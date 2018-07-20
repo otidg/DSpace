@@ -264,12 +264,12 @@ j(document).ready(function() {
             <div class="panel panel-warning">
             	<div class="panel-heading"><fmt:message key="jsp.admintools"/></div>
             	<div class="panel-body">
-				<form method="get" action="<%= request.getContextPath() %>/submit">
+<%-- 				<form method="get" action="<%= request.getContextPath() %>/submit">
                     <input type="hidden" name="edit_item" value="<%= item.getID() %>" />
                     <input type="hidden" name="pageCallerID" value="0" />
-                    <%--<input type="submit" name="submit" value="Edit...">--%>
+                    <input type="submit" name="submit" value="Edit...">
                     <input class="btn btn-default col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.general.editsubmission.button"/>" />
-                </form>
+                </form> --%>
                 <form method="get" action="<%= request.getContextPath() %>/tools/edit-item">
                     <input type="hidden" name="item_id" value="<%= item.getID() %>" />
                     <%--<input type="submit" name="submit" value="Edit...">--%>

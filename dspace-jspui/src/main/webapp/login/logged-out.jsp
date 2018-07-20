@@ -21,7 +21,9 @@
 <dspace:layout locbar="nolink" titlekey="jsp.login.logged-out.title">
     <%-- <h1>Logged Out</h1> --%>
     <h1><fmt:message key="jsp.login.logged-out.title"/></h1>
-
+	<div style="visibility:hidden">
+		<img src="<%= request.getContextPath() %>/Shibboleth.sso/Logout"  />
+	</div>
     <%-- <p>Thank you for remembering to log out!</p> --%>
     <p><fmt:message key="jsp.login.logged-out.thank"/></p>
     <%-- <p><a href="<%= request.getContextPath() %>/">Go to DSpace Home</a></p> --%>
