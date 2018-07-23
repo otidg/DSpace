@@ -29,5 +29,58 @@
 
 <%
     String angularWebappURL = ConfigurationManager.getProperty("dspace.angularui");
-	response.sendRedirect(angularWebappURL + "/mydspace");
 %>
+
+<script type='text/javascript' src="<%= request.getContextPath() %>/static/js/jquery/jquery-1.11.3.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<fmt:message var="redirectLabel" key="jsp.mydspace.success.redirect"/>
+<fmt:message var="successLabel" key="jsp.mydspace.success.login"/>
+<script>
+    jQuery(document).ready(function() {
+        var successHandler = function(result, status, xhr) {
+        	var token = xhr.getResponseHeader('Authorization').split(" ")[1];
+        	toastr.success('${redirectLabel}', '${successLabel}');
+            setTimeout(function() {
+            	window.location.href = '<%= angularWebappURL %>/login?token=' + token;
+            }, 2000);
+        };  
+
+        toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "onclick" : function() { toastr.remove(); }
+            }
+        
+        jQuery.ajax({
+          type : 'POST',
+          url : "<%= request.getContextPath() + "/dspace-spring-rest/api/authn/login"%>",
+          headers : {
+              "Content-Type" : 'application/json'
+          },
+          success : successHandler,
+          error : function(result, status, xhr) {
+              if (xhr == 401) {
+                  var loc = result.getResponseHeader("location");
+                  if (loc != null && loc != "") {
+                      document.location = loc;
+                  }
+              }
+          }
+        });
+
+    });
+</script>
