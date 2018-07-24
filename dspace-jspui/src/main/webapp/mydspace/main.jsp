@@ -29,6 +29,7 @@
 
 <%
     String angularWebappURL = ConfigurationManager.getProperty("dspace.angularui");
+	String baseWebappURL = ConfigurationManager.getProperty("dspace.baseUrl");
 %>
 
 <script type='text/javascript' src="<%= request.getContextPath() %>/static/js/jquery/jquery-1.11.3.min.js"></script>
@@ -67,7 +68,7 @@
         
         jQuery.ajax({
           type : 'POST',
-          url : "<%= request.getContextPath() + "/dspace-spring-rest/api/authn/login"%>",
+          url : "<%= baseWebappURL + "/dspace-spring-rest/api/authn/login"%>",
           headers : {
               "Content-Type" : 'application/json'
           },

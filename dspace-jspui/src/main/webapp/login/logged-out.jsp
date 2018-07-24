@@ -17,7 +17,11 @@
     prefix="fmt" %>
 
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
-
+<%@ page import="org.dspace.core.ConfigurationManager"%>
+<%
+    String angularWebappURL = ConfigurationManager.getProperty("dspace.angularui");
+	String baseWebappURL = ConfigurationManager.getProperty("dspace.baseUrl");
+%>
 <dspace:layout locbar="nolink" titlekey="jsp.login.logged-out.title">
 <script>
     jQuery(document).ready(function() {
@@ -29,10 +33,10 @@
             setTimeout(function() {
                 jQuery.ajax({ 
              	   type : "GET", 
-             	   url : window.location.href.replace("logout", "dspace-spring-rest/") + 'api/authn/logout',
+             	   url : "<%= baseWebappURL %>/dspace-spring-rest/api/authn/logout",
              	   headers: {'other': 'headers', 'Content-Type': 'application/json', 'Authorization': token},
              	   success : function(result) { 
-             		  jQuery("#logoutImg").attr("src", "<%= request.getContextPath() %>/Shibboleth.sso/Logout");
+             		  jQuery("#logoutImg").attr("src", "<%= baseWebappURL %>/Shibboleth.sso/Logout");
              	   }, 
              	   error : function(result) { 
              	     //handle the error 
@@ -42,7 +46,7 @@
         };  
 
         jQuery.ajax({
-          url : window.location.href.replace("logout", "dspace-spring-rest/") + 'api/authn/login',
+          url : "<%= baseWebappURL %>/dspace-spring-rest/api/authn/login",
     	  headers: {'other': 'headers', 'Content-Type': 'application/json'},
           success : successHandler,
           error : function(result, status, xhr) {
