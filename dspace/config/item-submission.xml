@@ -17,7 +17,8 @@
 	<!-- which does not appear in this map will be associated with the mapping -->
 	<!-- for handle "default". -->
 	<submission-map>
-		<name-map collection-handle="default" submission-name="traditional" />
+		<name-map collection-handle="default" submission-name="easy" />
+	<!--		<name-map collection-handle="1942/12374" submission-name="article" />  -->
 	</submission-map>
 
 
@@ -44,27 +45,52 @@
 	<!-- -->
 	<step-definitions>
 		<step id="extraction">
-       		<heading></heading> 
-	   		<processing-class>org.dspace.app.rest.submit.step.ExtractMetadataStep</processing-class>
+			<heading></heading>
+			<processing-class>org.dspace.app.rest.submit.step.ExtractMetadataStep</processing-class>
 			<type>utils</type>
-			<scope visibility="hidden" visibilityOutside="hidden">submission</scope>       
-     	</step>
-	    <!-- The "collection" step is a "special step" which is *REQUIRED* -->
-	    <!-- In DSpace, all submitted items must be immediately assigned --> 
-	    <!-- to a collection. This step ensures that a collection is always selected. -->
-	 	<step id="collection">
-       		<heading></heading> 
-	   		<processing-class>org.dspace.app.rest.submit.step.CollectionStep</processing-class>
+			<scope visibility="hidden" visibilityOutside="hidden">submission</scope>
+		</step>
+		<!-- The "collection" step is a "special step" which is *REQUIRED* -->
+		<!-- In DSpace, all submitted items must be immediately assigned -->
+		<!-- to a collection. This step ensures that a collection is always selected. -->
+		<step id="collection">
+			<heading></heading>
+			<processing-class>org.dspace.app.rest.submit.step.CollectionStep</processing-class>
 			<type>collection</type>
-			<scope visibility="hidden" visibilityOutside="hidden">submission</scope>       
-     	</step>
-		<step id="traditionalpageone" mandatory="true">
-			<heading>submit.progressbar.describe.stepone</heading>
+			<scope visibility="hidden" visibilityOutside="hidden">submission</scope>
+		</step>
+		<step id="basicinformation" mandatory="true">
+			<heading>submit.progressbar.describe.basicinformation</heading>
 			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
 			<type>submission-form</type>
 		</step>
-		<step id="traditionalpagetwo" mandatory="true">
-			<heading>submit.progressbar.describe.steptwo</heading>
+		<step id="description" mandatory="false">
+			<heading>submit.progressbar.describe.description</heading>
+			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+			<type>submission-form</type>
+		</step>
+		<step id="source" mandatory="false">
+			<heading>submit.progressbar.describe.source</heading>
+			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+			<type>submission-form</type>
+		</step>
+		<step id="conference" mandatory="false">
+			<heading>submit.progressbar.describe.conference</heading>
+			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+			<type>submission-form</type>
+		</step>
+		<step id="book" mandatory="false">
+			<heading>submit.progressbar.describe.book</heading>
+			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+			<type>submission-form</type>
+		</step>
+		<step id="pages" mandatory="false">
+			<heading>submit.progressbar.describe.pages</heading>
+			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+			<type>submission-form</type>
+		</step>
+		<step id="additionalfields" mandatory="false">
+			<heading>submit.progressbar.describe.additionalfields</heading>
 			<processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
 			<type>submission-form</type>
 		</step>
@@ -134,17 +160,23 @@
 	<submission-definitions>
 
 		<!--This "traditional" process defines the DEFAULT item submission process -->
-		<submission-process name="traditional">
+		<submission-process name="easy">
 
 			<!--Uncommment to display the SAMPLE step as your first step -->
 			<!--<step id="sample"/> -->
 			<step id="extraction" />
 
 			<step id="collection" />
-			
+
 			<!--Step will be to Describe the item. -->
-			<step id="traditionalpageone" />
-			<step id="traditionalpagetwo" />
+			<step id="basicinformation" />
+			<step id="source" />
+			<step id="conference" />
+			<step id="book" />
+			<step id="pages" />
+			<step id="description" />
+			<step id="additionalfields" />
+
 
 			<!--Step will be to Upload the item -->
 			<step id="upload" />
@@ -156,6 +188,7 @@
 			<!-- <step id="creative-commons"/> -->
 			<!-- <step id="verify"/> -->
 		</submission-process>
+
 
 	</submission-definitions>
 

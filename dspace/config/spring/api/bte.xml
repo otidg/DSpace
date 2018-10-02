@@ -27,7 +27,7 @@
 				<entry key="csv" value-ref="csvDataLoader" />
 				<entry key="tsv" value-ref="tsvDataLoader" />
 				<entry key="oai" value-ref="oaipmhDataLoader" />
-				<!-- <entry key="grobid" value-ref="grobidDataLoader" /> -->
+				<entry key="grobid" value-ref="grobidDataLoader" />
 			</map>
 		</property>
 		
@@ -200,8 +200,8 @@
 	            <entry key="arxiv" value-ref="arXivOnlineDataLoader"/>
 	            <entry key="cinii" value-ref="ciniiOnlineDataLoader"/>
 <!-- 	            depending on your apiKey you should use scopusOnlineDataLoader or scivalOnlineDataLoader
-		    <entry key="scopus" value-ref="scopusOnlineDataLoader"/>
-	            <entry key="wos" value-ref="wosOnlineDataLoader"/> -->
+		    <entry key="scopus" value-ref="scopusOnlineDataLoader"/> -->
+	            <entry key="wos" value-ref="wosOnlineDataLoader"/> 
 	            <entry key="pubmedXML" value-ref="pubmedFileDataLoader"/>
 	            <!-- <entry key="pubmedEuropeXML" value-ref="pubmedEuropeFileDataLoader"/> -->
 	            <entry key="crossRefXML" value-ref="crossRefFileDataLoader"/>
@@ -213,7 +213,7 @@
 	            <entry key="endnote" value-ref="endnoteDataLoader"/>
 	            <entry key="csv" value-ref="csvDataLoader"/>
 	            <entry key="tsv" value-ref="tsvDataLoader"/>
-	            <!-- <entry key="grobid" value-ref="grobidDataLoader" /> -->
+	            <entry key="grobid" value-ref="grobidDataLoader" />
 			</map>
 	    </property>
 	</bean>
@@ -231,8 +231,8 @@
 	            <entry key="arxiv" value-ref="arXivOnlineDataLoader"/>
 	            <entry key="cinii" value-ref="ciniiOnlineDataLoader"/>
 <!-- 	            depending on your apiKey you should use scopusOnlineDataLoader or scivalOnlineDataLoader
-		    <entry key="scopus" value-ref="scopusOnlineDataLoader"/>
-	            <entry key="wos" value-ref="wosOnlineDataLoader"/> -->
+		    <entry key="scopus" value-ref="scopusOnlineDataLoader"/> -->
+	            <entry key="wos" value-ref="wosOnlineDataLoader"/>
 	            <entry key="pubmedXML" value-ref="pubmedFileDataLoader"/>
 	            <!-- <entry key="pubmedEuropeXML" value-ref="pubmedEuropeFileDataLoader"/> -->
 	            <entry key="crossRefXML" value-ref="crossRefFileDataLoader"/>
@@ -244,11 +244,11 @@
 	            <entry key="endnote" value-ref="endnoteDataLoader"/>
 	            <entry key="csv" value-ref="csvDataLoader"/>
 	            <entry key="tsv" value-ref="tsvDataLoader"/>
-	            <!-- <entry key="grobid" value-ref="grobidDataLoader" /> -->
+	            <entry key="grobid" value-ref="grobidDataLoader" />
 			</map>
 	    </property>
 	</bean>
-
+	
 	<bean name="org.dspace.submit.lookup.SubmissionLookupOutputGenerator" class="org.dspace.submit.lookup.SubmissionLookupOutputGenerator" scope="prototype"/>
 	
 	<!-- Specify here any filters or modifiers to run before the output -->
@@ -364,8 +364,8 @@
 	        	<value>wosrisabstract</value>
 	        </list>
 	    </property>
-	</bean>	
-	
+	</bean>
+		
 	<!-- **************************************************************************************************** -->
 	<!-- Submission Lookup Transformation Engine (phase 2) 													  -->
 	<!-- **************************************************************************************************** -->
@@ -523,11 +523,16 @@
 	<bean id="bibTeXDataLoader" class="gr.ekt.bteio.loaders.BibTeXDataLoader">
 		<property name="fieldMap">
 			<map>
+                                <entry key="doi" value="doi" />
 				<entry key="title" value="title" />
 				<entry key="author" value="authors" />
 				<entry key="journal" value="journal" />
 				<entry key="year" value="issued" />
 				<entry key="ISSN" value="jissn" />
+                                <entry key="issn" value="jissn" />
+                                <entry key="abstract" value="abstract" />
+                                <entry key="volume" value="volume" />
+                                <entry key="number" value="issue" />
 			</map>
 		</property>
 	</bean>
@@ -608,12 +613,16 @@
 				<entry key="PY" value="issued" />
 				<entry key="SO" value="journal" />
 				<entry key="DT" value="subtype" />				
+				<entry key="CT" value="conferencetitle" />	<!-- added -->
+				<entry key="CY" value="conferencedate" />	<!-- added -->
+				<entry key="CL" value="conferenceplace" />	<!-- added -->
 				<entry key="DE" value="allkeywords" />	
 				<entry key="ID" value="allkeywords" />	
 				<entry key="C1" value="notes" />	
 				<entry key="RP" value="notes" />	
 				<entry key="EM" value="notes" />	
 				<entry key="OI" value="orcid" />	
+				<entry key="FU" value="funders" />			<!-- added -->
 				<entry key="PU" value="publisher" />	
 				<entry key="PA" value="publisherPlace" />	
 				<entry key="SN" value="jissn" />	
@@ -622,13 +631,16 @@
 				<entry key="IS" value="issue" />	
 				<entry key="BP" value="firstpage" />	
 				<entry key="EP" value="lastpage" />	
+				<entry key="AR" value="artnr" />			<!-- added -->
 				<entry key="DI" value="doi" />	
+				<entry key="PG" value="pages" />			<!-- added -->
 				<entry key="UT" value="isiId" />
 				<entry key="EI" value="eissn" />
 				<entry key="BN" value="pisbn" />
 			</map>
 		</property>
 	</bean>
+
 
 	<bean id="endnoteDataLoader" class="org.dspace.submit.extraction.EndnoteDataLoader">
 		<property name="fieldMap">
@@ -765,7 +777,7 @@
 		<!-- For CrossRef service you need to obtain an API Key from CrossRef. Once you get it, add it 
 			 to the following configuration value 
 		-->
-		<property name="apiKey" value="" />
+		<property name="apiKey" value="${bte.crossref.apikey}" />
 		<!-- Uncomment the following line if you want to define the max results returned by the 
 			 CrossRef free text (by author, title, date) search. Default value is 10 
 		-->
@@ -871,8 +883,8 @@
 				<entry key="jeissn" value="dc.identifier.eissn" />
 				<entry key="lastpage" value="dc.relation.lastpage" />
 				<entry key="eisbn" value="" />
-				<entry key="journal" value="dc.relation.ispartof" />				
-				<entry key="proceedingsPaper.journal" value="dc.relation.ispartofbook" />				
+				<entry key="journal" value="dc.bibliographicCitation.title" />				<!-- changed -->
+				<entry key="proceedingsPaper.journal" value="dc.bibliographicCitation.title" />		<!-- changed -->		
 				<entry key="title" value="dc.title" />
 				<entry key="wosristitle" value="dc.title" />
 				<entry key="issued" value="dc.date.issued" />
@@ -895,19 +907,25 @@
 				<entry key="pubmedcentralID" value="dc.identifier.pmcid" />
 				<entry key="uri" value="dc.identifier.uri" />
 				<entry key="url" value="dc.identifier.url" />
-				<entry key="issue" value="dc.identifier.issue" />
-				<entry key="volume" value="dc.identifier.volume" />
+				<entry key="issue" value="dc.bibliographicCitation.issue" />	<!-- changed -->
+				<entry key="volume" value="dc.bibliographicCitation.volume" />	<!-- changed -->
 				<entry key="firstpage" value="dc.identifier.spage" />
 				<entry key="lastpage" value="dc.identifier.epage" />
 				<entry key="editionnumber" value="dc.relation.edition" />
-				<entry key="seriestitle" value="dc.relation.ispartofjournal" />
-				<entry key="booktitle" value="dc.relation.ispartofbook" />				
+				<entry key="seriestitle" value="dc.bibliographicCitation.title" />		<!-- changed -->
+				<entry key="booktitle" value="dc.bibliographicCitation.title" />		<!-- changed -->	
 				<entry key="meshheadings" value="dc.subject.mesh" />
 				<entry key="meshqualifiers" value="dc.subject.meshqualifier" />
 				<entry key="eid" value="dc.identifier.scopus" />
 				<entry key="isiId" value="dc.identifier.isi" />
 				<entry key="providerType" value="dc.source.type" />
 				<entry key="orcid" value="dc.contributor.orcid" />				
+				<entry key="conferencetitle" value="dc.bibliographicCitation.conferencedate" />	<!-- added -->
+				<entry key="conferencedate" value="dc.bibliographicCitation.conferencename" />	<!-- added -->
+				<entry key="conferenceplace" value="dc.bibliographicCitation.conferenceplace" />	<!-- added -->
+				<entry key="funders" value="dc.description.sponsorship" />	<!-- added -->
+				<entry key="artnr" value="dc.bibliographicCitation.artnr" />	<!-- added -->
+				<entry key="pages" value="dc.format.pages" />	<!-- added -->
 				
 				<!-- Not used - new metadata fields need to be declared for them in DSpace registry -->
 				<!-- 
@@ -1209,7 +1227,6 @@
 		<property name="sourceIdMetadata" value="dc.identifier.isi" />
 		<property name="providerName" value="wos" />		
 	</bean>
-
 
 	<bean id="grobidDataLoader" class="org.dspace.submit.extraction.GrobidFileDataLoader">
 		<property name="url" value="${metadata.extraction.grobid.url}"/>

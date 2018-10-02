@@ -1,0 +1,6 @@
+# Default Access Group
+# (NOTE: blank lines are not allowable in a group record)
+##########################
+User-agent: *
+##############################
+Disallow: /

@@ -418,3 +418,5 @@ community-list.show.all = true
 submission.default.collection =
 
 metadata.extraction.grobid.url =
+
+bte.crossref.apikey =

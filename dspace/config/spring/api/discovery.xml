@@ -1677,18 +1677,12 @@
 		<property name="sidebarFacets">
 			<list>
 				<ref bean="searchFilterObjectNamedType" />
-				<ref bean="searchFilterType" />
-				<ref bean="searchFilterIssued" />
-				<ref bean="searchFilterSubmitted" />
 			</list>
 		</property>
 		<!--The search filters which can be used on the discovery search page -->
 		<property name="searchFilters">
 			<list>
 				<ref bean="searchFilterObjectNamedType" />
-				<ref bean="searchFilterType" />
-				<ref bean="searchFilterIssued" />
-				<ref bean="searchFilterSubmitted" />
 			</list>
 		</property>
 		<!--The sort filters for the discovery search -->

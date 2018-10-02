@@ -44,14 +44,13 @@
    		<property name="type" value="scopus"/>
    		<property name="crisEntityClazz" value="org.dspace.app.cris.model.ResearcherPage"/>
    		<property name="crisEntityTypeId" value="9"/>
-   	</bean>
+   	</bean> -->
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsAggregateIndicatorsPlugin" name="RPStatsAggregatorWOSIndicatorsPlugin">
    		<property name="name" value="RPStatsAggregatorWOSIndicatorsPlugin"/>
    		<property name="type" value="wos"/>
    		<property name="crisEntityClazz" value="org.dspace.app.cris.model.ResearcherPage"/>
    		<property name="crisEntityTypeId" value="9"/>
    	</bean>
-   	 -->
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsAggregateIndicatorsPlugin" name="RPStatsAggregatorPUBMEDIndicatorsPlugin">
    		<property name="name" value="RPStatsAggregatorPUBMEDIndicatorsPlugin"/>
    		<property name="type" value="pubmed"/>
@@ -83,7 +82,7 @@
    		<property name="type" value="scopus"/>
    		<property name="frequency" value="_last2"/>
    	</bean>
-   	
+-->   	
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPeriodIndicatorsPlugin" name="ItemStatsPeriodWeekWOSIndicatorsPlugin">
    		<property name="name" value="ItemStatsPeriodWeekWOSIndicatorsPlugin"/>
    		<property name="type" value="wos"/>
@@ -95,7 +94,6 @@
    		<property name="type" value="wos"/>
    		<property name="frequency" value="_last2"/>
    	</bean>
- -->   	
  
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPeriodIndicatorsPlugin" name="ViewStatsPeriodWeekIndicatorsPlugin">
    		<property name="name" value="ViewStatsPeriodWeekIndicatorsPlugin"/>
@@ -139,7 +137,7 @@
    			</list>
    		</property>
    	</bean>
-   	
+-->   	
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPercentileIndicatorsPlugin" name="PercentileWOSIndicatorsPlugin">
    		<property name="name" value="PercentileWOSIndicatorsPlugin"/>
    		<property name="metrics" value="wos"/>
@@ -149,7 +147,6 @@
    			</list>
    		</property>
    	</bean>
- -->   	
    	
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPercentileIndicatorsPlugin" name="PercentilePubmedIndicatorsPlugin">
    		<property name="name" value="PercentilePubmedIndicatorsPlugin"/>
@@ -171,7 +168,7 @@
    			</list>
    		</property>
    	</bean>
-   	
+-->   	
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPercentileIndicatorsPlugin" name="PercentileWOSAggregateIndicatorsPlugin">
    		<property name="name" value="PercentileWOSAggregateIndicatorsPlugin"/>
    		<property name="metrics" value="wos_aggregate"/>
@@ -181,7 +178,6 @@
    			</list>
    		</property>
    	</bean>
- -->
     	   	
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPercentileIndicatorsPlugin" name="PercentilePubmedAggregateIndicatorsPlugin">
    		<property name="name" value="PercentilePubmedAggregateIndicatorsPlugin"/>
@@ -203,7 +199,7 @@
    			</list>
    		</property>
    	</bean>
-   	
+-->   	
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPercentileIndicatorsPlugin" name="PercentileWOSCountIndicatorsPlugin">
    		<property name="name" value="PercentileWOSCountIndicatorsPlugin"/>
    		<property name="metrics" value="wos_count"/>
@@ -213,7 +209,6 @@
    			</list>
    		</property>
    	</bean>
- -->
  
    	<bean class="org.dspace.app.cris.statistics.plugin.StatsPercentileIndicatorsPlugin" name="PercentilePubmedCountIndicatorsPlugin">
    		<property name="name" value="PercentilePubmedCountIndicatorsPlugin"/>

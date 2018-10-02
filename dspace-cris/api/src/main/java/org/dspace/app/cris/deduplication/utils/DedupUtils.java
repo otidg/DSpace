@@ -27,6 +27,9 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.FacetParams;
 import org.dspace.app.cris.configuration.ViewResolver;
+import org.dspace.app.cris.deduplication.model.DuplicateDecisionType;
+import org.dspace.app.cris.deduplication.model.DuplicateDecisionValue;
+import org.dspace.app.cris.deduplication.model.DuplicateDecisionObjectRest;
 import org.dspace.app.cris.deduplication.service.DedupService;
 import org.dspace.app.cris.deduplication.service.impl.SolrDedupServiceImpl;
 import org.dspace.app.cris.deduplication.service.impl.SolrDedupServiceImpl.DeduplicationFlag;
@@ -39,10 +42,12 @@ import org.dspace.browse.BrowsableDSpaceObject;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.factory.ContentServiceFactory;
+import org.dspace.content.service.ItemService;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.discovery.SearchServiceException;
+import org.dspace.util.ItemUtils;
 import org.dspace.utils.DSpace;
 import org.hibernate.Session;
 
@@ -57,7 +62,7 @@ public class DedupUtils
     private ApplicationService applicationService;
     
     private DSpace dspace = new DSpace();
-
+    
     public DuplicateInfoList findSignatureWithDuplicate(Context context,
             String signatureType, int resourceType, int limit, int offset, int rule)
                     throws SearchServiceException, SQLException
@@ -139,97 +144,118 @@ public class DedupUtils
 
         return results;
     }
+
+	/**
+	 * @param context
+	 * @param targetItemID
+	 * @param resourceType
+	 * @param signatureType
+	 * @param isInWorkflow set null to retrieve all (ADMIN) 
+	 * @return
+	 * @throws SQLException
+	 * @throws SearchServiceException
+	 */
+	private List<DuplicateItemInfo> findDuplicate(Context context, UUID targetItemID,
+         Integer resourceType, String signatureType, Boolean isInWorkflow)
+                 throws SQLException, SearchServiceException
+    {
+        ViewResolver resolver = dspace.getServiceManager().getServiceByName(CrisConstants.getEntityTypeText(resourceType) + "ViewResolver", ViewResolver.class);
     
-    /**
-     * @param context
-     * @param id
-     * @param resourceType
-     * @param signatureType
-     * @param isInWorkflow set null to retrieve all (ADMIN) 
-     * @return
-     * @throws SQLException
-     * @throws SearchServiceException
-     */
-    private List<DuplicateItemInfo> findDuplicate(Context context, UUID id,
+        List<UUID> result = new ArrayList<UUID>();
+        Map<UUID, String> verify = new HashMap<UUID,String>();
+
+        SolrQuery findDuplicateBySignature = new SolrQuery();
+        findDuplicateBySignature.setQuery((isInWorkflow == null?SolrDedupServiceImpl.SUBQUERY_NOT_IN_REJECTED:(isInWorkflow?SolrDedupServiceImpl.SUBQUERY_NOT_IN_REJECTED_OR_VERIFYWF:SolrDedupServiceImpl.SUBQUERY_NOT_IN_REJECTED_OR_VERIFY)));
+        findDuplicateBySignature
+                .addFilterQuery(SolrDedupServiceImpl.RESOURCE_IDS_FIELD + ":"
+                        + targetItemID);
+        findDuplicateBySignature.addFilterQuery(SolrDedupServiceImpl.RESOURCE_RESOURCETYPE_FIELD + ":"
+                + resourceType);
+        String filter = "";
+        if(isInWorkflow==null) {            
+            filter = SolrDedupServiceImpl.RESOURCE_FLAG_FIELD + ":"
+                    + SolrDedupServiceImpl.DeduplicationFlag.MATCH.getDescription();            }
+        else if(isInWorkflow) {
+            filter = SolrDedupServiceImpl.RESOURCE_FLAG_FIELD + ":("
+                + SolrDedupServiceImpl.DeduplicationFlag.REJECTWS.getDescription() +" OR "+ SolrDedupServiceImpl.DeduplicationFlag.VERIFYWS.getDescription() + ")";
+        }
+        else {
+            filter = SolrDedupServiceImpl.RESOURCE_FLAG_FIELD + ":"
+                    + SolrDedupServiceImpl.DeduplicationFlag.MATCH.getDescription();
+        }
+
+        findDuplicateBySignature.addFilterQuery(filter);
+
+        findDuplicateBySignature
+                .setFields("dedup.ids", "dedup.note", "dedup.flag");
+
+        if (ConfigurationManager.getBooleanProperty("deduplication",
+                "tool.duplicatechecker.ignorewithdrawn"))
+        {
+            findDuplicateBySignature.addFilterQuery("-"+SolrDedupServiceImpl.RESOURCE_WITHDRAWN_FIELD+":true");
+        }
+
+	    ItemService itemService = ContentServiceFactory.getInstance().getItemService();
+	    List<DuplicateItemInfo> dupsInfo = new ArrayList<DuplicateItemInfo>();  
+	    QueryResponse response = dedupService
+	              .search(findDuplicateBySignature);
+	    SolrDocumentList solrDocumentList = response.getResults();
+	    for (SolrDocument solrDocument : solrDocumentList) {
+	          Collection<Object> match = (Collection<Object>) solrDocument.getFieldValues("dedup.ids");
+
+	              if (match!=null && !match.isEmpty()) {
+	                  for (Object matchItem : match) {
+	                      UUID itemID = UUID.fromString((String)matchItem);
+	                      if(!itemID.equals(targetItemID)) {
+	                      	  DuplicateItemInfo info = new DuplicateItemInfo();
+	                          Item duplicateItem = itemService.find(context, itemID);
+	                          info.setDuplicateItem(duplicateItem);
+	                          info.setDuplicateItemType(ItemUtils.getItemStatus(context, duplicateItem));
+	  
+	                          String flag = (String)solrDocument.getFieldValue("dedup.flag");
+		                      if (SolrDedupServiceImpl.DeduplicationFlag.VERIFYWS.getDescription().equals(flag)) {
+		                          info.setNote(DuplicateDecisionType.WORKSPACE, (String)solrDocument.getFieldValue("dedup.note"));
+		                          info.setDecision(DuplicateDecisionType.WORKSPACE, DuplicateDecisionValue.VERIFY);
+		                      }
+		                      else if (SolrDedupServiceImpl.DeduplicationFlag.REJECTWS.getDescription().equals(flag)){
+		                      	info.setDecision(DuplicateDecisionType.WORKSPACE, DuplicateDecisionValue.REJECT);
+		                      }
+	                          dupsInfo.add(info);
+	                          break;
+	                      }
+	                  }
+	              }
+	      }
+          
+          return dupsInfo;
+
+    }
+
+
+    private boolean hasStoredDecision(UUID firstItemID, UUID secondItemID, DuplicateDecisionType decisionType)
+    		throws SQLException, SearchServiceException {
+
+    	QueryResponse response = dedupService
+                .findDecisions(firstItemID, secondItemID, decisionType);
+
+        return !response.getResults().isEmpty();
+    }
+
+    public boolean matchExist(Context context, UUID itemID, UUID targetItemID,
             Integer resourceType, String signatureType, Boolean isInWorkflow)
                     throws SQLException, SearchServiceException
     {
-            ViewResolver resolver = dspace.getServiceManager().getServiceByName(CrisConstants.getEntityTypeText(resourceType) + "ViewResolver", ViewResolver.class);
-        
-            List<UUID> result = new ArrayList<UUID>();
-            Map<UUID, String> verify = new HashMap<UUID,String>();
-
-            SolrQuery findDuplicateBySignature = new SolrQuery();
-            findDuplicateBySignature.setQuery((isInWorkflow == null?SolrDedupServiceImpl.SUBQUERY_NOT_IN_REJECTED:(isInWorkflow?SolrDedupServiceImpl.SUBQUERY_NOT_IN_REJECTED_OR_VERIFYWF:SolrDedupServiceImpl.SUBQUERY_NOT_IN_REJECTED_OR_VERIFY)));
-            findDuplicateBySignature
-                    .addFilterQuery(SolrDedupServiceImpl.RESOURCE_IDS_FIELD + ":"
-                            + id);
-            findDuplicateBySignature.addFilterQuery(SolrDedupServiceImpl.RESOURCE_RESOURCETYPE_FIELD + ":"
-                    + resourceType);
-            String filter = "";
-            if(isInWorkflow==null) {            
-                filter = SolrDedupServiceImpl.RESOURCE_FLAG_FIELD + ":"
-                        + SolrDedupServiceImpl.DeduplicationFlag.MATCH.getDescription();            }
-            else if(isInWorkflow) {
-                filter = SolrDedupServiceImpl.RESOURCE_FLAG_FIELD + ":("
-                    + SolrDedupServiceImpl.DeduplicationFlag.MATCH.getDescription() +" OR "+ SolrDedupServiceImpl.DeduplicationFlag.VERIFYWS.getDescription() + ")";
-            }
-            else {
-                filter = SolrDedupServiceImpl.RESOURCE_FLAG_FIELD + ":"
-                        + SolrDedupServiceImpl.DeduplicationFlag.MATCH.getDescription();
-            }
-
-            findDuplicateBySignature.addFilterQuery(filter);
-
-            findDuplicateBySignature
-                    .setFields("dedup.ids", "dedup.note", "dedup.flag");
-
-            if (ConfigurationManager.getBooleanProperty("deduplication",
-                    "tool.duplicatechecker.ignorewithdrawn"))
-            {
-                findDuplicateBySignature.addFilterQuery("-"+SolrDedupServiceImpl.RESOURCE_WITHDRAWN_FIELD+":true");
-            }
-
-            QueryResponse response2 = dedupService
-                    .search(findDuplicateBySignature);
-            SolrDocumentList solrDocumentList2 = response2.getResults();
-            for (SolrDocument solrDocument : solrDocumentList2)
-            {
-                Collection<Object> tmp = (Collection<Object>) solrDocument.getFieldValues("dedup.ids");
-                if(tmp!=null && !tmp.isEmpty()) {
-                    for(Object tttmp : tmp) {
-                        String idtmp = (String)tttmp;
-                        UUID parseInt = UUID.fromString(idtmp);
-                        if(!parseInt.equals(id)) {
-                            String flag = (String)solrDocument.getFieldValue("dedup.flag");
-                            if(SolrDedupServiceImpl.DeduplicationFlag.VERIFYWS.getDescription().equals(flag)) {
-                                verify.put(parseInt, (String)solrDocument.getFieldValue("dedup.note"));
-                            }
-                            else {
-                                result.add(parseInt);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        
-        List<DuplicateItemInfo> dupsInfo = new ArrayList<DuplicateItemInfo>();        
-        for (UUID idResult : result) {
-            DuplicateItemInfo info = new DuplicateItemInfo();            
-            info.setRejected(false);
-            info.setDuplicateItem(resolver.fillDTO(context, idResult, resourceType));
-            if(verify.containsKey(idResult)) {
-                info.setNote(verify.get(idResult));
-                info.setCustomActions(context);
-            }
-            else {
-                info.setDefaultActions(context, isInWorkflow);
-            }                     
-            dupsInfo.add(info);
+    	boolean exist = false;
+        List<DuplicateItemInfo> potentialDuplicates = findDuplicate(context, itemID, resourceType, null, isInWorkflow);
+        for (DuplicateItemInfo match : potentialDuplicates) {
+        	if (match.getDuplicateItem().getID().toString().equals(targetItemID.toString())) {
+        		exist = true;
+        		break;
+        	}
         }
         
-        return dupsInfo;
+        return exist;
+        
     }
 
     public boolean rejectAdminDups(Context context, UUID firstId,
@@ -270,7 +296,7 @@ public class DedupUtils
                 row.setAdmin_decision(DeduplicationFlag.REJECTADMIN.getDescription());
             }
             applicationService.saveOrUpdate(CrisDeduplication.class, row);
-            dedupService.buildReject(context, firstId.toString(), secondId.toString(), type, DeduplicationFlag.REJECTADMIN, null);
+            dedupService.buildDecision(context, firstId.toString(), secondId.toString(), type, DeduplicationFlag.REJECTADMIN, null);
             return true;
         }
         catch (Exception ex)
@@ -383,13 +409,123 @@ public class DedupUtils
             }
 
             applicationService.saveOrUpdate(CrisDeduplication.class, row);
-            dedupService.buildReject(context, firstId.toString(), secondId.toString(), type, check?DeduplicationFlag.VERIFYWF:DeduplicationFlag.VERIFYWS, note);
+            dedupService.buildDecision(context, firstId.toString(), secondId.toString(), type, check?DeduplicationFlag.VERIFYWF:DeduplicationFlag.VERIFYWS, note);
         }
         else
         {
             throw new AuthorizeException(
                     "Only authorize users can access to the deduplication");
         }
+    }
+
+    private Boolean hasAuthorization(Context context, UUID firstId, UUID secondId) {
+        Item firstItem;
+        Item secondItem;
+		try {
+			firstItem = ContentServiceFactory.getInstance().getItemService().find(context, firstId);
+			secondItem = ContentServiceFactory.getInstance().getItemService().find(context, secondId);
+
+			return (AuthorizeServiceFactory.getInstance().getAuthorizeService().authorizeActionBoolean(context, firstItem,
+	                Constants.WRITE)
+	                || AuthorizeServiceFactory.getInstance().getAuthorizeService().authorizeActionBoolean(context, secondItem,
+	                        Constants.WRITE));
+		} catch (SQLException ex) {
+			log.error(ex.getMessage(), ex);
+			return false;
+		}
+    }
+
+    private CrisDeduplication retrieveDuplicationRow(Context context, UUID firstId, UUID secondId) {
+    	
+        UUID[] sortedIds = new UUID[] { firstId, secondId };
+        Arrays.sort(sortedIds);
+        CrisDeduplication row = null;
+        row = applicationService.uniqueCrisDeduplicationByFirstAndSecond(sortedIds[0].toString(), sortedIds[1].toString());
+        if(row == null) {                
+        	 row = new CrisDeduplication();
+        }
+
+    	return row;
+    }
+
+    public void setDuplicateDecision(Context context, UUID firstId,
+            UUID secondId, Integer type, DuplicateDecisionObjectRest decisionObject)
+            throws AuthorizeException, SQLException, SearchServiceException {
+    	
+    	if (hasAuthorization(context, firstId, secondId)) {
+    		CrisDeduplication row = retrieveDuplicationRow(context, firstId, secondId);
+    		boolean toFix = false, fake = false;
+    		boolean isWorkflow = decisionObject.getType() == DuplicateDecisionType.WORKFLOW;
+    		DeduplicationFlag decisionFlag = decisionObject.getDecisionFlag();
+    		String decisionDesc = decisionFlag.getDescription();
+    		String readerNote = null, epersonNote = null;
+    		UUID readerId = null, epersonId = null;
+    		Date readerTime = null, epersonTime = null;
+
+			if (decisionObject.getValue() == DuplicateDecisionValue.REJECT) {
+				fake = isWorkflow ? false : true;
+				epersonNote = decisionObject.getNote();
+				epersonId = context.getCurrentUser().getID();
+				epersonTime = new Date();
+			} else if (decisionObject.getValue() == DuplicateDecisionValue.VERIFY) {
+				toFix = true;
+				readerNote = decisionObject.getNote();
+				readerId = context.getCurrentUser().getID();
+				readerTime = new Date();
+			} else {
+				decisionDesc = null;
+			}
+
+            row.setFirstItemId(firstId.toString());
+            row.setSecondItemId(secondId.toString());
+            row.setResource_type_id(type);     
+            row.setTofix(toFix);
+            row.setFake(fake);
+			row.setEperson_id(epersonId);
+			row.setReject_time(epersonTime);
+			row.setNote(epersonNote);
+            row.setReader_id(readerId);
+            row.setReader_time(readerTime);
+            row.setReader_note(readerNote);
+            if(isWorkflow) {
+            	row.setWorkflow_decision(decisionDesc);
+            }
+            else {
+            	row.setSubmitter_decision(decisionDesc);
+            }
+            
+            applicationService.saveOrUpdate(CrisDeduplication.class, row);
+            
+            if (hasStoredDecision(firstId, secondId, decisionObject.getType())) {
+            	dedupService.removeStoredDecision(firstId, secondId, decisionObject.getType());
+            }
+
+            dedupService.buildDecision(context, firstId.toString(), secondId.toString(), type,
+            		decisionFlag, decisionObject.getNote());
+            dedupService.commit();
+    	} else {
+    		throw new AuthorizeException(
+                    "Only authorize users can access to the deduplication");
+    	}
+    	
+    }
+
+    public boolean validateDecision(DuplicateDecisionObjectRest decisionObject) {
+    	boolean valid = false;
+
+    	switch (decisionObject.getType()) {
+	    	case WORKSPACE:
+	    	case WORKFLOW:
+	    		valid = (decisionObject.getValue() == DuplicateDecisionValue.REJECT ||
+	    				decisionObject.getValue() == DuplicateDecisionValue.VERIFY ||
+	    				decisionObject.getValue() == null);
+	    		break;
+	    	case ADMIN:
+	    		valid = decisionObject.getValue() == DuplicateDecisionValue.REJECT;
+	    		break;
+        }
+        
+        return valid;
     }
 
     public boolean rejectDups(Context context, UUID firstId,
@@ -440,7 +576,7 @@ public class DedupUtils
                             DeduplicationFlag.REJECTWS.getDescription());
                 }
                 applicationService.saveOrUpdate(CrisDeduplication.class, row);
-                dedupService.buildReject(context, firstId.toString(), secondId.toString(), type,
+                dedupService.buildDecision(context, firstId.toString(), secondId.toString(), type,
                         check ? DeduplicationFlag.REJECTWF
                                 : DeduplicationFlag.REJECTWS,
                         note);
