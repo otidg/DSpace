@@ -191,10 +191,12 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean name="enhancerFulltext" class="org.dspace.content.integration.defaultvalues.FulltextInfoGenerator"/>
 	<bean name="enhancerPermissionFulltext" class="org.dspace.content.integration.defaultvalues.FulltextPermissionGenerator"/>
-
+		
+<!-- ADVANCED EXAMPLE: Expose virtual metadata on the Item retrieving values from a CRIS nested object -->  	
+	
 	<bean class="org.dspace.content.ItemEnhancer">
 		<property name="alias" value="journalimpactfactor" />
 		<property name="metadata">
