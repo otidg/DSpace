@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +32,6 @@ import org.dspace.app.itemimport.BTEBatchImportService;
 import org.dspace.app.itemimport.BatchUpload;
 import org.dspace.app.itemimport.factory.ItemImportServiceFactory;
 import org.dspace.app.itemimport.service.ItemImportService;
-import org.dspace.app.util.SubmissionConfig;
-import org.dspace.app.util.SubmissionConfigReader;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.app.webui.util.UIUtil;
 import org.dspace.authorize.AuthorizeException;
@@ -59,13 +58,14 @@ import org.dspace.eperson.factory.EPersonServiceFactory;
 import org.dspace.eperson.service.GroupService;
 import org.dspace.handle.factory.HandleServiceFactory;
 import org.dspace.handle.service.HandleService;
-import org.dspace.submit.AbstractProcessingStep;
 import org.dspace.util.ItemUtils;
 import org.dspace.utils.DSpace;
+import org.dspace.workflow.WorkflowItem;
 import org.dspace.workflowbasic.BasicWorkflowItem;
-import org.dspace.workflowbasic.factory.BasicWorkflowServiceFactory;
-import org.dspace.workflowbasic.service.BasicWorkflowItemService;
-import org.dspace.workflowbasic.service.BasicWorkflowService;
+import org.dspace.xmlworkflow.factory.XmlWorkflowServiceFactory;
+import org.dspace.xmlworkflow.service.XmlWorkflowService;
+import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
+import org.dspace.xmlworkflow.storedcomponents.service.XmlWorkflowItemService;
 
 /**
  * Servlet for constructing the components of the "My DSpace" page
@@ -105,11 +105,16 @@ public class MyDSpaceServlet extends DSpaceServlet
     private final transient WorkspaceItemService workspaceItemService
              = ContentServiceFactory.getInstance().getWorkspaceItemService();
 
-    private final transient BasicWorkflowService workflowService
-             = BasicWorkflowServiceFactory.getInstance().getBasicWorkflowService();
+//    private final transient BasicWorkflowService workflowService
+//             = BasicWorkflowServiceFactory.getInstance().getBasicWorkflowService();
+    private final transient XmlWorkflowService workflowService
+    		 = XmlWorkflowServiceFactory.getInstance().getXmlWorkflowService();
 
-    private final transient BasicWorkflowItemService workflowItemService
-             = BasicWorkflowServiceFactory.getInstance().getBasicWorkflowItemService();
+    private final transient XmlWorkflowItemService workflowItemService
+	 = XmlWorkflowServiceFactory.getInstance().getXmlWorkflowItemService();
+
+//    private final transient BasicWorkflowItemService workflowItemService
+//             = BasicWorkflowServiceFactory.getInstance().getBasicWorkflowItemService();
     
     private final transient HandleService handleService
              = HandleServiceFactory.getInstance().getHandleService();
@@ -230,7 +235,7 @@ public class MyDSpaceServlet extends DSpaceServlet
         }
 
         // Get workflow item specified, if any
-        BasicWorkflowItem workflowItem;
+        XmlWorkflowItem workflowItem;
 
         try
         {
@@ -325,8 +330,8 @@ public class MyDSpaceServlet extends DSpaceServlet
                 log.info(LogManager.getHeader(context, "unclaim_workflow",
                         "workflow_id=" + workflowItem.getID()));
 
-                workflowService.unclaim(context, workflowItem, context
-                        .getCurrentUser());
+//                workflowService.unclaim(context, workflowItem, context
+//                        .getCurrentUser());
 
                 showMainPage(context, request, response);
                 context.complete();
@@ -356,7 +361,7 @@ public class MyDSpaceServlet extends DSpaceServlet
             HttpServletResponse response) throws ServletException, IOException,
             SQLException, AuthorizeException
     {
-        
+
         String buttonPressed = UIUtil.getSubmitButton(request, "submit_cancel");
 
         // Get workspace item
@@ -429,8 +434,11 @@ public class MyDSpaceServlet extends DSpaceServlet
                         InProgressSubmission inprogress = workspaceItemService.findByItem(context, item);
                         if (inprogress == null) {
                             inprogress = workflowItemService.findByItem(context, item);
+                            workflowItemService.delete(context, (XmlWorkflowItem) inprogress);
                         }
-                        ContentServiceFactory.getInstance().getInProgressSubmissionService(inprogress).deleteWrapper(context, inprogress);
+                        else {
+                        	workspaceItemService.deleteAll(context, (WorkspaceItem) inprogress);
+                        }
                     }
                 }
             }
@@ -463,7 +471,7 @@ public class MyDSpaceServlet extends DSpaceServlet
         String buttonPressed = UIUtil.getSubmitButton(request, "submit_cancel");
 
         // Get workflow item
-        BasicWorkflowItem workflowItem;
+        XmlWorkflowItem workflowItem;
 
         try
         {
@@ -487,8 +495,8 @@ public class MyDSpaceServlet extends DSpaceServlet
         if (buttonPressed.equals("submit_start"))
         {
             // User clicked "start" button to claim the task
-            workflowService.claim(context, workflowItem, context
-                    .getCurrentUser());
+//            workflowService.claim(context, workflowItem, context
+//                    .getCurrentUser());
 
             // Display "perform task" page
             request.setAttribute("workflow.item", workflowItem);
@@ -520,7 +528,7 @@ public class MyDSpaceServlet extends DSpaceServlet
         String buttonPressed = UIUtil.getSubmitButton(request, "submit_cancel");
 
         // Get workflow item
-        BasicWorkflowItem workflowItem;
+        XmlWorkflowItem workflowItem;
 
         try
         {
@@ -546,8 +554,8 @@ public class MyDSpaceServlet extends DSpaceServlet
             Item item = workflowItem.getItem();
 
             // Advance the item along the workflow
-            workflowService.advance(context, workflowItem, context
-                    .getCurrentUser());
+//            workflowService.advance(context, workflowItem, context
+//                    .getCurrentUser());
 
             // FIXME: This should be a return value from advance()
             // See if that gave the item a Handle. If it did,
@@ -598,8 +606,8 @@ public class MyDSpaceServlet extends DSpaceServlet
         else if (buttonPressed.equals("submit_pool"))
         {
             // Return task to pool
-            workflowService.unclaim(context, workflowItem, context
-                    .getCurrentUser());
+//            workflowService.unclaim(context, workflowItem, context
+//                    .getCurrentUser());
             showMainPage(context, request, response);
             context.complete();
         }
@@ -626,61 +634,7 @@ public class MyDSpaceServlet extends DSpaceServlet
             throws ServletException, IOException, SQLException,
             AuthorizeException
     {
-        String buttonPressed = UIUtil.getSubmitButton(request, "submit_cancel");
-
-        // Get workflow item
-        BasicWorkflowItem workflowItem;
-
-        try
-        {
-            int wfID = Integer.parseInt(request.getParameter("workflow_id"));
-            workflowItem = workflowItemService.find(context, wfID);
-        }
-        catch (NumberFormatException nfe)
-        {
-            workflowItem = null;
-        }
-
-        if (workflowItem == null)
-        {
-            log.warn(LogManager.getHeader(context, "integrity_error", UIUtil
-                    .getRequestLogInfo(request)));
-            JSPManager.showIntegrityError(request, response);
-
-            return;
-        }
-
-        if (buttonPressed.equals("submit_send"))
-        {
-            String reason = request.getParameter("reason");
-
-            WorkspaceItem wsi = workflowService.sendWorkflowItemBackSubmission(context, workflowItem,
-                    context.getCurrentUser(), null, reason);
-
-            // Load the Submission Process for the collection this WSI is
-            // associated with
-            Collection c = wsi.getCollection();
-            SubmissionConfigReader subConfigReader = new SubmissionConfigReader();
-            SubmissionConfig subConfig = subConfigReader.getSubmissionConfig(c
-                    .getHandle(), false);
-
-            // Set the "stage_reached" column on the workspace item
-            // to the LAST page of the LAST step in the submission process
-            // (i.e. the page just before "Complete")
-            int lastStep = subConfig.getNumberOfSteps() - 2;
-            wsi.setStageReached(lastStep);
-            wsi.setPageReached(AbstractProcessingStep.LAST_PAGE_REACHED);
-            workspaceItemService.update(context, wsi);
-
-            JSPManager
-                    .showJSP(request, response, "/mydspace/task-complete.jsp");
-            context.complete();
-        }
-        else
-        {
-            request.setAttribute("workflow.item", workflowItem);
-            JSPManager.showJSP(request, response, "/mydspace/perform-task.jsp");
-        }
+        return;
     }
 
     private void processExportArchive(Context context,
@@ -914,14 +868,17 @@ public class MyDSpaceServlet extends DSpaceServlet
         }
         
         
-        List<BasicWorkflowItem> ownedList = workflowService.getOwnedTasks(context, currentUser);
+//        List<BasicWorkflowItem> ownedList = workflowService.getOwnedTasks(context, currentUser);
+        List<BasicWorkflowItem> ownedList = new ArrayList<BasicWorkflowItem>();
         
 
         // Pooled workflow items
-        List<BasicWorkflowItem> pooledList = workflowService.getPooledTasks(context, currentUser);
+//        List<BasicWorkflowItem> pooledList = workflowService.getPooledTasks(context, currentUser);
+        List<BasicWorkflowItem> pooledList = new ArrayList<BasicWorkflowItem>();
 
         // User's WorkflowItems
-        List<BasicWorkflowItem> workflowItems = workflowItemService.findBySubmitter(context, currentUser);
+//        List<BasicWorkflowItem> workflowItems = workflowItemService.findBySubmitter(context, currentUser);
+        List<BasicWorkflowItem> workflowItems = new ArrayList<BasicWorkflowItem>();
 
         // User's PersonalWorkspace
         List<WorkspaceItem> workspaceItems = workspaceItemService.findByEPerson(context, currentUser);
