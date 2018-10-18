@@ -235,6 +235,8 @@ public class DedupEventConsumer implements Consumer
 
             }
 
+            indexer.commit();
+
         }
 
         // "free" the resources
