@@ -431,9 +431,7 @@ return decorator.generateDisplayValue(alternativeName, rp);
 		    if (StringUtils.isNotBlank(tmpPersonName.getLastName()))
 		    {
 		        luceneQuery += ClientUtils.escapeQueryChars(tmpPersonName
-		                .getLastName().trim())
-		                + (StringUtils.isNotBlank(tmpPersonName
-		                        .getFirstNames()) ? "" : "*");
+		                .getLastName().trim()) + "*";
 		    }
 	
 		    if (StringUtils.isNotBlank(tmpPersonName.getFirstNames()))
