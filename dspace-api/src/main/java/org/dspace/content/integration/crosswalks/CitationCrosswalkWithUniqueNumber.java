@@ -49,7 +49,6 @@ public class CitationCrosswalkWithUniqueNumber extends ReferCrosswalk implements
         	s = "("+index+")";
         }
         s += stream.toString().replaceAll("\\r\\n", "");
-        s += " \r\n";
         
         out.write(s.getBytes());
     }

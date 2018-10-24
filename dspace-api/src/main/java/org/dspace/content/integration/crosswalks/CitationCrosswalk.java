@@ -41,7 +41,6 @@ public class CitationCrosswalk extends ReferCrosswalk
         
         String s = "";
         s = stream.toString().replaceAll("\\r\\n", "");
-        s += " \r\n";
         
         out.write(s.getBytes());
         
