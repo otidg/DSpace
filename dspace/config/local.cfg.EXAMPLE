@@ -36,9 +36,6 @@ dspace.hostname = localhost
 # DSpace base host URL.  Include port number etc.
 dspace.baseUrl = http://localhost:8080
 
-# DSpace angular UI URL.  Include port number etc.
-dspace.angularui =
-
 # The user interface you will be using for DSpace. Common usage is either xmlui or jspui
 dspace.ui = jspui
 
@@ -220,9 +217,6 @@ batch.customer.recipient =
 # Authentication by Password (encrypted in DSpace's database). See authentication-password.cfg for default configuration.
 # Enabled by default in authentication.cfg
 #plugin.sequence.org.dspace.authenticate.AuthenticationMethod = org.dspace.authenticate.PasswordAuthentication
-
-########### RESOURCESYNC ##########
-resourcesync.base-url = ${dspace.baseUrl}/rs
 
 #---------------------------------------------------------------#
 #--------------OAUTH AUTHENTICATION CONFIGURATIONS--------------#
