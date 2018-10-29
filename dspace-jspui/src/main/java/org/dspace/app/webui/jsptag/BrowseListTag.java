@@ -273,14 +273,6 @@ public class BrowseListTag extends TagSupport
             
             if (bix != null && ArrayUtils.isEmpty(browseFields))
             {
-                browseFields  = configurationService.getArrayProperty("webui.itemlist." + bix.getName()
-                                + ".columns");
-                browseWidths = configurationService.getArrayProperty("webui.itemlist." + bix.getName()
-                                + ".widths");
-            }
-
-            if (bix != null && ArrayUtils.isEmpty(browseFields))
-            {
                 browseFields = configurationService.getArrayProperty("webui.itemlist." + bix.getDisplayType()
                                 + ".columns");
                 browseWidths = configurationService.getArrayProperty("webui.itemlist." + bix.getDisplayType()
