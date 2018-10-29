@@ -2450,4 +2450,7 @@
 		</constructor-arg>
 	</bean>
 	
+	<!-- add additional fields and values to Solr index: (rejected, rejecteddate, rejecteduser) -->
+        <bean id="workspaceitemSolrServiceIndexPlugin" class="org.dspace.discovery.WorkspaceitemSolrServiceIndexPlugin" />
+	
 </beans>
