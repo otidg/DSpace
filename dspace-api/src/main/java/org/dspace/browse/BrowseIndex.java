@@ -50,8 +50,11 @@ public final class BrowseIndex
     /** the display type of the metadata, as specified in the config */
     private String displayType;
     
-    /** base name for tables, sequences */
+    /** base name for tables, sequences. */
     private String tableBaseName;
+    
+    /** First support of sorl index query */
+    private SorlMetadataQuery sorlMetadataQuery = null;
     
     /** a three part array of the metadata bits (e.g. dc.contributor.author) */
     private String[][] mdBits;
@@ -65,8 +68,11 @@ public final class BrowseIndex
     /** additional 'internal' tables that are always defined */
     private static BrowseIndex itemIndex      = new BrowseIndex("bi_item", "item");
     private static BrowseIndex withdrawnIndex = new BrowseIndex("bi_withdrawn", "item");
+    private static BrowseIndex rejectedIndex = new BrowseIndex("bi_item", "item", "rejected",
+    		new SorlMetadataQuery("search.resourcetype:8 AND rejected:true", 
+    				new String[] {"rejecteditemuuid", "rejecteddate", "rejecteduser" }));	// TODO: Cadili FIX
+    
     private static BrowseIndex privateIndex = new BrowseIndex("bi_private", "item");
-
 
     /**
      * Ensure no one else can create these
@@ -96,6 +102,34 @@ public final class BrowseIndex
         {
             // FIXME Exception handling
         }
+    }
+    
+    private BrowseIndex(String baseName, String type, String name, SorlMetadataQuery query)
+    {
+        try
+        {
+            number = -1;
+            tableBaseName = baseName;
+            this.name = name;
+            sorlMetadataQuery = query;
+            displayType = type;
+            sortOption = SortOption.getDefaultSortOption();
+        }
+        catch (SortException se)
+        {
+            // FIXME Exception handling
+        }
+    }
+    
+    /***
+     * @return The sorl metadata query or null
+     */
+    public SorlMetadataQuery getSorlMetadataQuery() {
+    	if (sorlMetadataQuery != null) {
+    		return sorlMetadataQuery;
+    	}
+    	else
+    		return null;
     }
     
     /**
@@ -901,6 +935,15 @@ public final class BrowseIndex
         return BrowseIndex.withdrawnIndex;
     }
 
+    /**
+     * Get the internally defined browse index for reject items.
+     * @return browse index
+     */
+    public static BrowseIndex getRejectedBrowseIndex()
+    {
+        return BrowseIndex.rejectedIndex;
+    }
+    
     /**
      * @return browse index
      */

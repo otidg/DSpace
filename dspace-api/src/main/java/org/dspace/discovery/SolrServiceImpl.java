@@ -79,6 +79,7 @@ import org.dspace.content.Item;
 import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataSchema;
 import org.dspace.content.MetadataValue;
+import org.dspace.content.SorlInProgressItem;
 import org.dspace.content.RootObject;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.service.ChoiceAuthorityService;
@@ -88,6 +89,7 @@ import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.CollectionService;
 import org.dspace.content.service.CommunityService;
 import org.dspace.content.service.ItemService;
+import org.dspace.content.service.RootEntityService;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
@@ -146,6 +148,8 @@ public class SolrServiceImpl implements SearchService, IndexingService {
     protected static final String HANDLE_FIELD = "handle";
     protected static final String RESOURCE_TYPE_FIELD = "search.resourcetype";
     protected static final String RESOURCE_ID_FIELD = "search.resourceid";
+    //protected static final String RESOURCE_8_ITEM_UUID = "rejecteditemuuid";
+    protected static final String RESOURCE_UNIQUE_UUID = "inprogress.item";
 
     public static final String FILTER_SEPARATOR = "\n|||\n";
     public static final String ESCAPED_FILTER_SEPARATOR = "\n\\|\\|\\|\n";
@@ -2060,7 +2064,32 @@ public class SolrServiceImpl implements SearchService, IndexingService {
             List<String> searchFields = query.getSearchFields();
             for (SolrDocument doc : results)
             {
-                BrowsableDSpaceObject dso = findDSpaceObject(context, doc);
+            	BrowsableDSpaceObject dso = null;
+            	try {
+                	dso = findDSpaceObject(context, doc);
+            	}
+            	catch (IllegalArgumentException ie) {
+            		// Conversion of UUID (UUID.fromString operation) generate a IllegalArgumentException. 
+            		Integer id = null;
+            		Integer type = (Integer) doc.getFirstValue(RESOURCE_TYPE_FIELD);
+            		try {
+            			id = Integer.parseInt((String)doc.getFirstValue(RESOURCE_ID_FIELD));
+            			
+            			// generate dso
+            			switch (type) {
+	            			case 8: {
+	            				dso = new SorlInProgressItem(doc);
+	            				break;
+	            			}
+	            			default: {
+	            				throw new IllegalArgumentException("Cannot handle entity with of type " + type + " and id " + id);
+	            			}	
+            			}
+            		}
+            		catch(NumberFormatException nfe) {
+            			log.error("Cannot handle the id " + (String)doc.getFirstValue(RESOURCE_ID_FIELD) + " of object of type " + type);
+            		}
+            	}
 
                 if(dso != null)
                 {
@@ -2254,7 +2283,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
     }
 
     @Override
-    public List<BrowsableDSpaceObject> search(Context context, String query, String orderfield, boolean ascending, int offset, int max, String... filterquery)
+    public List<BrowsableDSpaceObject> search(Context context, String query, String orderfield, boolean ascending, Integer offset, Integer max, String... filterquery)
     {
 
         try {
@@ -2266,7 +2295,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
             SolrQuery solrQuery = new SolrQuery();
             solrQuery.setQuery(query);
             //Only return obj identifier fields in result doc
-            solrQuery.setFields(RESOURCE_ID_FIELD, RESOURCE_TYPE_FIELD);
+            solrQuery.setFields(RESOURCE_ID_FIELD, RESOURCE_TYPE_FIELD, RESOURCE_UNIQUE_UUID);
             solrQuery.setStart(offset);
             solrQuery.setRows(max);
             if (orderfield != null)
@@ -2285,8 +2314,47 @@ public class SolrServiceImpl implements SearchService, IndexingService {
             while (iter.hasNext())
             {
                 SolrDocument doc = (SolrDocument) iter.next();
-
-                BrowsableDSpaceObject o = (BrowsableDSpaceObject)contentServiceFactory.getRootObjectService((Integer) doc.getFirstValue(RESOURCE_TYPE_FIELD)).find(context, UUID.fromString((String) doc.getFirstValue(RESOURCE_ID_FIELD)));
+                
+                // check if first document has a valid UUID
+                UUID resourceId = null;
+                Integer resurceType = null; 
+                String resourceIdAsString = (String) doc.getFirstValue(RESOURCE_ID_FIELD);
+                try {
+                	resourceId = UUID.fromString(resourceIdAsString);
+                	resurceType = (Integer)doc.getFirstValue(RESOURCE_TYPE_FIELD);
+                }
+                catch (Exception e) {
+                	try {
+                		int id = Integer.parseInt(resourceIdAsString);
+                		resurceType = (Integer)doc.getFirstValue(RESOURCE_TYPE_FIELD);
+                				
+                		switch (resurceType) {
+	                		case 8: {
+	                			// workaround, a type 8 is read
+	                			//resourceId = UUID.fromString((String) doc.getFirstValue(RESOURCE_8_ITEM_UUID));
+	                			//resurceType = 2;
+	                			String uuid = (String) doc.getFirstValue(RESOURCE_UNIQUE_UUID);
+	                			int pos = uuid.indexOf("-");
+	                			if (pos < 0) {
+	                				throw new IllegalArgumentException("Required unique sorl metadata: " + RESOURCE_UNIQUE_UUID + "(value: " + uuid + ") is not in the right format.");
+	                			}
+	                			//resourceId = UUID.fromString((String) doc.getFirstValue(RESOURCE_8_ITEM_UUID));
+	                			//resurceType = 2;
+	                			resourceId = UUID.fromString(uuid.substring(pos + 1));
+	                			resurceType = Integer.parseInt(uuid.substring(0, pos));
+	                			break;
+	                		}
+	                		default: {
+	                			throw new Exception("Resource of type " + resourceId + "is not supported.");
+	                		}
+                		}
+                	}
+                	catch (Exception e1) {
+                		log.warn("Error while reading UUID: " + resourceIdAsString, e1);
+                		continue;
+                	}
+                }                
+                BrowsableDSpaceObject o = (BrowsableDSpaceObject)contentServiceFactory.getRootObjectService(resurceType).find(context, resourceId);
 
                 if (o != null)
                 {

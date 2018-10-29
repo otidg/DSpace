@@ -126,7 +126,7 @@ public class BrowseEngine
         browseIndex = scope.getBrowseIndex();
 
         // get the table name that we are going to be getting our data from
-        dao.setTable(browseIndex.getTableName());
+        dao.setTable(browseIndex.getTableName(), browseIndex.getSorlMetadataQuery());
 
         // tell the browse query whether we are ascending or descending on the value
         dao.setAscending(scope.isAscending());
@@ -206,7 +206,7 @@ public class BrowseEngine
         try
         {
             // get the table name that we are going to be getting our data from
-            dao.setTable(browseIndex.getTableName());
+            dao.setTable(browseIndex.getTableName(), browseIndex.getSorlMetadataQuery());
 
             // tell the browse query whether we are ascending or descending on the value
             dao.setAscending(scope.isAscending());

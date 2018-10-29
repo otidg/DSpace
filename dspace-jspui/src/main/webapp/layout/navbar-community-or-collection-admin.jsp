@@ -67,6 +67,7 @@
                <li class="divider"></li>
                <li><a href="<%= request.getContextPath() %>/tools/edit-item"><fmt:message key="jsp.layout.navbar-admin.items"/></a></li>
                <li><a href="<%= request.getContextPath() %>/tools/withdrawn"><fmt:message key="jsp.layout.navbar-admin.withdrawn"/></a></li>
+               <li><a href="<%= request.getContextPath() %>/tools/rejected"><fmt:message key="jsp.layout.navbar-admin.rejected"/></a></li>
                <li><a href="<%= request.getContextPath() %>/tools/privateitems"><fmt:message key="jsp.layout.navbar-admin.privateitems"/></a></li>
             </ul>
           </li>

@@ -149,6 +149,10 @@ public class SolrBrowseDAO implements BrowseDAO
 
     private boolean itemsWithdrawn = false;
     private boolean itemsDiscoverable = true;
+    
+    // handle inProgress item
+    private boolean itemsWithSorlFilter = false;
+	private SorlMetadataQuery sorlFilter = null;
 
     private boolean showFrequencies;
 
@@ -208,6 +212,8 @@ public class SolrBrowseDAO implements BrowseDAO
             }
             try
             {
+            	if (sorlFilter != null)
+            		query.addSearchField("*");
 				sResponse = searcher.search(context, query, itemsWithdrawn
 						|| !itemsDiscoverable);
             }
@@ -224,7 +230,15 @@ public class SolrBrowseDAO implements BrowseDAO
         String filter = ConfigurationManager.getProperty("browse.solr."+table+".filter");
         if (StringUtils.isNotBlank(filter))
         {
-            query.addFilterQueries(filter);
+        	if (sorlFilter != null) {
+        		// handle inProgress item
+        		query.addFilterQueries(sorlFilter.getSorlMetadataQuery());
+        	}
+        	else {
+        		// used with all type
+        		query.addFilterQueries(filter);
+        	}
+        	
         }
     }
 
@@ -347,6 +361,8 @@ public class SolrBrowseDAO implements BrowseDAO
         DiscoverResult resp = null;
         try
         {
+        	if (sorlFilter != null)
+        		query.addSearchField("*");
             resp = searcher.search(context, query);
         }
         catch (SearchServiceException e)
@@ -419,6 +435,8 @@ public class SolrBrowseDAO implements BrowseDAO
         DiscoverResult resp = null;
         try
         {
+        	if (sorlFilter != null)
+        		query.addSearchField("*");
             resp = searcher.search(context, query, includeUnDiscoverable);
         }
         catch (SearchServiceException e)
@@ -796,6 +814,23 @@ public class SolrBrowseDAO implements BrowseDAO
         if (userLocale != null) {
             facetField += "_"+userLocale;
         }
+    }
+    
+    /**
+     * Set the name of the table to query
+     *
+     * @param table     	the name of the table
+     * @param sorlFilter	the sorl filter
+     */
+    public void setTable(String table, SorlMetadataQuery sorlFilter) 
+    {
+    	setTable(table);
+    	
+    	// handle inProgress item
+    	if (sorlFilter != null) {
+    		itemsWithSorlFilter = true;
+    		this.sorlFilter = sorlFilter;
+    	}
     }
 
     @Override

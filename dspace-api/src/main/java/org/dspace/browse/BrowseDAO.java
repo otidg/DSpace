@@ -305,6 +305,14 @@ public interface BrowseDAO
      * @param table     the name of the table
      */
     public void setTable(String table);
+    
+    /**
+     * Set the name of the table to query
+     *
+     * @param table     	the name of the table
+     * @param sorlFilter	the sorl filter
+     */
+    public void setTable(String table, SorlMetadataQuery sorlFilter);
 
     /**
      * Set the name of the mapping tables to use for filtering
