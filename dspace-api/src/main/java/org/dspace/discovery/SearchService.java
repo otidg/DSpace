@@ -100,7 +100,7 @@ public interface SearchService {
     InputStream searchJSON(Context context, DiscoverQuery query, BrowsableDSpaceObject dso, String jsonIdentifier) throws SearchServiceException;
 
 
-    List<BrowsableDSpaceObject> search(Context context, String query, String orderfield, boolean ascending, int offset, int max, String... filterquery);
+    List<BrowsableDSpaceObject> search(Context context, String query, String orderfield, boolean ascending, Integer offset, Integer max, String... filterquery);
 
 
     /**
