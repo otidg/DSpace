@@ -146,7 +146,8 @@
 	String coreCredentials = ConfigurationManager.getProperty("core-aggregator", "credentials");
 %>
 
-
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <% if(pmcEnabled || scopusEnabled || wosEnabled || scholarEnabled || altMetricEnabled) { %>
 <c:set var="dspace.layout.head.last" scope="request">
 <% if(altMetricEnabled) { %> 
@@ -261,15 +262,69 @@ j(document).ready(function() {
         if (admin_button)  // admin edit button
         { 
         	
+            String baseWebappURL = ConfigurationManager.getProperty("dspace.baseUrl");
             String angularWebappURL = ConfigurationManager.getProperty("dspace.angularui");
-            String editSubmissionLink = angularWebappURL + "/items/" + item.getID() + "/edit";
+            String editSubmissionLink = "/items/" + item.getID() + "/edit";
         
         %>
+
+	<fmt:message var="redirectLabel" key="jsp.mydspace.success.redirect"/>
+	<fmt:message var="successLabel" key="jsp.mydspace.success.login"/>
+        <script type="text/javascript">
+
+        var successLoginHandler = function(result, status, xhr) {
+        	var token = xhr.getResponseHeader('Authorization').split(" ")[1];
+        	toastr.success('${redirectLabel}', '${successLabel}');
+            setTimeout(function() {
+            	window.location.href = '<%= angularWebappURL %>/login?token=' + token + '&redirectUrl=<%= editSubmissionLink %>';
+            }, 2000);
+        };  
+
+        toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "onclick" : function() { toastr.remove(); }
+            }
+
+                function editLoginHandler() {
+                        console.log("log!!!");
+        	jQuery.ajax({
+	          type : 'POST',
+	          url : "<%= baseWebappURL + "/dspace-spring-rest/api/authn/login"%>",
+	          headers : {
+	              "Content-Type" : 'application/json'
+	          },
+	          success : successLoginHandler,
+	          error : function(result, status, xhr) {
+	              if (xhr == 401) {
+	                  var loc = result.getResponseHeader("location");
+	                  if (loc != null && loc != "") {
+	                      document.location = loc;
+	                  }
+	              }
+	          }
+	        });
+                }
+        
+        </script>
+
         <div class="col-sm-5 col-md-4 col-lg-3">
             <div class="panel panel-warning">
             	<div class="panel-heading"><fmt:message key="jsp.admintools"/></div>
             	<div class="panel-body">
-            	<a href="<%= editSubmissionLink %>" class="btn btn-default col-md-12" role="button"><fmt:message key="jsp.general.editsubmission.button"/></a>
+                <input class="btn btn-default col-md-12" type="button" name="edit" onclick="editLoginHandler()" value="<fmt:message key="jsp.general.editsubmission.button"/>" />
                 <form method="get" action="<%= request.getContextPath() %>/tools/edit-item">
                     <input type="hidden" name="item_id" value="<%= item.getID() %>" />
                     <%--<input type="submit" name="submit" value="Edit...">--%>
