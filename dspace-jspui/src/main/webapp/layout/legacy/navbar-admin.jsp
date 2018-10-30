@@ -175,6 +175,15 @@
      			<a href="<%= request.getContextPath() %>/dspace-admin/withdrawn"><fmt:message key="jsp.layout.navbar-admin.withdrawn"/></a>
    		</td>
 	</tr>
+	
+	<tr class="navigationBarItem">
+   		<td>
+      <img alt="" src="<%= request.getContextPath() %>/image/<%= (currentPage.endsWith("/rejected") ? "arrow-highlight" : "arrow") %>.gif" width="16" height="16"/>
+   		</td>
+   		<td nowrap="nowrap" class="navigationBarItem">
+     			<a href="<%= request.getContextPath() %>/dspace-admin/rejected"><fmt:message key="jsp.layout.navbar-admin.rejected"/></a>
+   		</td>
+	</tr>
 
 	<tr class="navigationBarItem">
    		<td>

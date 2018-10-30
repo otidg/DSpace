@@ -263,6 +263,11 @@
 		<servlet-name>browsewithdrawn</servlet-name>
 		<servlet-class>org.dspace.app.webui.servlet.admin.WithdrawnBrowserServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>browserejected</servlet-name>
+		<servlet-class>org.dspace.app.webui.servlet.admin.RejectedBrowserServlet</servlet-class>
+	</servlet>
 
 	<servlet>
 		<servlet-name>collection-wizard</servlet-name>
@@ -717,6 +722,16 @@
   </servlet-mapping>
 
   <servlet-mapping>
+    	<servlet-name>browserejected</servlet-name>
+    	<url-pattern>/dspace-admin/rejected</url-pattern>
+  	</servlet-mapping>
+  
+  	<servlet-mapping>
+    	<servlet-name>browserejected</servlet-name>
+    	<url-pattern>/tools/rejected</url-pattern>
+  	</servlet-mapping>
+  
+    <servlet-mapping>
 		<servlet-name>community-list</servlet-name>
 		<url-pattern>/community-list</url-pattern>
 	</servlet-mapping>

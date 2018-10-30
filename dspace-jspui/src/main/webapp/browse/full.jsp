@@ -46,6 +46,7 @@ function sortBy(idx, ord)
     String urlFragment = "browse";
     String layoutNavbar = "default";
     boolean withdrawn = false;
+    boolean rejected = false;
     boolean privateitems = false;
 
     // Is the logged in user an admin or community admin or collection admin
@@ -63,6 +64,17 @@ function sortBy(idx, ord)
         layoutNavbar = "admin";
         urlFragment = "dspace-admin/withdrawn";
         withdrawn = true;
+
+        if(!isAdmin && (isCommunityAdmin || isCollectionAdmin))
+        {
+            layoutNavbar = "community-or-collection-admin";
+        }
+    }
+    else if (request.getAttribute("browseRejected") != null)
+    {
+        layoutNavbar = "admin";
+        urlFragment = "dspace-admin/rejected";
+        rejected = true;
 
         if(!isAdmin && (isCommunityAdmin || isCollectionAdmin))
         {
@@ -542,7 +554,7 @@ jQuery(document).ready(function() {
 		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
 
 <%
-    if (admin_button && !withdrawn && !privateitems)
+    if (admin_button && !withdrawn && !rejected && !privateitems)
     {
         %><input type="submit" class="btn btn-default" name="submit_export_metadata" value="<fmt:message key="jsp.general.metadataexport.button"/>" /><%
     }
@@ -619,7 +631,7 @@ jQuery(document).ready(function() {
 	<dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getMetadata() %>"  inputName="<%= inputBiblio %>" />
     <%
         }
-        else if (withdrawn || privateitems)
+        else if (withdrawn || rejected || privateitems)
         {
     %>
     <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getSortOption().getMetadata() %>" linkToEdit="true" disableCrossLinks="true" />

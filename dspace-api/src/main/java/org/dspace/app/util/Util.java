@@ -252,7 +252,7 @@ public class Util {
     public static UUID getUUIDParameter(HttpServletRequest request, String param)
     {
         String val = request.getParameter(param);
-        if (StringUtils.isEmpty(val))
+        if (StringUtils.isEmpty(val) || "null".equalsIgnoreCase(val))
         {
             return null;
         }
