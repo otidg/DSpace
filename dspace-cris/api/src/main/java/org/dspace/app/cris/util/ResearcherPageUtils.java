@@ -447,8 +447,8 @@ return decorator.generateDisplayValue(alternativeName, rp);
 		    discoverQuery.setDSpaceObjectFilter(CrisConstants.RP_TYPE_ID);
 		    String surnameQuery = "{!lucene q.op=AND df=rpsurnames}("
     			    + luceneQuery
-    			    + ") OR (\""
-    			    + luceneQuery.substring(0,luceneQuery.length() - 1) + "\")";
+    			    + ") OR ("
+    			    + luceneQuery.replace("\\*", "{placeholder_star}").replace("*", "").replace("{placeholder_star}", "*") + ")";
 		    
 		    discoverQuery.setQuery(surnameQuery);
 		    discoverQuery.setMaxResults(MAX_RESULTS);
