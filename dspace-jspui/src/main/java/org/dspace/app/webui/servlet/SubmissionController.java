@@ -50,6 +50,9 @@ import org.dspace.submit.step.UploadStep;
 import org.dspace.workflow.WorkflowItem;
 import org.dspace.workflow.WorkflowItemService;
 import org.dspace.workflowbasic.factory.BasicWorkflowServiceFactory;
+import org.dspace.xmlworkflow.factory.XmlWorkflowServiceFactory;
+import org.dspace.xmlworkflow.service.XmlWorkflowService;
+import org.dspace.xmlworkflow.storedcomponents.service.XmlWorkflowItemService;
 
 import com.google.gson.Gson;
 
@@ -141,7 +144,8 @@ public class SubmissionController extends DSpaceServlet
     	workspaceItemService = ContentServiceFactory.getInstance().getWorkspaceItemService();
     	bitstreamService = ContentServiceFactory.getInstance().getBitstreamService();
     	bundleService = ContentServiceFactory.getInstance().getBundleService();
-    	workflowItemService = BasicWorkflowServiceFactory.getInstance().getBasicWorkflowItemService();    	
+    	//workflowItemService = BasicWorkflowServiceFactory.getInstance().getBasicWorkflowItemService();   
+        workflowItemService = XmlWorkflowServiceFactory.getInstance().getXmlWorkflowItemService();
     }
     
     protected void doDSGet(Context context, HttpServletRequest request,
@@ -539,18 +543,20 @@ public class SubmissionController extends DSpaceServlet
             //if this step is finished, continue to next step
             if(stepFinished)
             {
-                // If we finished up an upload, then we need to change
-                // the FileUploadRequest object back to a normal HTTPServletRequest
-                if(request instanceof FileUploadRequest)
-                {
-                    request = ((FileUploadRequest)request).getOriginalRequest();
-                }
-                
-                //retrieve any changes to the SubmissionInfo object
-                subInfo = getSubmissionInfo(context, request);
-                
-                //do the next step!
-                doNextStep(context, request, response, subInfo, currentStepConfig);
+//                // If we finished up an upload, then we need to change
+//                // the FileUploadRequest object back to a normal HTTPServletRequest
+//                if(request instanceof FileUploadRequest)
+//                {
+//                    request = ((FileUploadRequest)request).getOriginalRequest();
+//                }
+//                
+//                //retrieve any changes to the SubmissionInfo object
+//                subInfo = getSubmissionInfo(context, request);
+//                
+//                //do the next step!
+//                doNextStep(context, request, response, subInfo, currentStepConfig);
+            	JSPManager.showJSP(request, response,
+                        "/mydspace/main.jsp");
             }
             else
             {

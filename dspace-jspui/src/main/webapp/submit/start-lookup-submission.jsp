@@ -177,38 +177,6 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 	<div id="tabs-search">
 	<!-- da qui -->
 	<div class="panel-group" id="accordion">
-	  <div class="panel panel-default">
-	    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-	      <h4 class="panel-title">
-	        <a>
-	          <i span class="fa fa-chevron-down"></i> <fmt:message key="jsp.submit.start-lookup-submission.manual-submission"/>
-	        </a>
-	      </h4>
-	    </div>
-	    <div id="collapseOne" class="panel-collapse collapse in">
-	      <div class="panel-body">
-	      	<div id="manual-submission">
-				<form class="form-horizontal" id="form-submission" action="" method="post">
-					<div class="form-group">
-						<label for="select-collection-manual" class="col-sm-2 control-label"><fmt:message key="jsp.submit.start-lookup-submission.select.collection.label"/></label>
-						<div class="col-sm-7">
-								<dspace:selectcollection klass="form-control" id="select-collection-manual" collection="<%= collection_id %>"/>
-						</div>
-						<button class="btn btn-success" id="manual-submission-button" type="button"><fmt:message key="jsp.submit.start-lookup-submission.button.manual-submission"/> </button>
-					</div>
-					<input type="hidden" id="iuuid" name="iuuid" value=""/>
-					<input type="hidden" id="fuuid" name="fuuid" value=""/>
-					<input type="hidden" id="suuid" name="suuid" value="<%= uuid %>"/>
-					<input type="hidden" id="collectionid" name="collectionid" value=""/>
-					<input type="hidden" id="iuuid_batch" name="iuuid_batch" value=""/>
-					<input type="hidden" id="colid_batch" name="colid_batch" value=""/>
-					<input type="hidden" id="filePath" name="filePath" value=""/>
-					<input type="hidden" id="filename" name="filename" value=""/>					
-				</form>
-			</div>
-	      </div>
-	    </div>
-	  </div>
 <%		
 	if (searchProviders != null && searchProviders.size() > 0) {
 	%>
@@ -268,8 +236,27 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 	        </a>
 	      </h4>
 	    </div>
-	    <div id="collapseThree" class="panel-collapse collapse">
+	    <div id="collapseThree" class="panel-collapse collapse in">
 	      <div class="panel-body">
+	      	      	<div id="manual-submission">
+				<form class="form-horizontal" id="form-submission" action="" method="post">
+					<div class="form-group">
+						<label for="select-collection-manual" class="col-sm-2 control-label"><fmt:message key="jsp.submit.start-lookup-submission.select.collection.label"/></label>
+						<div class="col-sm-7">
+								<dspace:selectcollection klass="form-control" id="select-collection-manual" collection="<%= collection_id %>"/>
+						</div>
+						<button class="btn btn-success" id="manual-submission-button" type="button"><fmt:message key="jsp.submit.start-lookup-submission.button.manual-submission"/> </button>
+					</div>
+					<input type="hidden" id="iuuid" name="iuuid" value=""/>
+					<input type="hidden" id="fuuid" name="fuuid" value=""/>
+					<input type="hidden" id="suuid" name="suuid" value="<%= uuid %>"/>
+					<input type="hidden" id="collectionid" name="collectionid" value=""/>
+					<input type="hidden" id="iuuid_batch" name="iuuid_batch" value=""/>
+					<input type="hidden" id="colid_batch" name="colid_batch" value=""/>
+					<input type="hidden" id="filePath" name="filePath" value=""/>
+					<input type="hidden" id="filename" name="filename" value=""/>					
+				</form>
+			</div>
 		<form class="form-horizontal" id="form-submission-identifier" action="" method="post">
 		<input type="hidden" id="suuid-identifier" name="suuid" value="<%= uuid %>"/>
 		<input type="hidden" id="iuuid-identifier" name="iuuid" value=""/>
@@ -311,73 +298,7 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 <% 
 		
 	} %>
-	<% if (fileLoaders != null && fileLoaders.size()>0) {
-	%>
-	  <div class="panel panel-default">
-	    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-	      <h4 class="panel-title">
-	        <a>
-	          <i span class="fa fa-chevron-right"></i> <fmt:message key="jsp.submit.start-lookup-submission.byfile"/>
-	        </a>
-	      </h4>
-	    </div>
-	    <div id="collapseFour" class="panel-collapse collapse">
-	      <div class="panel-body">
-	<form class="form-horizontal" id="form-submission-loader" action="" method="post">
-		<input type="hidden" id="suuid-loader" name="suuid" value="<%= uuid %>"/>
-		<input type="hidden" id="iuuid-loader" name="iuuid" value=""/>
-		<input type="hidden" id="fuuid-loader" name="fuuid" value=""/>
-		<input type="hidden" id="collectionid-loader" name="collectionid" value=""/>
-		
-	<p class="help-block"><fmt:message key="jsp.submit.start-lookup-submission.byfile.hints"/></p>
-	
-	<div class="form-group">
-			<label class="col-md-3" for="provider_loader"><fmt:message key="jsp.submit.start-lookup-submission.byfile.chooseprovider"/>:</label>
-	<div class="col-md-6">
-	<select class="form-control submission-file-loader" name="provider_loader" id="provider_loader">
-			<option value="-1"><fmt:message key="jsp.submit.start-lookup-submission.select.fileformat.defaultoption"/></option>
-	<%	
-			for (String dataLoader : fileLoaders){			
-				String fileLoaderKey = "jsp.submit.start-lookup-submission.select.fileformat." + dataLoader;
-	%>
-				<option value="<%= dataLoader %>"><fmt:message key="<%= fileLoaderKey %>"/></option>
-	<% 
-		}
-	%>
-	</select> 
-	</div>
-	</div>
-	<div class="form-group">
-			<label class="col-md-3" for="file_upload"><fmt:message key="jsp.submit.start-lookup-submission.byfile.file"/>:</label>
-				<div class="col-md-6"> 
-					<input class="submission-file-loader" type="file" name="file_upload" id="file_upload" />
-				</div>
-		</div>
-		<div class="form-group">
-		    <div class="col-md-offset-3 col-md-6">
-		      <div class="checkbox">
-		        <label>
-		          <input class="submission-file-loader submission-preview-loader" type="checkbox" name="preview_loader" id="preview_loader" value="<%= Boolean.TRUE%>"/><fmt:message key="jsp.submit.start-lookup-submission.byfile.filepreview"/>
-		        </label>
-			</div>
-	</div>
-  	</div>
-  
-	<div class="form-group" id="select-collection-file-div">
-				<label class="col-md-3" for="select-collection-file"><fmt:message key="jsp.submit.start-lookup-submission.byfile.filecollection"/>:</label>
-				<div class="col-md-6">
-                                  <dspace:selectcollection klass="form-control submission-file-loader" name="select-collection-file" id="select-collection-file" collection="<%= collection_id %>"/>
-				</div>
-	</div>
-		<button class="btn btn-primary col-md-2 pull-right" type="button" id="loadfile_go"><fmt:message key="jsp.submit.start-lookup-submission.byfile.process"/></button>
-		</form>
-	</div>
-	    </div>
-	  </div>
-  </div>
-<% 
-		
-	} %>
+	 </div>
 </div>
 	<%		
 	if ((searchProviders != null && searchProviders.size() > 0) || (identifiers != null && identifiers.size()>0)) {
@@ -538,13 +459,13 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
             },
         activate: function( event, ui ) {
             j("li.ui-tabs-active").toggleClass("ui-tabs-active ui-state-active active");
-            if ('tabs-result' == ui.newPanel.attr('id'))
+/*             if ('tabs-result' == ui.newPanel.attr('id'))
    				{
 				j('#manual-submission>form').appendTo("#no_result_manual_submission");	
     		}
             else{
             	j('#no_result_manual_submission>form').appendTo("#manual-submission");	
-   					}
+   					} */
     			}
     	});
    	
