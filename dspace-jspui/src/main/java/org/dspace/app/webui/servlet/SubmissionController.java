@@ -555,6 +555,8 @@ public class SubmissionController extends DSpaceServlet
 //                
 //                //do the next step!
 //                doNextStep(context, request, response, subInfo, currentStepConfig);
+//                // commit & close context
+                context.complete();
             	JSPManager.showJSP(request, response,
                         "/mydspace/main.jsp");
             }

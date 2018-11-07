@@ -240,13 +240,6 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 	      <div class="panel-body">
 	      	      	<div id="manual-submission">
 				<form class="form-horizontal" id="form-submission" action="" method="post">
-					<div class="form-group">
-						<label for="select-collection-manual" class="col-sm-2 control-label"><fmt:message key="jsp.submit.start-lookup-submission.select.collection.label"/></label>
-						<div class="col-sm-7">
-								<dspace:selectcollection klass="form-control" id="select-collection-manual" collection="<%= collection_id %>"/>
-						</div>
-						<button class="btn btn-success" id="manual-submission-button" type="button"><fmt:message key="jsp.submit.start-lookup-submission.button.manual-submission"/> </button>
-					</div>
 					<input type="hidden" id="iuuid" name="iuuid" value=""/>
 					<input type="hidden" id="fuuid" name="fuuid" value=""/>
 					<input type="hidden" id="suuid" name="suuid" value="<%= uuid %>"/>
@@ -315,7 +308,7 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 				<div class="col-sm-7">
 						<dspace:selectcollection klass="form-control" id="select-collection-identifier" collection="<%= collection_id %>"/>
 				</div>
-				<button class="btn btn-success" id="identifier-submission-button" type="button"><fmt:message key="jsp.submit.general.submit"/> </button>
+				<button class="btn btn-success" id="identifier-submission-button" type="button"><fmt:message key="jsp.submit.general.import"/> </button>
 				</div>
 			<input type="hidden" id="iuuid" name="iuuid" value=""/>
 			<input type="hidden" id="fuuid" name="fuuid" value=""/>

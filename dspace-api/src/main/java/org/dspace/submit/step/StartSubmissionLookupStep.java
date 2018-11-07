@@ -20,8 +20,15 @@ import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.util.DCInputSet;
 import org.dspace.app.util.DCInputsReader;
@@ -32,6 +39,7 @@ import org.dspace.content.Bitstream;
 import org.dspace.content.Collection;
 import org.dspace.content.Item;
 import org.dspace.content.WorkspaceItem;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
@@ -271,6 +279,8 @@ public class StartSubmissionLookupStep extends AbstractProcessingStep
                 {
                     transformationEngine.transform(new TransformationSpec());
                     result = outputGenerator.getWitems();
+					// temporary fix for updating wsi solr indexes
+					updateWsi(result);
                 }
                 catch (BadTransformationSpec e1)
                 {
@@ -385,6 +395,7 @@ public class StartSubmissionLookupStep extends AbstractProcessingStep
 
     	public void run() {
     		Context context = null;
+
     		try {
     			context = new Context();
     			context.turnOffItemWrapper();
@@ -413,6 +424,9 @@ public class StartSubmissionLookupStep extends AbstractProcessingStep
     					String uu = witems.get(0).getItem().getMetadata("dc.title");
     					context.commit();
     					context.complete();
+    					
+    					// temporary fix for updating wsi solr indexes
+    					updateWsi(witems);
     				} catch (BadTransformationSpec e1) {
     					log.error(e1.getMessage(), e1);
     				} catch (MalformedSourceException e1) {
@@ -431,6 +445,31 @@ public class StartSubmissionLookupStep extends AbstractProcessingStep
     			}
     		}
     	}
+
     }
-    
+
+	protected void updateWsi(List<WorkspaceItem> witems) throws UnsupportedOperationException, IOException {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+        String dspaceUrl = ConfigurationManager
+                .getProperty("dspace.baseUrl");
+        HttpPost httppost = new HttpPost(dspaceUrl + "/dspace-spring-rest/wsiupdate/notifyUpdate");
+
+		// Request parameters and other properties.
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        
+        for(WorkspaceItem wsi : witems) {
+			String id = wsi.getID().toString();
+			builder.addTextBody("wsiList", id, ContentType.TEXT_PLAIN);
+		}
+
+        HttpEntity multipart = builder.build();
+        httppost.setEntity(multipart);
+
+		//Execute and get the response.
+		HttpResponse response = httpclient.execute(httppost);
+		HttpEntity entity = response.getEntity();
+        EntityUtils.consume(entity);
+        httpclient.getConnectionManager().shutdown(); 
+		
+	}
 }
