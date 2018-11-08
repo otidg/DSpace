@@ -87,6 +87,7 @@ public class WsiUpdateRestController implements InitializingBean {
 	    	for (String id : wsiList) {
     			witem = wis.find(context, Integer.parseInt(id));
     			if (witem != null) {
+    				log.info("Updating workspaceitem : " + id);
 	    			context.addEvent(new Event(Event.MODIFY_METADATA, Constants.ITEM, witem.getItem().getID(), null,
 	    					itemService.getIdentifiers(context, witem.getItem())));
     			}

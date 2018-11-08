@@ -49,6 +49,9 @@ dspace.ui =
 # Name of the site
 dspace.name = DSpace at My University
 
+# Server IP where is installed the user interface you will be using for DSpace (jspui).
+dspace.authorized.ipaddr =
+
 # assetstore.dir, look at DSPACE/config/spring/api/bitstore.xml for more options
 # default is ${dspace.dir}/assetstore, uncomment and modify if you need to use a different path
 #assetstore.dir = ${dspace.dir}/assetstore
