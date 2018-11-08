@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- TEST-SPRING.XML -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -22,12 +24,10 @@
 				<entry key="ciniiXML" value-ref="ciniiFileDataLoader" />
 				<entry key="bibtex" value-ref="bibTeXDataLoader" />
 				<entry key="ris" value-ref="risDataLoader" />
-				<entry key="wosris" value-ref="wosRISDataLoader" />
 				<entry key="endnote" value-ref="endnoteDataLoader" />
 				<entry key="csv" value-ref="csvDataLoader" />
 				<entry key="tsv" value-ref="tsvDataLoader" />
 				<entry key="oai" value-ref="oaipmhDataLoader" />
-				<entry key="grobid" value-ref="grobidDataLoader" />
 			</map>
 		</property>
 		
@@ -53,90 +53,13 @@
 			</list>
 		</property>
 	</bean>
-	
-	<!-- **************************************************************************************************** -->
-	<!-- In Submission Lookup Service 																			  -->
-	<!-- **************************************************************************************************** -->
-	<bean class="org.dspace.submit.lookup.SubmissionLookupService"
-		id="identifierSubmissionLookupService" name="identifierSubmissionLookupService" scope="prototype">
-		<property name="phase1TransformationEngine" ref="phase1MultiTransformationEngine" />
-		<property name="phase2TransformationEngine" ref="phase2SingleItemTransformationEngine" />
-		<!-- Uncomment the following property if you want specific fields to appear in the detail presentation
-			 of a publication. Default values are the ones shown below -->
-		<!-- 
-		<property name="detailFields">
-	        <list>
-	        	<value>title</value>
-                <value>authors</value>
-                <value>editors</value>
-                <value>translators</value>
-                <value>chairs</value>
-                <value>issued</value>
-                <value>abstract</value>
-                <value>doi</value>
-                <value>journal</value>
-                <value>volume</value>
-                <value>issue</value>
-                <value>publisher</value>
-                <value>jissn</value>
-                <value>jeissn</value>
-                <value>pisbn</value>
-                <value>eisbn</value>
-                <value>arxivCategory</value>
-                <value>keywords</value>
-                <value>mesh</value>
-                <value>language</value>
-                <value>subtype</value>
-                <value>translators</value>
-	        </list>
-	    </property>
-	    -->
-	</bean>
-	
-	<!-- **************************************************************************************************** -->
-	<!-- In Submission Lookup Service 																			  -->
-	<!-- **************************************************************************************************** -->
-	<bean class="org.dspace.submit.lookup.SubmissionLookupService"
-		id="metadataExtractorSubmissionLookupService" name="metadataExtractorSubmissionLookupService" scope="prototype">
-		<property name="phase1TransformationEngine" ref="phase1TransformationEngine" />
-		<property name="phase2TransformationEngine" ref="phase2SingleItemTransformationEngine" />
-		<!-- Uncomment the following property if you want specific fields to appear in the detail presentation
-			 of a publication. Default values are the ones shown below -->
-		<!-- 
-		<property name="detailFields">
-	        <list>
-	        	<value>title</value>
-                <value>authors</value>
-                <value>editors</value>
-                <value>translators</value>
-                <value>chairs</value>
-                <value>issued</value>
-                <value>abstract</value>
-                <value>doi</value>
-                <value>journal</value>
-                <value>volume</value>
-                <value>issue</value>
-                <value>publisher</value>
-                <value>jissn</value>
-                <value>jeissn</value>
-                <value>pisbn</value>
-                <value>eisbn</value>
-                <value>arxivCategory</value>
-                <value>keywords</value>
-                <value>mesh</value>
-                <value>language</value>
-                <value>subtype</value>
-                <value>translators</value>
-	        </list>
-	    </property>
-	    -->
-	</bean>
 
 	<!-- **************************************************************************************************** -->
-	<!-- Outside Submission Lookup Service 																			  -->
+	<!-- Submission Lookup Service 																			  -->
 	<!-- **************************************************************************************************** -->
+
 	<bean class="org.dspace.submit.lookup.SubmissionLookupService"
-		id="submissionLookupService" name="submissionLookupService" scope="prototype">
+		name="org.dspace.submit.lookup.SubmissionLookupService" scope="prototype">
 		<property name="phase1TransformationEngine" ref="phase1TransformationEngine" />
 		<property name="phase2TransformationEngine" ref="phase2TransformationEngine" />
 		<!-- Uncomment the following property if you want specific fields to appear in the detail presentation
@@ -174,51 +97,14 @@
 	<!-- **************************************************************************************************** -->
 	<!-- Submission Lookup Transformation Engine (phase 1) 												      -->
 	<!-- **************************************************************************************************** -->
-
-	<bean name="phase1MultiTransformationEngine" class="gr.ekt.bte.core.TransformationEngine" scope="prototype">
-	    <property name="dataLoader" ref="multiDataLoader"/>
-    	<property name="workflow" ref="phase1LinearWorkflow"/>
-    	<property name="outputGenerator" ref="org.dspace.submit.lookup.SubmissionLookupOutputGenerator"/>
-  	</bean>
 	
 	<bean name="phase1TransformationEngine" class="gr.ekt.bte.core.TransformationEngine" scope="prototype">
-	    <property name="dataLoader" ref="singleDataLoader"/>
+	    <property name="dataLoader" ref="multipleDataLoader"/>
     	<property name="workflow" ref="phase1LinearWorkflow"/>
     	<property name="outputGenerator" ref="org.dspace.submit.lookup.SubmissionLookupOutputGenerator"/>
   	</bean>
 
-	<bean name="multiDataLoader" class="org.dspace.submit.lookup.MultipleSubmissionLookupDataLoader" scope="prototype">
-	    <property name="dataloadersMap">
-	        <map>
-	            <!-- Specify here any data loaders you want to include in the submission lookup process.
-	            	Dataloaders must either extend the "NetworkSubmissionLookupDataLoader" abstract class
-	            	or conform to "FileDataLoader" interface of BTE -->
-	            <entry key="pubmed" value-ref="pubmedOnlineDataLoader"/>
-	            <!-- <entry key="pubmedEurope" value-ref="pubmedEuropeOnlineDataLoader"/> -->	            
-	            <entry key="crossref" value-ref="crossRefOnlineDataLoader"/>
-	            <entry key="orcid" value-ref="orcidOnlineDataLoader"/>
-	            <entry key="arxiv" value-ref="arXivOnlineDataLoader"/>
-	            <entry key="cinii" value-ref="ciniiOnlineDataLoader"/>
-<!-- 	            depending on your apiKey you should use scopusOnlineDataLoader or scivalOnlineDataLoader
-		    <entry key="scopus" value-ref="scopusOnlineDataLoader"/> -->
-	            <entry key="wos" value-ref="wosOnlineDataLoader"/> 
-	            <entry key="pubmedXML" value-ref="pubmedFileDataLoader"/>
-	            <!-- <entry key="pubmedEuropeXML" value-ref="pubmedEuropeFileDataLoader"/> -->
-	            <entry key="crossRefXML" value-ref="crossRefFileDataLoader"/>
-	            <entry key="arXivXML" value-ref="arXivFileDataLoader"/>
-	            <entry key="ciniiXML" value-ref="ciniiFileDataLoader"/>
-	            <entry key="bibtex" value-ref="bibTeXDataLoader"/>
-	            <entry key="ris" value-ref="risDataLoader"/>
-	            <entry key="wosris" value-ref="wosRISDataLoader"/>
-	            <entry key="endnote" value-ref="endnoteDataLoader"/>
-	            <entry key="csv" value-ref="csvDataLoader"/>
-	            <entry key="tsv" value-ref="tsvDataLoader"/>
-	            <entry key="grobid" value-ref="grobidDataLoader" />
-			</map>
-	    </property>
-	</bean>
-
-	<bean name="singleDataLoader" class="org.dspace.submit.lookup.SingleSubmissionLookupDataLoader" scope="prototype">
+	<bean name="multipleDataLoader" class="org.dspace.submit.lookup.MultipleSubmissionLookupDataLoader" scope="prototype">
 	    <property name="dataloadersMap">
 	        <map>
 	            <!-- Specify here any data loaders you want to include in the submission lookup process.
@@ -240,15 +126,13 @@
 	            <entry key="ciniiXML" value-ref="ciniiFileDataLoader"/>
 	            <entry key="bibtex" value-ref="bibTeXDataLoader"/>
 	            <entry key="ris" value-ref="risDataLoader"/>
-	            <entry key="wosris" value-ref="wosRISDataLoader"/>
 	            <entry key="endnote" value-ref="endnoteDataLoader"/>
 	            <entry key="csv" value-ref="csvDataLoader"/>
 	            <entry key="tsv" value-ref="tsvDataLoader"/>
-	            <entry key="grobid" value-ref="grobidDataLoader" />
 			</map>
 	    </property>
 	</bean>
-	
+
 	<bean name="org.dspace.submit.lookup.SubmissionLookupOutputGenerator" class="org.dspace.submit.lookup.SubmissionLookupOutputGenerator" scope="prototype"/>
 	
 	<!-- Specify here any filters or modifiers to run before the output -->
@@ -260,8 +144,7 @@
 				<ref bean="mapConverter_classificationASJC" />
 			    <ref bean="mapConverter_scopusType"/>
 			    <ref bean="mapConverter_wosType"/>			    			    
-			    <ref bean="splitValue"/>
-			    <ref bean="squashValue"/>							    
+			    <ref bean="splitValue"/>							    
 			    <ref bean="removeLastDot"/>
 			</list>
 		</property>
@@ -354,18 +237,7 @@
 	    </property>
 	    <property name="separator" value="|" />
 	</bean>	
-
-	<!-- Squash multi rows in a single line -->
-	<bean name="squashValue" class="org.dspace.submit.lookup.SquashLinesModifier">
-	    <constructor-arg value="SquashValue Modifier"/>
-	    <property name="fieldKeys">
-	        <list>
-	        	<value>wosristitle</value>
-	        	<value>wosrisabstract</value>
-	        </list>
-	    </property>
-	</bean>
-		
+	
 	<!-- **************************************************************************************************** -->
 	<!-- Submission Lookup Transformation Engine (phase 2) 													  -->
 	<!-- **************************************************************************************************** -->
@@ -375,12 +247,6 @@
     	<property name="workflow" ref="phase2linearWorkflow"/>
     	<property name="outputGenerator" ref="org.dspace.submit.lookup.DSpaceWorkspaceItemOutputGenerator"/>
   	</bean>
-  	
-	<bean name="phase2SingleItemTransformationEngine" class="gr.ekt.bte.core.TransformationEngine">
-	    <property name="dataLoader" ref="submissionItemDataLoader"/>
-    	<property name="workflow" ref="phase2linearWorkflow"/>
-    	<property name="outputGenerator" ref="org.dspace.submit.lookup.DSpaceSingleItemOutputGenerator"/>
-  	</bean>  	
   	
 	<bean name="submissionItemDataLoader" class="org.dspace.submit.lookup.SubmissionItemDataLoader"/>
 	
@@ -490,22 +356,6 @@
 			</list>
 		</property>		 
 	</bean>
-
-	<bean name="org.dspace.submit.lookup.DSpaceSingleItemOutputGenerator" class="org.dspace.submit.lookup.DSpaceSingleItemOutputGenerator" scope="prototype">
-	    <property name="outputMap" ref="outputMap"/>
-
-	    <property name="extraMetadataToKeep">
-			<list>
-				<value>dc.import.contributorauthor</value>
-				<value>dc.import.contributoreditor</value>
-				<value>dc.import.contributortranslator</value>
-				<!-- <value>dc.description.scopusurl</value>
-				<value>dc.description.scopuscitationcount</value>
-				<value>dc.description.scopuscitationurl</value>-->
-			</list>
-		</property>		 
-	</bean>
-
 	
 	<!-- **************************************************************************************************** -->
 	<!-- DataLoader beans 																					  -->
@@ -523,16 +373,11 @@
 	<bean id="bibTeXDataLoader" class="gr.ekt.bteio.loaders.BibTeXDataLoader">
 		<property name="fieldMap">
 			<map>
-                                <entry key="doi" value="doi" />
 				<entry key="title" value="title" />
 				<entry key="author" value="authors" />
 				<entry key="journal" value="journal" />
 				<entry key="year" value="issued" />
 				<entry key="ISSN" value="jissn" />
-                                <entry key="issn" value="jissn" />
-                                <entry key="abstract" value="abstract" />
-                                <entry key="volume" value="volume" />
-                                <entry key="number" value="issue" />
 			</map>
 		</property>
 	</bean>
@@ -604,52 +449,14 @@
 		</property>
 	</bean>
 
-	<bean id="wosRISDataLoader" class="org.dspace.submit.extraction.WOSRISDataLoader">
+	<bean id="endnoteDataLoader" class="gr.ekt.bteio.loaders.EndnoteDataLoader">
 		<property name="fieldMap">
 			<map>
-				<entry key="TI" value="wosristitle" />
-				<entry key="AF" value="authors" />
-				<entry key="AB" value="wosrisabstract" />
+				<entry key="TI" value="title" />
+				<entry key="AU" value="authors" />
+				<entry key="AB" value="abstract" />
 				<entry key="PY" value="issued" />
 				<entry key="SO" value="journal" />
-				<entry key="DT" value="subtype" />				
-				<entry key="CT" value="conferencetitle" />	<!-- added -->
-				<entry key="CY" value="conferencedate" />	<!-- added -->
-				<entry key="CL" value="conferenceplace" />	<!-- added -->
-				<entry key="DE" value="allkeywords" />	
-				<entry key="ID" value="allkeywords" />	
-				<entry key="C1" value="notes" />	
-				<entry key="RP" value="notes" />	
-				<entry key="EM" value="notes" />	
-				<entry key="OI" value="orcid" />	
-				<entry key="FU" value="funders" />			<!-- added -->
-				<entry key="PU" value="publisher" />	
-				<entry key="PA" value="publisherPlace" />	
-				<entry key="SN" value="jissn" />	
-				<entry key="PY" value="issued" />	
-				<entry key="VL" value="volume" />	
-				<entry key="IS" value="issue" />	
-				<entry key="BP" value="firstpage" />	
-				<entry key="EP" value="lastpage" />	
-				<entry key="AR" value="artnr" />			<!-- added -->
-				<entry key="DI" value="doi" />	
-				<entry key="PG" value="pages" />			<!-- added -->
-				<entry key="UT" value="isiId" />
-				<entry key="EI" value="eissn" />
-				<entry key="BN" value="pisbn" />
-			</map>
-		</property>
-	</bean>
-
-
-	<bean id="endnoteDataLoader" class="org.dspace.submit.extraction.EndnoteDataLoader">
-		<property name="fieldMap">
-			<map>
-				<entry key="%T" value="title" />
-				<entry key="%A" value="authors" />
-				<entry key="%X" value="abstract" />
-				<entry key="%D" value="issued" />
-				<entry key="%J" value="journal" />
 			</map>
 		</property>
 	</bean>
@@ -777,7 +584,7 @@
 		<!-- For CrossRef service you need to obtain an API Key from CrossRef. Once you get it, add it 
 			 to the following configuration value 
 		-->
-		<property name="apiKey" value="${bte.crossref.apikey}" />
+		<property name="apiKey" value="" />
 		<!-- Uncomment the following line if you want to define the max results returned by the 
 			 CrossRef free text (by author, title, date) search. Default value is 10 
 		-->
@@ -876,71 +683,63 @@
 	<bean name="outputMap" class="java.util.HashMap" scope="prototype">
 		<constructor-arg>
 			<map key-type="java.lang.String" value-type="java.lang.String">
-				<entry key="jissn" value="dc.identifier.issn" />
-				<entry key="eissn" value="dc.identifier.eissn" />				
-				<entry key="pisbn" value="dc.identifier.isbn" />
-				<entry key="sissn" value="dc.identifier.issn" />
-				<entry key="jeissn" value="dc.identifier.eissn" />
-				<entry key="lastpage" value="dc.relation.lastpage" />
-				<entry key="eisbn" value="" />
-				<entry key="journal" value="dc.bibliographicCitation.title" />				<!-- changed -->
-				<entry key="proceedingsPaper.journal" value="dc.bibliographicCitation.title" />		<!-- changed -->		
-				<entry key="title" value="dc.title" />
-				<entry key="wosristitle" value="dc.title" />
-				<entry key="issued" value="dc.date.issued" />
-				<entry key="language" value="dc.language.iso" />
-				<entry key="subtype" value="dc.type" />
-				<entry key="authors" value="dc.contributor.author" />
-				<entry key="editors" value="dc.contributor.editor" />
-				<entry key="translators" value="dc.contributor.other" />
-				<entry key="investigators" value="dc.contributor.other" />
-				<entry key="chairs" value="dc.contributor.other" />
-				<entry key="abstract" value="dc.description.abstract" />
-				<entry key="wosrisabstract" value="dc.description.abstract" />
-				<entry key="description" value="dc.description" />
-				<entry key="allkeywords" value="dc.subject" />
-				<entry key="arxivCategory" value="dc.subject" />
-				<entry key="doi" value="dc.identifier.doi" />
-				<entry key="publisher" value="dc.publisher" />
-				<entry key="publisherPlace" value="dc.publisher.place" />
-				<entry key="pubmedID" value="dc.identifier.pmid" />
-				<entry key="pubmedcentralID" value="dc.identifier.pmcid" />
-				<entry key="uri" value="dc.identifier.uri" />
-				<entry key="url" value="dc.identifier.url" />
-				<entry key="issue" value="dc.bibliographicCitation.issue" />	<!-- changed -->
-				<entry key="volume" value="dc.bibliographicCitation.volume" />	<!-- changed -->
-				<entry key="firstpage" value="dc.identifier.spage" />
-				<entry key="lastpage" value="dc.identifier.epage" />
-				<entry key="editionnumber" value="dc.relation.edition" />
-				<entry key="seriestitle" value="dc.bibliographicCitation.title" />		<!-- changed -->
-				<entry key="booktitle" value="dc.bibliographicCitation.title" />		<!-- changed -->	
-				<entry key="meshheadings" value="dc.subject.mesh" />
-				<entry key="meshqualifiers" value="dc.subject.meshqualifier" />
-				<entry key="eid" value="dc.identifier.scopus" />
-				<entry key="isiId" value="dc.identifier.isi" />
-				<entry key="providerType" value="dc.source.type" />
-				<entry key="orcid" value="dc.contributor.orcid" />				
-				<entry key="conferencetitle" value="dc.bibliographicCitation.conferencedate" />	<!-- added -->
-				<entry key="conferencedate" value="dc.bibliographicCitation.conferencename" />	<!-- added -->
-				<entry key="conferenceplace" value="dc.bibliographicCitation.conferenceplace" />	<!-- added -->
-				<entry key="funders" value="dc.description.sponsorship" />	<!-- added -->
-				<entry key="artnr" value="dc.bibliographicCitation.artnr" />	<!-- added -->
-				<entry key="pages" value="dc.format.pages" />	<!-- added -->
+				<entry value="jissn" key="dc.identifier.issn" />
+				<entry value="eissn" key="dc.identifier.eissn" />				
+				<entry value="pisbn" key="dc.identifier.isbn" />
+				<entry value="sissn" key="dc.identifier.issn" />
+				<entry value="jeissn" key="dc.identifier.eissn" />
+				<entry value="lastpage" key="dc.relation.lastpage" />
+				<entry value="eisbn" key="" />
+				<entry value="journal" key="dc.relation.ispartof" />				
+				<entry value="proceedingsPaper.journal" key="dc.relation.ispartofbook" />				
+				<entry value="title" key="dc.title" />
+				<entry value="issued" key="dc.date.issued" />
+				<entry value="language" key="dc.language.iso" />
+				<entry value="subtype" key="dc.type" />
+				<entry value="authors" key="dc.contributor.author" />
+				<entry value="editors" key="dc.contributor.editor" />
+				<entry value="translators" key="dc.contributor.other" />
+				<entry value="investigators" key="dc.contributor.other" />
+				<entry value="chairs" key="dc.contributor.other" />
+				<entry value="abstract" key="dc.description.abstract" />
+				<entry value="description" key="dc.description" />
+				<entry value="allkeywords" key="dc.subject" />
+				<entry value="arxivCategory" key="dc.subject" />
+				<entry value="doi" key="dc.identifier.doi" />
+				<entry value="publisher" key="dc.publisher" />
+				<entry value="publisherPlace" key="dc.publisher.place" />
+				<entry value="pubmedID" key="dc.identifier.pmid" />
+				<entry value="pubmedcentralID" key="dc.identifier.pmcid" />
+				<entry value="uri" key="dc.identifier.uri" />
+				<entry value="url" key="dc.identifier.url" />
+				<entry value="issue" key="dc.identifier.issue" />
+				<entry value="volume" key="dc.identifier.volume" />
+				<entry value="firstpage" key="dc.identifier.spage" />
+				<entry value="lastpage" key="dc.identifier.epage" />
+				<entry value="editionnumber" key="dc.relation.edition" />
+				<entry value="seriestitle" key="dc.relation.ispartofjournal" />
+				<entry value="booktitle" key="dc.relation.ispartofbook" />				
+				<entry value="meshheadings" key="dc.subject.mesh" />
+				<entry value="meshqualifiers" key="dc.subject.meshqualifier" />
+				<entry value="eid" key="dc.identifier.scopus" />
+				<entry value="isiId" key="dc.identifier.isi" />
+				<entry value="providerType" key="dc.source.type" />
+				<entry value="orcid" key="dc.contributor.orcid" />				
 				
 				<!-- Not used - new metadata fields need to be declared for them in DSpace registry -->
 				<!-- 
-				<entry key="url" value="" />
-				<entry key="note" value="" />
-				<entry key="fulltextUrl" value="" />
-				<entry key="authorsWithAffiliation" value="" />
-				<entry key="publicationStatus" value="" />
-				<entry key="jeissn" value="" />
-				<entry key="eisbn" value="" />
+				<entry value="url" key="" />
+				<entry value="note" key="" />
+				<entry value="fulltextUrl" key="" />
+				<entry value="authorsWithAffiliation" key="" />
+				<entry value="publicationStatus" key="" />
+				<entry value="jeissn" key="" />
+				<entry value="eisbn" key="" />
 
-				<entry key="titleAlternative" value="" />
-				<entry key="authorAlternative" value="" />
-				<entry key="ncid" value="" />
-				<entry key="naid" value="" />
+				<entry value="titleAlternative" key="" />
+				<entry value="authorAlternative" key="" />
+				<entry value="ncid" key="" />
+				<entry value="naid" key="" />
 				 -->
 				 
 				 
@@ -1227,21 +1026,5 @@
 		<property name="sourceIdMetadata" value="dc.identifier.isi" />
 		<property name="providerName" value="wos" />		
 	</bean>
-
-	<bean id="grobidDataLoader" class="org.dspace.submit.extraction.GrobidFileDataLoader">
-		<property name="url" value="${metadata.extraction.grobid.url}"/>
-		<property name="fieldMap">
-			<map>
-				<entry key="analytictitle" value="title" />
-				<entry key="analyticname" value="authors" />
-				<entry key="monogrtitle" value="journal" />
-				<entry key="publicationstmtdatepublished" value="issued" />
-				<entry key="ISSN" value="jissn" />
-				<entry key="ISBN" value="pisbn" />
-				<entry key="DOI" value="doi" />
-				<entry key="profiledescabstractparagraph" value="abstract" />
-				<entry key="profiledesckeywordsterm" value="allkeywords" />
-			</map>
-		</property>
-	</bean>	
+	
 </beans>
