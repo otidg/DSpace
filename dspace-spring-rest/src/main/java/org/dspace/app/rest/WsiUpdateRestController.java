@@ -7,18 +7,17 @@
  */
 package org.dspace.app.rest;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.dspace.app.rest.model.AuthnRest;
 import org.dspace.app.rest.model.WsiUpdateRest;
 import org.dspace.app.rest.utils.ContextUtil;
 import org.dspace.content.WorkspaceItem;
 import org.dspace.content.service.ItemService;
 import org.dspace.content.service.WorkspaceItemService;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.event.Event;
@@ -55,11 +54,21 @@ public class WsiUpdateRestController implements InitializingBean {
 
     @RequestMapping(value = "/notifyUpdate", method = { RequestMethod.POST, RequestMethod.GET })
     public boolean notifyUpdate(HttpServletRequest request, @RequestParam(name = "wsiList") String[] wsiList) {
-    	String server = request.getServerName();
-    	if (server.equals("localhost")) {
+        String authorizedIps = ConfigurationManager
+                .getProperty("dspace.authorized.ipaddr");
+    	
+    	String clientIp = request.getHeader("X-FORWARDED-FOR");  
+        if (clientIp == null) {  
+        	clientIp = request.getRemoteAddr();  
+        }
+
+    	if (authorizedIps.contains(clientIp)
+    			|| clientIp.equals("127.0.1.1")
+    			|| clientIp.equals("0:0:0:0:0:0:0:1")) {
     		wsiUpdate(request, wsiList);
     		return true;
     	} else {
+    		log.info("Skipping indexes update. Request sent from : " + clientIp);
     		return false;
     	}
     }
