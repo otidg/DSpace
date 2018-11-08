@@ -280,6 +280,7 @@ public class StartSubmissionLookupStep extends AbstractProcessingStep
                     transformationEngine.transform(new TransformationSpec());
                     result = outputGenerator.getWitems();
 					// temporary fix for updating wsi solr indexes
+                    context.commit();
 					updateWsi(result);
                 }
                 catch (BadTransformationSpec e1)
