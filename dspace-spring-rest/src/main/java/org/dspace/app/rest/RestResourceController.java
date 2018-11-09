@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -839,6 +840,7 @@ public class RestResourceController implements InitializingBean {
     public <T extends RestAddressableModel> ResourceSupport executeSearchMethods(@PathVariable String apiCategory,
                                                                                  @PathVariable String model,
                                                                                  @PathVariable String searchMethodName,
+                                                                                 HttpServletResponse response,
                                                                                  Pageable pageable, Sort sort,
                                                                                  PagedResourcesAssembler assembler,
                                                                                  @RequestParam MultiValueMap<String,
@@ -860,20 +862,28 @@ public class RestResourceController implements InitializingBean {
             }
         }
 
-        searchResult =
-            repositoryUtils.executeQueryMethod(repository, parameters, searchMethod, pageable, sort, assembler);
+        searchResult = repositoryUtils
+            .executeQueryMethod(repository, parameters, searchMethod, pageable, sort, assembler);
 
         returnPage = searchMethod.getReturnType().isAssignableFrom(Page.class);
         ResourceSupport result = null;
         if (returnPage) {
-            Page<DSpaceResource<T>> resources = ((Page<T>) searchResult).map(repository::wrapResource);
+            Page<DSpaceResource<T>> resources;
+            if (searchResult == null) {
+                resources = new PageImpl(new ArrayList(), pageable, 0);
+            } else {
+                resources = ((Page<T>) searchResult).map(repository::wrapResource);
+            }
             resources.forEach(linkService::addLinks);
             result = assembler.toResource(resources, link);
         } else {
-            T modelObject = (T) searchResult;
-            if (modelObject == null) {
-                throw new ResourceNotFoundException(
-                    apiCategory + "." + model + " with method: " + searchMethodName + " not found resource");
+            if (searchResult == null) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NO_CONTENT);
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
+                return null;
             }
             DSpaceResource<T> dsResource = repository.wrapResource((T) searchResult);
             linkService.addLinks(dsResource);
