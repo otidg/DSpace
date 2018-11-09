@@ -946,10 +946,10 @@
 		<url-pattern>/statistics</url-pattern>
 	</servlet-mapping>
 
-<!-- 	<servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>submit</servlet-name>
 		<url-pattern>/submit</url-pattern>
-	</servlet-mapping> -->
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>subscribe</servlet-name>
