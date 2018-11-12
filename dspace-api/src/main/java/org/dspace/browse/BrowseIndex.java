@@ -70,7 +70,7 @@ public final class BrowseIndex
     private static BrowseIndex withdrawnIndex = new BrowseIndex("bi_withdrawn", "item");
     private static BrowseIndex rejectedIndex = new BrowseIndex("bi_item", "item", "rejected",
     		new SorlMetadataQuery("search.resourcetype:8 AND rejected:true", 
-    				new String[] {"rejecteditemuuid", "rejecteddate", "rejecteduser" }));	// TODO: Cadili FIX
+    				new String[] {"rejecteditemuuid", "rejecteddate", "rejecteduser" }));
     
     private static BrowseIndex privateIndex = new BrowseIndex("bi_private", "item");
 
