@@ -74,7 +74,7 @@ public class JSPStartSubmissionLookupStep extends JSPStep
             .getLogger(JSPStartSubmissionLookupStep.class);
 
     SubmissionLookupService slService = DSpaceServicesFactory.getInstance().getServiceManager()
-            .getServiceByName(SubmissionLookupService.class.getCanonicalName(),
+            .getServiceByName("submissionLookupService",
                     SubmissionLookupService.class);
     
 	private CollectionService collectionService = ContentServiceFactory.getInstance().getCollectionService();

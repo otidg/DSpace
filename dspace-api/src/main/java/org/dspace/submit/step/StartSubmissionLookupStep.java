@@ -98,7 +98,7 @@ public class StartSubmissionLookupStep extends AbstractProcessingStep
 
     private SubmissionLookupService slService = DSpaceServicesFactory.getInstance().getServiceManager()
             .getServiceByName(
-                    SubmissionLookupService.class.getCanonicalName(),
+            		"submissionLookupService",
                     SubmissionLookupService.class);
 
     /** log4j logger */

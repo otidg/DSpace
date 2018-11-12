@@ -416,3 +416,7 @@ core-aggregator.enabled = false
 core-aggregator.credentials =
 
 community-list.show.all = true
+
+metadata.extraction.grobid.url =
+
+bte.crossref.apikey =
