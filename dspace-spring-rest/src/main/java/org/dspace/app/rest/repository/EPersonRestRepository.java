@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dspace.app.rest.Parameter;
 import org.dspace.app.rest.SearchRestMethod;
 import org.dspace.app.rest.converter.EPersonConverter;
+import org.dspace.app.rest.exception.ConflictException;
 import org.dspace.app.rest.exception.PatchBadRequestException;
 import org.dspace.app.rest.exception.RESTAuthorizationException;
 import org.dspace.app.rest.exception.RepositoryMethodNotImplementedException;
@@ -35,6 +37,7 @@ import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.factory.EPersonServiceFactory;
 import org.dspace.eperson.service.EPersonService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -75,6 +78,11 @@ public class EPersonRestRepository extends DSpaceRestRepository<EPersonRest, UUI
 
         EPerson eperson = null;
         try {
+
+        	// Check if eperson already exists
+        	checkEpersonAlredyExists(context, mock);
+
+        	// Create new eperson
             eperson = es.create(context);
 
             // this should be probably moved to the converter (a merge method?)
@@ -98,6 +106,27 @@ public class EPersonRestRepository extends DSpaceRestRepository<EPersonRest, UUI
         }
 
         return converter.convert(eperson);
+    }
+
+    protected void checkEpersonAlredyExists(Context context, EPersonRest eperson) {
+        EPerson testExists = null;
+        try {
+	    	// Check if it is already present an eperson with passed email
+	    	testExists = es.findByEmail(context, eperson.getEmail());
+	    	if (testExists != null) {
+	    		String msg = "Error creating new eperson. Eperson with email '" + eperson.getEmail() + "' already exists";
+	    		throw new ConflictException(msg);
+	    	}
+	
+	    	// Check if it is already present an eperson with passed netid
+	    	testExists = es.findByNetid(context, eperson.getNetid());
+	    	if (testExists != null) {
+	    		String msg = "Error creating new eperson. Eperson with netid '" + eperson.getNetid() + "' already exists";
+	    		throw new ConflictException(msg);
+	    	}
+	    } catch (SQLException e) {
+	        throw new RuntimeException(e.getMessage(), e);
+	    }
     }
 
     @Override
