@@ -66,7 +66,7 @@ public class SubmissionLookupJSONRequest extends JSONRequest
 {
 
     private SubmissionLookupService service = DSpaceServicesFactory.getInstance().getServiceManager()
-            .getServiceByName(SubmissionLookupService.class.getName(),
+            .getServiceByName("submissionLookupService",
                     SubmissionLookupService.class);
 
     private static Logger log = Logger
