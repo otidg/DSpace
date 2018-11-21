@@ -317,7 +317,7 @@ public class ReferCrosswalk extends SelfNamedPlugin
         File templateFile = new File(parent, templateFileName);
         BufferedReader templateReader = new BufferedReader(new FileReader(templateFile));
 
-        Pattern mdRepl = Pattern.compile("@[a-z0-9.*]+(\\(.*\\))?@");
+        Pattern mdRepl = Pattern.compile("@[a-zA-Z0-9.*]+(\\(.*\\))?@");
         String templateLine = templateReader.readLine();
         while (templateLine != null) {
             TemplateLine line = new TemplateLine();
