@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <context:annotation-config /> <!-- allows us to use spring annotations in beans -->
+	
+  	<bean class="org.dspace.disseminate.CitationDocumentServiceImpl" id="org.dspace.disseminate.CitationDocumentServiceImpl">
+	    <property name="configurationStrategy">
+	    	<list>
+	    		<ref bean="dissaminateStrategy_bitstreamMetadata" />
+	    		<!-- <ref bean="dissaminateStrategy_collection" /> -->
+	     		<!-- <ref bean="dissaminateStrategy_community" /> -->
+	     		<!-- <ref bean="dissaminateStrategy_itemMetadata" /> -->
+	    		<!-- <ref bean="dissaminateStrategy_default" /> -->
+	    	</list>
+	    </property>
+	</bean>
+
+	<bean name="dissaminateStrategy_bitstreamMetadata" class="org.dspace.disseminate.strategy.BitstreamMetadataStrategy" >
+		<property name="metadataKeys">
+			<map>
+		          <entry key="dc.description" value-ref="bitstreamDescriptionMap" />
+		    </map>
+		</property>
+	</bean>
+
+	<bean name="bitstreamDescriptionMap" class="java.util.HashMap" scope="prototype">
+		<constructor-arg>
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="regex.^Peer-reviewed author version*" value="citation-page" />
+				<entry key="regex.^Non peer-reviewed author version*" value="citation-page" />
+				<entry key="regex.^Supplementary material*" value="citation-page" />
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean name="dissaminateStrategy_itemMetadata" class="org.dspace.disseminate.strategy.ItemMetadataStrategy" >
+		<property name="metadataKeys">
+			<map>
+		          <entry key="dc.bibliographicCitation.title" value-ref="itemTypeMap" />
+		    </map>
+		</property>
+	</bean>
+
+	<bean name="itemTypeMap" class="java.util.HashMap" scope="prototype">
+		<constructor-arg>
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Budapest Scientometrics" value="citation-page" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean name="dissaminateStrategy_collection" class="org.dspace.disseminate.strategy.CollectionStrategy" >
+		<property name="citationEnabledCollections">
+			<!-- List of collection handles to enable, to apply to nested bitstreams within -->
+	    	<map>
+	    		<entry key="123456789/23928" value="citation-page" />
+	    	</map>
+		</property>
+	</bean>
+	
+	<bean name="dissaminateStrategy_community" class="org.dspace.disseminate.strategy.CommunityStrategy" >
+		<property name="citationEnabledCommunities">
+			<!-- List of community handles to enable, to apply to nested bitstreams within -->
+	    	<map>
+	    		<entry key="1942/995" value="citation-page" />
+	    	</map>
+		</property>
+	</bean>
+	
+	<bean name="dissaminateStrategy_default" class="org.dspace.disseminate.strategy.DefaultStrategy" >
+		<!-- Set value to determine if citation-functionality is enabled globally for entire site. -->
+		<property name="defaultConfigFile" value="citation-page" />
+	</bean>
+	
+</beans>

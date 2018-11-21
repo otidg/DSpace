@@ -35,4 +35,20 @@
 		<property name="configurationService" ref="org.dspace.services.ConfigurationService" />
 		<property name="defaultValue" value="GEN"/>
 	</bean>
+	
+	<bean name="mapConverterdoi" class="org.dspace.util.SimpleMapConverter"
+		init-method="init">
+		<constructor-arg value="mapConverterrefman" />
+		<property name="converterNameFile" value="mapConverter-doi.properties" />
+		<property name="configurationService" ref="org.dspace.services.ConfigurationService" />
+		<property name="defaultValue" value="@misc"/>
+	</bean>
+	
+	<bean name="mapConverterhandle" class="org.dspace.util.SimpleMapConverter"
+		init-method="init">
+		<constructor-arg value="mapConverterrefman" />
+		<property name="converterNameFile" value="mapConverter-handle.properties" />
+		<property name="configurationService" ref="org.dspace.services.ConfigurationService" />
+		<property name="defaultValue" value="@misc"/>
+	</bean>
 </beans>
