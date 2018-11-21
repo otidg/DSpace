@@ -7,6 +7,8 @@
  */
 package org.dspace.app.webui.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -35,6 +37,8 @@ import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.core.Utils;
 import org.dspace.core.factory.CoreServiceFactory;
+import org.dspace.disseminate.factory.DisseminateServiceFactory;
+import org.dspace.disseminate.service.CitationDocumentService;
 import org.dspace.handle.factory.HandleServiceFactory;
 import org.dspace.handle.service.HandleService;
 import org.dspace.plugin.BitstreamHomeProcessor;
@@ -67,7 +71,10 @@ public class BitstreamServlet extends DSpaceServlet
     
     private final transient BitstreamService bitstreamService
              = ContentServiceFactory.getInstance().getBitstreamService();
-    
+
+    private final transient CitationDocumentService citationDocumentService
+    		= DisseminateServiceFactory.getInstance().getCitationDocumentService();
+
     @Override
 	public void init(ServletConfig arg0) throws ServletException {
 		super.init(arg0);
@@ -223,15 +230,61 @@ public class BitstreamServlet extends DSpaceServlet
         
         preProcessBitstreamHome(context, request, response, bitstream);
         
-        // Pipe the bits
-        InputStream is = bitstreamService.retrieve(context, bitstream);
+        InputStream is = null;
+        long size = 0;
+
+        // Success, bitstream found and the user has access to read it.
+        // Store these for later retrieval:
+
+        // Intercepting views to the original bitstream to instead show a citation altered version of the object
+        // We need to check if this resource falls under the "show watermarked alternative" umbrella.
+        // At which time we will not return the "bitstream", but will instead on-the-fly generate the citation rendition.
+
+        // What will trigger a redirect/intercept?
+        // 1) Intercepting Enabled
+        // 2) This User is not an admin
+        // 3) This object is citation-able
+        if (citationDocumentService.isCitationEnabledForBitstream(bitstream, context)) {
+            // on-the-fly citation generator
+            log.info(item.getHandle() + " - " + bitstream.getName() + " is citable.");
+
+            FileInputStream fileInputStream = null;
+
+            try {
+                //Create the cited document
+                File tempFile = citationDocumentService.makeCitedDocument(context, bitstream);
+                if(tempFile == null) {
+                    log.error("CitedDocument was null");
+                } else {
+                    log.info("CitedDocument was ok," + tempFile.getAbsolutePath());
+                }
+
+
+                fileInputStream = new FileInputStream(tempFile);
+                if(fileInputStream == null) {
+                    log.error("Error opening fileInputStream: ");
+                }
+
+                size = tempFile.length();
+                is = fileInputStream;
+
+            } catch (Exception e) {
+                log.error("Caught an error with intercepting the citation document:" + e.getMessage());
+            }
+
+            //End of CitationDocument
+        } else {
+            // Pipe the bits
+            is = bitstreamService.retrieve(context, bitstream);
+            size = bitstream.getSize();
+        }
      
 		// Set the response MIME type
         response.setContentType(bitstream.getFormat(context).getMIMEType());
 
         // Response length
         response.setHeader("Content-Length", String
-                .valueOf(bitstream.getSize()));
+                .valueOf(size));
 
 		if(threshold != -1 && bitstream.getSize() >= threshold)
 		{

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dspace.content.Bitstream;
 import org.dspace.content.Item;
 import org.dspace.util.SimpleMapConverter;
 import org.dspace.utils.DSpace;
@@ -39,10 +40,23 @@ public class ConvertMetadata {
 			if (c != null)
 				return c.getValue(item.getMetadata(matcher.group(1)));
 			else
-				return metadata;
+				return item.getMetadata(metadata);
 		}
 		else
-			return metadata;
+			return item.getMetadata(metadata);
+	}
+	
+	public String convert(String metadata, Bitstream bitstream) {
+		Matcher matcher = pattern.matcher(metadata);
+		if (matcher.matches() && matcher.group(1) != null && matcher.group(2) != null) {
+			SimpleMapConverter c = getConverter(matcher.group(2));
+			if (c != null)
+				return c.getValue(bitstream.getMetadata(matcher.group(1)));
+			else
+				return bitstream.getMetadata(metadata);
+		}
+		else
+			return bitstream.getMetadata(metadata);
 	}
 	
 	/***
