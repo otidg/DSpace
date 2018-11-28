@@ -9,6 +9,7 @@ package org.dspace.app.rest.repository;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.dspace.app.rest.model.AuthorityEntryRest;
 import org.dspace.app.rest.model.AuthorityRest;
 import org.dspace.app.rest.model.hateoas.AuthorityEntryResource;
@@ -45,8 +46,14 @@ public class AuthorityEntryValueLinkRepository extends AbstractDSpaceRestReposit
     public AuthorityEntryRest getResource(HttpServletRequest request, String name, String relId, Pageable pageable,
                                           String projection) {
         Context context = obtainContext();
+        String metadata = request.getParameter("metadata");
+        String fieldKey = null;
+        if (StringUtils.isNotBlank(metadata)) {
+            String[] tokens = org.dspace.core.Utils.tokenize(metadata);
+            fieldKey = org.dspace.core.Utils.standardize(tokens[0], tokens[1], tokens[2], "_");
+        }
         ChoiceAuthority choiceAuthority = cas.getChoiceAuthorityByAuthorityName(name);
-        Choice choice = choiceAuthority.getChoice(null, relId, context.getCurrentLocale().toString());
+        Choice choice = choiceAuthority.getChoice(fieldKey, relId, context.getCurrentLocale().toString());
         return authorityUtils.convertEntry(choice, name);
     }
 

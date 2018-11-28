@@ -7,6 +7,9 @@
  */
 package org.dspace.content.authority;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.dspace.content.Collection;
 
 /**
@@ -86,11 +89,24 @@ public interface ChoiceAuthority {
         return true;
     }
 
+    /**
+     * Get extra metadata related to the authority.
+     *
+     * @param field     being matched for
+     * @param authKey   authority key known to this authority.
+     * @param authName  authority name known to this authority.
+     * @return descriptive label - should always return something, never null.
+     */
+    default public Map<String, String> getExtraInfo(String fieldKey, String authKey) {
+		return new HashMap<String, String>();    	
+    }
+    
     default public Choice getChoice(String fieldKey, String authKey, String locale) {
         Choice result = new Choice();
         result.authority = authKey;
         result.label = getLabel(fieldKey, authKey, locale);
         result.value = getLabel(fieldKey, authKey, locale);
+        result.extras = getExtraInfo(fieldKey, authKey);
         return result;
     }
 

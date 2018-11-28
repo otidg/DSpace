@@ -10,8 +10,10 @@ package org.dspace.app.cris.util;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -387,30 +389,32 @@ return decorator.generateDisplayValue(alternativeName, rp);
 		String filter = _configurationService.getPropertyAsType("cris." + RPAuthority.RP_AUTHORITY_NAME
 				+ ((field != null && !field.isEmpty()) ? "." + field : "") + ".filter", _configurationService
 				.getPropertyAsType("cris." + RPAuthority.RP_AUTHORITY_NAME + ".filter", String.class));
+
 		if (filter != null) {
 			discoverQuery.addFilterQueries(filter);
 		}
 	}
     
-    private static List<Choice> choiceResults(DiscoverResult result){
+    private static List<Choice> choiceResults(DiscoverResult result, String field){
     	List<Choice> choiceList = new LinkedList<Choice>();
 		for (BrowsableDSpaceObject dso : result.getDspaceObjects()) {
 			ResearcherPage rp = (ResearcherPage) dso;
-			choiceList.add(new Choice(getPersistentIdentifier(rp), rp.getFullName(),getLabel(rp.getFullName(), rp)));
+			choiceList.add(new Choice(getPersistentIdentifier(rp), rp.getFullName(),getLabel(rp.getFullName(), rp),
+					ResearcherPageUtils.getExtraInfo(rp, field)));
 			if (rp.getTranslatedName() != null
 					&& rp.getTranslatedName().getVisibility() == VisibilityConstants.PUBLIC
 					&& rp.getTranslatedName().getValue() != null) {
 				choiceList.add(new Choice(getPersistentIdentifier(rp), rp
 						.getTranslatedName().getValue(),
 						getLabel(rp.getTranslatedName()
-								.getValue(), rp)));
+								.getValue(), rp), getExtraInfo(rp, field)));
 			}
 			for (RestrictedField variant : rp.getVariants()) {
 				if (variant.getValue() != null
 						&& variant.getVisibility() == VisibilityConstants.PUBLIC) {
 					choiceList.add(new Choice(getPersistentIdentifier(rp), variant
 							.getValue(), getLabel(
-							variant.getValue(), rp)));
+							variant.getValue(), rp), getExtraInfo(rp, field)));
 				}
 			}
 	    }
@@ -454,8 +458,6 @@ return decorator.generateDisplayValue(alternativeName, rp);
 			discoverQuery.setDSpaceObjectFilter(CrisConstants.RP_TYPE_ID);
 			discoverQuery.setQuery(solrQuery);
 			discoverQuery.setMaxResults(MAX_RESULTS);
-			System.out.println(discoverQuery.getQuery());
-			System.out.println(discoverQuery.getQuery());
 			DiscoverResult result = _searchService.search(null, discoverQuery, true);
 
 			List<Choice> choiceList = choiceResults(result, field);
@@ -596,7 +598,28 @@ return decorator.generateDisplayValue(alternativeName, rp);
 		}
 		return null;
 	}
-	
+
+	protected static Map<String, String> getExtraInfo(ACrisObject ro, String field) {
+		
+    	ConfigurationService configurationService = dspace.getServiceManager().getServiceByName(
+                "org.dspace.services.ConfigurationService",
+                ConfigurationService.class);
+
+		String[] extraFields = configurationService.getArrayProperty("cris." + RPAuthority.RP_AUTHORITY_NAME
+				+ ((field != null && !field.isEmpty()) ? "." + field : "") + ".extraFields");
+		Map<String, String> extras = new HashMap<String, String>();
+		
+		for (String extraField : extraFields) {
+			String extraFieldValue = ResearcherPageUtils.getStringValue(ro, extraField);
+			if (extraFieldValue != null) {
+				extras.put(extraField, extraFieldValue);
+			}
+
+		}
+        
+        return extras;
+	}
+
 	public static <P extends Property<TP>, TP extends PropertiesDefinition, NP extends ANestedProperty<NTP>, NTP extends ANestedPropertiesDefinition, 
 		ACNO extends ACrisNestedObject<NP, NTP, P, TP>, ATNO extends ATypeNestedObject<NTP>> void buildTextValue(ACrisObject<P, TP, NP, NTP, ACNO, ATNO> ro, 
 				String valueToSet, String pdefKey) {

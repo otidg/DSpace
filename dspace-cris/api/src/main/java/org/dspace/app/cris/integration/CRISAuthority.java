@@ -10,8 +10,10 @@ package org.dspace.app.cris.integration;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -148,7 +150,7 @@ public abstract class CRISAuthority<T extends ACrisObject> implements ChoiceAuth
 	                discoverQuery.setMaxResults(50);
                 }
                 discoverQuery.setSortField("crisauthoritylookup_sort", SORT_ORDER.asc);
-                
+
                 DiscoverResult result = searchService.search(null,
                         discoverQuery, true);
 
@@ -159,7 +161,7 @@ public abstract class CRISAuthority<T extends ACrisObject> implements ChoiceAuth
                     T cris = (T) dso;
                     choiceList.add(new Choice(ResearcherPageUtils
                             .getPersistentIdentifier(cris), cris.getName(),
-                            getDisplayEntry(cris)));
+                            getDisplayEntry(cris), getExtraInfo(field, cris.getCrisID())));
                 }
 
                 Choice[] results = new Choice[choiceList.size()];
@@ -175,6 +177,38 @@ public abstract class CRISAuthority<T extends ACrisObject> implements ChoiceAuth
             return new Choices(true);
         }
     }
+
+    @Override
+	public Map<String, String> getExtraInfo(String fieldKey, String authKey) {
+
+        init();
+        
+        Map<String, String> extras = new HashMap<String, String>();
+        Integer id = ResearcherPageUtils.getRealPersistentIdentifier(authKey, getCRISTargetClass());
+        
+        if (id == null)
+        {
+            log.error(LogManager.getHeader(null, "getLabel",
+                    "invalid key for authority key " + authKey));
+            return null;
+        }
+        T cris = applicationService.get(getCRISTargetClass(), id);
+        if (cris != null)
+        {
+			String[] extraFields = configurationService.getArrayProperty("cris." + getPluginName()
+					+ ((fieldKey != null && !fieldKey.isEmpty()) ? "." + fieldKey : "") + ".extraFields");
+			
+			
+			for (String extraField : extraFields) {
+				String extraFieldValue = ResearcherPageUtils.getStringValue(cris, extraField);
+				if (extraFieldValue != null) {
+					extras.put(extraField, extraFieldValue);
+				}
+			}
+        }
+        
+        return extras;
+	}
 
 	protected String getDisplayEntry(T cris) {
 		return cris.getName();
@@ -257,7 +291,7 @@ public abstract class CRISAuthority<T extends ACrisObject> implements ChoiceAuth
                     T cris = (T) dso;
                     choiceList.add(new Choice(ResearcherPageUtils
                             .getPersistentIdentifier(cris), cris.getName(),
-                            getDisplayEntry(cris)));
+                            getDisplayEntry(cris), getExtraInfo(field, cris.getCrisID())));
                 }
             }
 
