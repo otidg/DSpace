@@ -420,71 +420,47 @@ return decorator.generateDisplayValue(alternativeName, rp);
     
 	public static Choices doGetMatches(String field, String query, ConfigurationService _configurationService,
 			SearchService _searchService) throws SearchServiceException
-	{
+	{		
 		Choices choicesResult;
 		if (query != null && query.length() > 1)
 		{
-		    DCPersonName tmpPersonName = new DCPersonName(
-		            query.toLowerCase());
-	
-		    String luceneQuery = "";
-		    if (StringUtils.isNotBlank(tmpPersonName.getLastName()))
-		    {
-		        luceneQuery += ClientUtils.escapeQueryChars(tmpPersonName
-		                .getLastName().trim())
-		                + (StringUtils.isNotBlank(tmpPersonName
-		                        .getFirstNames()) ? "" : "*");
-		    }
-	
-		    if (StringUtils.isNotBlank(tmpPersonName.getFirstNames()))
-		    {
-		        luceneQuery += (luceneQuery.length() > 0 ? " " : "")
-		                + ClientUtils.escapeQueryChars(tmpPersonName
-		                        .getFirstNames().trim()) + "*";
-		    }
-		    luceneQuery = luceneQuery.replaceAll("\\\\ ", " ");
-		    DiscoverQuery discoverQuery = new DiscoverQuery();
-		    applyCustomFilter(field, discoverQuery,_configurationService);
-		    discoverQuery.setSortField("crisrp.fullName_sort", SORT_ORDER.asc);		    
-		    discoverQuery.setDSpaceObjectFilter(CrisConstants.RP_TYPE_ID);
-		    String surnameQuery = "{!lucene q.op=AND df=rpsurnames}("
-    			    + luceneQuery
-    			    + ") OR (\""
-    			    + luceneQuery.substring(0,luceneQuery.length() - 1) + "\")";
-		    
-		    discoverQuery.setQuery(surnameQuery);
-		    discoverQuery.setMaxResults(MAX_RESULTS);
-		    
-		    DiscoverResult result = _searchService.search(null, discoverQuery, true);
+			DCPersonName tmpPersonName = new DCPersonName(query.toLowerCase());
+
+			String solrQuery = null;
+			if (StringUtils.isBlank(tmpPersonName.getFirstNames())) {
+				String luceneQuery = ClientUtils.escapeQueryChars(tmpPersonName.getLastName().trim())
+						+ (StringUtils.isNotBlank(tmpPersonName.getFirstNames()) ? "" : "*");
+				luceneQuery = luceneQuery.replaceAll("\\\\ ", " ");
+
+				solrQuery = "{!lucene q.op=AND df=rpsurnames}(" + luceneQuery + ") OR (\""
+						+ luceneQuery.substring(0, luceneQuery.length() - 1) + "\")";
+			} else {
+				String luceneQuerySurExact = ClientUtils.escapeQueryChars(tmpPersonName.getLastName().trim()) + " "
+						+ ClientUtils.escapeQueryChars(tmpPersonName.getFirstNames().trim()) + "*";
+				
+				luceneQuerySurExact = luceneQuerySurExact.replaceAll("\\\\ ", " "); 
+				String luceneQuerySurJolly = ClientUtils.escapeQueryChars(tmpPersonName.getLastName().trim()) + "* "
+						+ ClientUtils.escapeQueryChars(tmpPersonName.getFirstNames().trim()) + "*";
+				
+				solrQuery = "{!lucene q.op=AND df=crisauthoritylookup}(" + luceneQuerySurExact + ") OR (\""
+						+ luceneQuerySurExact.substring(0, luceneQuerySurExact.length() - 1) + "\") OR (" 
+						+ luceneQuerySurJolly + ") OR ("
+						+ luceneQuerySurJolly.substring(0, luceneQuerySurJolly.length() - 1) + ")";
+			}
 			
+			DiscoverQuery discoverQuery = new DiscoverQuery();
+			applyCustomFilter(field, discoverQuery, _configurationService);
+			discoverQuery.setSortField("crisrp.fullName_sort", SORT_ORDER.asc);
+			discoverQuery.setDSpaceObjectFilter(CrisConstants.RP_TYPE_ID);
+			discoverQuery.setQuery(solrQuery);
+			discoverQuery.setMaxResults(MAX_RESULTS);
+			DiscoverResult result = _searchService.search(null, discoverQuery, true);
+
 			List<Choice> choiceList = choiceResults(result);
-			int surnamesResult = choiceList.size();
-		    
-			if (surnamesResult<MAX_RESULTS){
-		    	int difference = MAX_RESULTS - surnamesResult;
-		    	discoverQuery.setMaxResults(difference);
-		    	String crisauthoritylookup = "{!lucene q.op=AND df=crisauthoritylookup}("
-		    								 + luceneQuery
-		    								 + ") OR (\""
-		    								 + luceneQuery.substring(0,luceneQuery.length() - 1) + "\")";
-		    	
-		    	discoverQuery.setQuery(crisauthoritylookup);
-				String negativeFilters = "-rpsurnames:(" + luceneQuery.substring(0,luceneQuery.length() - 1) + ")";
-				String negativeFiltersStar = "-rpsurnames:(" + luceneQuery + ")";
-				discoverQuery.addFilterQueries(negativeFilters);
-				discoverQuery.addFilterQueries(negativeFiltersStar);
-		    	result = _searchService.search(null, discoverQuery, true);
-		    	List<Choice> authorityLookupList = choiceResults(result);
-		    	if (authorityLookupList.size()>0){
-		    		choiceList.addAll(authorityLookupList);
-		    	}
-		    }
-		    
 			int foundSize = choiceList.size();
-		    Choice[] results = new Choice[foundSize];
-		    results = choiceList.toArray(results);
-		    choicesResult = new Choices(results, 0, foundSize,
-		            Choices.CF_AMBIGUOUS, false, 0);
+			Choice[] results = new Choice[foundSize];
+			results = choiceList.toArray(results);
+			choicesResult = new Choices(results, 0, foundSize, Choices.CF_AMBIGUOUS, false, 0);
 		} else {
 			choicesResult = new Choices(false);
 		}
