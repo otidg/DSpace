@@ -57,31 +57,35 @@ public class ExcelBulkChanges implements IBulkChanges
         this.mainObjects = workbook.getSheet("main_entities");
         this.nestedObjects = workbook.getSheet("nested_entities");
         int column = 0;
-        row = mainObjects.getRow(0);
-        while (column<row.length)
+
+        if (mainObjects != null) 
         {
-        	String cellContent = StringUtils.trim(row[column].getContents());
-            if (StringUtils.isNotBlank(cellContent))
-            {
-				mainHeaders.add(cellContent);
-                if (HEADER_COLUMNS.length > column && !StringUtils
-                        .equalsIgnoreCase(cellContent, HEADER_COLUMNS[column]))
-                {
-                    throw new IllegalArgumentException(
-                            "Invalid excel file[main_entities sheet] - unexpected header column "
-                                    + column + " -> " + cellContent
-                                    + " expected " + HEADER_COLUMNS[column]);
-        		}        		
-        	}    
-            column++;
+	        row = mainObjects.getRow(0);
+	        while (column<row.length)
+	        {
+	        	String cellContent = StringUtils.trim(row[column].getContents());
+	            if (StringUtils.isNotBlank(cellContent))
+	            {
+					mainHeaders.add(cellContent);
+	                if (HEADER_COLUMNS.length > column && !StringUtils
+	                        .equalsIgnoreCase(cellContent, HEADER_COLUMNS[column]))
+	                {
+	                    throw new IllegalArgumentException(
+	                            "Invalid excel file[main_entities sheet] - unexpected header column "
+	                                    + column + " -> " + cellContent
+	                                    + " expected " + HEADER_COLUMNS[column]);
+	        		}        		
+	        	}    
+	            column++;
+	        }       
+
+	        if (mainHeaders.size() < HEADER_COLUMNS.length)
+	        {
+	            throw new IllegalArgumentException(
+	                    "Invalid excel file[main_entities sheet] - unexpected header row: missing the required first 5 cells (action, CRISID, UUID, SOURCEREF, SOURCEID)");
+	        }
         }
-        
-        if (mainHeaders.size() < HEADER_COLUMNS.length)
-        {
-            throw new IllegalArgumentException(
-                    "Invalid excel file[main_entities sheet] - unexpected header row: missing the required first 5 cells (action, CRISID, UUID, SOURCEREF, SOURCEID)");
-        }
-        
+
         if (nestedObjects != null)
         {
 	        column = 0;
@@ -125,22 +129,22 @@ public class ExcelBulkChanges implements IBulkChanges
 	@Override
     public int size()
     {
-        return mainObjects.getRows() - 1
+        return (mainObjects != null ? mainObjects.getRows() - 1 : 0)
                 + (nestedObjects != null ? nestedObjects.getRows() - 1 : 0);
 	}
 
 	@Override
     public IBulkChange getChanges(int i)
     {
-        if (i < mainObjects.getRows())
+        if (mainObjects != null && i < mainObjects.getRows())
         {
             log.debug("Retrieve in entity sheet row #" + i);
             return new ExcelBulkChange(mainObjects.getRow(i), mainHeaders);
         }
         else
         {
-            log.debug("Retrieve in nested sheet row #" + (i - (mainObjects.getRows() - 1)));
-            return getNestedChanges((i - (mainObjects.getRows() - 1)));
+            log.debug("Retrieve in nested sheet row #" + (i - (mainObjects != null ? mainObjects.getRows() - 1 : 0)));
+            return getNestedChanges((i - (mainObjects != null ? mainObjects.getRows() - 1 : 0)));
         }
 		}
 
