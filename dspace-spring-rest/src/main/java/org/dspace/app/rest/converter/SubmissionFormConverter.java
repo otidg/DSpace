@@ -81,6 +81,7 @@ public class SubmissionFormConverter extends DSpaceConverter<DCInputSet, Submiss
 
         inputField.setLabel(dcinput.getLabel());
         inputField.setHints(dcinput.getHints());
+        inputField.setStyle(dcinput.getStyle());
         inputField.setMandatoryMessage(dcinput.getWarning());
         inputField.setMandatory(dcinput.isRequired());
         inputField.setScope(ScopeEnum.fromString(dcinput.getScope()));
@@ -181,6 +182,6 @@ public class SubmissionFormConverter extends DSpaceConverter<DCInputSet, Submiss
 
     @Override
     public DCInputSet toModel(SubmissionFormRest obj) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Method not implemented");
     }
 }

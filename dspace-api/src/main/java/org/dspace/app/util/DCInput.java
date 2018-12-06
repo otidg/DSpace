@@ -64,8 +64,9 @@ public class DCInput {
     private String label = null;
 
     /**
-     * a custom style assigned to the field
-     **/
+     * a style instruction to apply to the input. The exact way to use the style value is UI depending that receive the
+     * value from the REST API as is
+     */
     private String style = null;
 
     /**
@@ -177,7 +178,6 @@ public class DCInput {
         repeatable = "true".equalsIgnoreCase(repStr)
             || "yes".equalsIgnoreCase(repStr);
         label = fieldMap.get("label");
-        style = fieldMap.get("style");
         inputType = fieldMap.get("input-type");
         // these types are list-controlled
         if ("dropdown".equals(inputType) || "qualdrop_value".equals(inputType)
@@ -205,7 +205,7 @@ public class DCInput {
                 typeBind.add(type.trim());
             }
         }
-
+        style = fieldMap.get("style");
     }
 
     /**
@@ -268,7 +268,7 @@ public class DCInput {
     }
 
     /**
-     * Get the DC element for this form row.
+     * Get the DC element for this form field.
      *
      * @return the DC element
      */
@@ -277,7 +277,7 @@ public class DCInput {
     }
 
     /**
-     * Get the DC namespace prefix for this form row.
+     * Get the DC namespace prefix for this form field.
      *
      * @return the DC namespace prefix
      */
@@ -296,7 +296,7 @@ public class DCInput {
     }
 
     /**
-     * Is there a required string for this form row?
+     * Is there a required string for this form field?
      *
      * @return true if a required string is set
      */
@@ -305,7 +305,7 @@ public class DCInput {
     }
 
     /**
-     * Get the DC qualifier for this form row.
+     * Get the DC qualifier for this form field.
      *
      * @return the DC qualifier
      */
@@ -314,7 +314,7 @@ public class DCInput {
     }
 
     /**
-     * Get the language for this form row.
+     * Get the language for this form field.
      *
      * @return the language state
      */
@@ -323,7 +323,7 @@ public class DCInput {
     }
 
     /**
-     * Get the hint for this form row, formatted for an HTML table
+     * Get the hint for this form field
      *
      * @return the hints
      */
@@ -341,14 +341,13 @@ public class DCInput {
     }
 
     /**
-     * Get the custom style for this field if any.
+     * Get the style for this form field
      *
      * @return the style
      */
     public String getStyle() {
         return style;
     }
-
 
     /**
      * Get the name of the pairs type

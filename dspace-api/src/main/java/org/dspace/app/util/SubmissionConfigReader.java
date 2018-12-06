@@ -530,8 +530,7 @@ public class SubmissionConfigReader {
                 String attrValue = nAttr.getNodeValue();
                 stepInfo.put(tagName + "." + attrName, attrValue);
             }
-        }
-        // end for each field
+        } // end for each field
 
         // check for ID attribute & save to step info
         String stepID = getAttribute(nStep, "id");
