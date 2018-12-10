@@ -126,6 +126,9 @@ public class AuthorityLookupModifier<T extends ACrisObject>
 					for (String propShortname : mappingOutputConfiguration.keySet()) {
 						String bteField = mappingOutputConfiguration.get(propShortname);
 						List<Value> exValues = rec.getValues(bteField);
+						if (exValues == null) {
+							exValues = new ArrayList<Value>(); 
+						}
 						List<Value> newValues = new ArrayList<Value>();
 						rec.removeField(bteField);
 
