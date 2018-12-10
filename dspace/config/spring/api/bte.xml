@@ -439,14 +439,14 @@
 			<map>
 				<entry key="journal" value="crisjournals.journalsname" />
 				<entry key="jissn" value="crisjournals.journalsissn" />
-				<entry key="jeissn" value="crisjournals.journaleissn" />
+			 	<entry key="jeissn" value="crisjournals.journalseissn" />
 			</map>
 		</property>
 		<property name="mappingOutputConfiguration">
 			<map>
 				<entry key="journalsname" value="journal" />
 				<entry key="journalsissn" value="jissn" />
-				<entry key="journalseissn" value="jeissn" />
+ 				<entry key="journalseissn" value="jeissn" />
 				<entry key="journalspublisher" value="publisher" />
 			</map>
 		</property>
