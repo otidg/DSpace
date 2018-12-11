@@ -631,11 +631,17 @@ jQuery(document).ready(function() {
 	<dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getMetadata() %>"  inputName="<%= inputBiblio %>" />
     <%
         }
-        else if (withdrawn || rejected || privateitems)
+        else if (withdrawn || privateitems)
         {
     %>
     <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getSortOption().getMetadata() %>" linkToEdit="true" disableCrossLinks="true" />
 	<%
+    	}
+    	else if (rejected)
+    	{
+    %>
+    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getSortOption().getMetadata() %>" linkToEdit="false" disableCrossLinks="true" />
+	<%    		
     	}
     	else
     	{

@@ -161,11 +161,11 @@ public class SorlInProgressItem implements DSpaceObjectLegacySupport, BrowsableD
 					break;
 				}
 				case 4: {
-					m = new MetadataValueVolatile(md[0], md[1], md[2], metadataAuthority, md[4]);
+					m = new MetadataValueVolatile(md[0], md[1], md[2], metadataAuthority, md[3]);
 					break;
 				}
 				default:
-					throw new IllegalIcuArgumentException("Medatada " + entry.getKey() + " is not in a valid format.");
+					break;
 			}
 			
 			if (m != null) {

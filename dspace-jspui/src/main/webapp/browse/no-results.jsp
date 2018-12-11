@@ -31,7 +31,9 @@
     request.setAttribute("LanguageSwitch", "hide");
 
 	String layoutNavbar = "default";
-	if (request.getAttribute("browseWithdrawn") != null || request.getAttribute("browsePrivate") != null)
+	boolean rejected = request.getAttribute("browseRejected") != null;
+
+	if (request.getAttribute("browseWithdrawn") != null || request.getAttribute("browsePrivate") != null || request.getAttribute("browseRejected") != null)
 	{
 	    layoutNavbar = "admin";
             
@@ -49,7 +51,7 @@
                 layoutNavbar = "community-or-collection-admin";
             }
 	}
-
+	
 	// get the BrowseInfo object
 	BrowseInfo bi = (BrowseInfo) request.getAttribute("browse.info");
 
@@ -106,6 +108,12 @@
         </fmt:message>
    <%
  	    }
+ 	    else if (rejected)
+ 	    {
+   %>
+   		<fmt:message key="browse.no-results.rejected"/>
+   <%
+   	    }
  	    else
  	    {
    %>
