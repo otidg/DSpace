@@ -255,6 +255,9 @@ public class WorkspaceItemRestRepository extends DSpaceRestRepository<WorkspaceI
             }
 
         }
+        
+        context.commit();
+        context.reloadEntity(source);
         wsi = converter.convert(source);
 
         if (errors.isEmpty()) {
@@ -262,9 +265,8 @@ public class WorkspaceItemRestRepository extends DSpaceRestRepository<WorkspaceI
         } else {
             wsi.setStatus(false);
             wsi.getErrors().addAll(errors);
-        }
-
-        context.commit();
+        }       
+        
         return wsi;
     }
 

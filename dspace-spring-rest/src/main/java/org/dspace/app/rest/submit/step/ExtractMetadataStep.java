@@ -172,7 +172,6 @@ public class ExtractMetadataStep extends ExtractionStep implements UploadableSte
                         }
                     }
                 }
-                context.dispatchEvents();
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 ErrorRest result = new ErrorRest();
