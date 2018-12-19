@@ -53,8 +53,8 @@ public final class BrowseIndex
     /** base name for tables, sequences. */
     private String tableBaseName;
     
-    /** First support of sorl index query */
-    private SorlMetadataQuery sorlMetadataQuery = null;
+    /** First support of solr index query */
+    private SolrMetadataQuery solrMetadataQuery = null;
     
     /** a three part array of the metadata bits (e.g. dc.contributor.author) */
     private String[][] mdBits;
@@ -104,14 +104,14 @@ public final class BrowseIndex
         }
     }
     
-    private BrowseIndex(String baseName, String type, String name, SorlMetadataQuery query)
+    private BrowseIndex(String baseName, String type, String name, SolrMetadataQuery query)
     {
         try
         {
             number = -1;
             tableBaseName = baseName;
             this.name = name;
-            sorlMetadataQuery = query;
+            solrMetadataQuery = query;
             displayType = type;
             sortOption = SortOption.getDefaultSortOption();
         }
@@ -122,11 +122,11 @@ public final class BrowseIndex
     }
     
     /***
-     * @return The sorl metadata query or null
+     * @return The solr metadata query or null
      */
-    public SorlMetadataQuery getSorlMetadataQuery() {
-    	if (sorlMetadataQuery != null) {
-    		return sorlMetadataQuery;
+    public SolrMetadataQuery getSolrMetadataQuery() {
+    	if (solrMetadataQuery != null) {
+    		return solrMetadataQuery;
     	}
     	else
     		return null;

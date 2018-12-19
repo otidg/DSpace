@@ -79,7 +79,7 @@ import org.dspace.content.Item;
 import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataSchema;
 import org.dspace.content.MetadataValue;
-import org.dspace.content.SorlInProgressItem;
+import org.dspace.content.SolrInProgressItem;
 import org.dspace.content.RootObject;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.service.ChoiceAuthorityService;
@@ -2078,7 +2078,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
             			// generate dso
             			switch (type) {
 	            			case 8: {
-	            				dso = new SorlInProgressItem(doc);
+	            				dso = new SolrInProgressItem(doc);
 	            				break;
 	            			}
 	            			default: {
@@ -2336,7 +2336,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 	                			String uuid = (String) doc.getFirstValue(RESOURCE_UNIQUE_UUID);
 	                			int pos = uuid.indexOf("-");
 	                			if (pos < 0) {
-	                				throw new IllegalArgumentException("Required unique sorl metadata: " + RESOURCE_UNIQUE_UUID + "(value: " + uuid + ") is not in the right format.");
+	                				throw new IllegalArgumentException("Required unique solr metadata: " + RESOURCE_UNIQUE_UUID + "(value: " + uuid + ") is not in the right format.");
 	                			}
 	                			//resourceId = UUID.fromString((String) doc.getFirstValue(RESOURCE_8_ITEM_UUID));
 	                			//resurceType = 2;

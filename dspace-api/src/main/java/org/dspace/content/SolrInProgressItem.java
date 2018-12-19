@@ -19,7 +19,7 @@ import org.dspace.util.MultiFormatDateParser;
 import com.ibm.icu.impl.IllegalIcuArgumentException;
 
 /***
- * SorlInProgressItem are used to store RejectedSubmission store, as BrowsableDSpaceObject.
+ * SolrInProgressItem are used to store RejectedSubmission store, as BrowsableDSpaceObject.
  * The uuid item key is inprogress.item.
  * 
  * For RejectedSubmission, that is a Dspace-CRIS 7 item, id and type are:
@@ -27,7 +27,7 @@ import com.ibm.icu.impl.IllegalIcuArgumentException;
  *  2.	search.resourcetype, its type (whose velue is 8)
  * 	3.	search.resourceid, its id (as a legacy id)
  * 
- * Example of SorlInProgressItem:
+ * Example of SolrInProgressItem:
  * 	{	lastModified=Wed Oct 24 18:18:44 CEST 2018,
  * 		read=[ws99423c27-b642-4bb9-a9cd-6d910e68dca5,
  * 			e99423c27-b642-4bb9-a9cd-6d910e68dca5], 
@@ -119,21 +119,21 @@ import com.ibm.icu.impl.IllegalIcuArgumentException;
  * 		
  * 		// TODO: remove rejecteditemuuid and use inprogress.item...
  */
-public class SorlInProgressItem implements DSpaceObjectLegacySupport, BrowsableDSpaceObject {
+public class SolrInProgressItem implements DSpaceObjectLegacySupport, BrowsableDSpaceObject {
 	
 	public transient Map<String, Object> extraInfo = new HashMap<String, Object>();
 	
 	/***
-	 * Prefix used in sorl keyword name.
+	 * Prefix used in solr keyword name.
 	 */
-	public static String sorlSchemaPrefix = "sorl";
+	public static String solrSchemaPrefix = "solr";
 	
 	public static String metadataAuthority = null;
 	public static String resoucetype = "search.resourcetype";
 	public static String id = "search.resourceid";
 	public static String uniqueUuid = "inprogress.item";
-	public static String lastModified = sorlSchemaPrefix + "." + "lastModified";
-	public static String name = sorlSchemaPrefix + "." + "objectname";
+	public static String lastModified = solrSchemaPrefix + "." + "lastModified";
+	public static String name = solrSchemaPrefix + "." + "objectname";
 	
 	private List<MetadataValueVolatile> metadata = new ArrayList<MetadataValueVolatile>();
 	private UUID uuid;
@@ -141,7 +141,7 @@ public class SorlInProgressItem implements DSpaceObjectLegacySupport, BrowsableD
 	private Integer submissionType;
 	
 	@SuppressWarnings("unchecked")
-	public SorlInProgressItem(SolrDocument doc) {
+	public SolrInProgressItem(SolrDocument doc) {
 		for (Entry<String, Object> entry : doc.entrySet()) {
 			String[] md = entry.getKey().split("\\.");
 			MetadataValueVolatile m = null;
@@ -149,7 +149,7 @@ public class SorlInProgressItem implements DSpaceObjectLegacySupport, BrowsableD
 			// 
 			switch (md.length) {
 				case 1: {
-					m = new MetadataValueVolatile(sorlSchemaPrefix, md[0], null, metadataAuthority, Item.ANY);
+					m = new MetadataValueVolatile(solrSchemaPrefix, md[0], null, metadataAuthority, Item.ANY);
 					break;
 				}
 				case 2: {
@@ -191,7 +191,7 @@ public class SorlInProgressItem implements DSpaceObjectLegacySupport, BrowsableD
 		String uuid = getMetadata(uniqueUuid);
 		int pos = uuid.indexOf("-");
 		if (pos < 0) {
-			throw new IllegalIcuArgumentException("Required unique sorl index: " + uniqueUuid + "(value: " + uuid + ") is not in the right format.");
+			throw new IllegalIcuArgumentException("Required unique solr index: " + uniqueUuid + "(value: " + uuid + ") is not in the right format.");
 		}
 		this.uuid = UUID.fromString(uuid.substring(pos + 1));
 		this.type = Integer.parseInt(uuid.substring(0, pos));
@@ -243,7 +243,7 @@ public class SorlInProgressItem implements DSpaceObjectLegacySupport, BrowsableD
         	qualifier = tokens[2];
         }
         else {
-        	schema = sorlSchemaPrefix;
+        	schema = solrSchemaPrefix;
         	element = tokens[0];
         	qualifier = tokens[2];
         }
