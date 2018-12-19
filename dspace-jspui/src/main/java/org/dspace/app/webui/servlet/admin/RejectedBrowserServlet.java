@@ -51,7 +51,7 @@ public class RejectedBrowserServlet extends AbstractBrowserServlet
             // Check that we are doing an item browse
             if (scope.getBrowseIndex() == null || scope.getBrowseIndex().isItemIndex())
             {
-                // And override the index in the scope with the withdrawn items
+                // And override the index in the scope with the rejected items
                 scope.setBrowseIndex(BrowseIndex.getRejectedBrowseIndex());
             }
             else
