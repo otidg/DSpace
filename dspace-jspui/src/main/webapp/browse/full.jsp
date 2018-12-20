@@ -640,7 +640,7 @@ jQuery(document).ready(function() {
     	else if (rejected)
     	{
     %>
-    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getSortOption().getMetadata() %>" linkToEdit="false" disableCrossLinks="true" />
+    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bix.getSortOption().getMetadata() %>" linkToEdit="false" disableCrossLinks="true" disableDefaultColumnLinks="true"/>
 	<%    		
     	}
     	else

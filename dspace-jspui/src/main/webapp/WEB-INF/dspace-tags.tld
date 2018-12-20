@@ -319,6 +319,11 @@
         <required>false</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>
+        <attribute>
+        <name>disableDefaultColumnLinks</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
     <attribute>
         <name>radioButton</name>
         <required>false</required>

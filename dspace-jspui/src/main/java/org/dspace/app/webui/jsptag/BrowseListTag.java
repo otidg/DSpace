@@ -86,6 +86,9 @@ public class BrowseListTag extends TagSupport
 
     /** Config to disable cross links */
     private boolean disableCrossLinks = false;
+    
+    /** Config to disable default column links */
+    private boolean disableDefaultColumnLinks = false;
 
     /** Config to use a specific configuration */
     private String config = null;
@@ -425,18 +428,21 @@ public class BrowseListTag extends TagSupport
 
                 String style = null;
 
-                // backward compatibility, special fields
-                if (field.equals("thumbnail"))
+                if (!disableDefaultColumnLinks)
                 {
-                    style = "thumbnail";
-                }
-                else if (field.equals(titleField))
-                {
-                    style = "title";
-                }
-                else if (field.equals(dateField))
-                {
-                    style = "date";
+	                // backward compatibility, special fields
+	                if (field.equals("thumbnail"))
+	                {
+	                    style = "thumbnail";
+	                }
+	                else if (field.equals(titleField))
+	                {
+	                    style = "title";
+	                }
+	                else if (field.equals(dateField))
+	                {
+	                    style = "date";
+	                }
                 }
 
                 Matcher fieldStyleMatcher = fieldStylePatter.matcher(field);
@@ -829,7 +835,15 @@ public class BrowseListTag extends TagSupport
         this.disableCrossLinks = links;
     }
 
-    /**
+    public boolean getDisableDefaultColumnLinks() {
+		return disableDefaultColumnLinks;
+	}
+
+	public void setDisableDefaultColumnLinks(boolean disableDefaultColumnLinks) {
+		this.disableDefaultColumnLinks = disableDefaultColumnLinks;
+	}
+
+	/**
      * Get the items to list
      * 
      * @return the items
