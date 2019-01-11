@@ -52,10 +52,10 @@
          <dc-element>contributor</dc-element>
          <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Autor</label>
+         <label>Autores</label>
          <input-type>onebox</input-type>
          <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
-         <required>Ingrese el nombre del autor</required>
+         <required>Ingrese los nombres de los autores</required>
        </field>
 	   
 	    <field>
@@ -63,7 +63,7 @@
          <dc-element>contributor</dc-element>
          <dc-qualifier>advisor</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Asesor</label>
+         <label>Asesores</label>
          <input-type>onebox</input-type>
          <hint>Ingrese los nombres de los asesores de esta publicación en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
          <required></required>
