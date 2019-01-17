@@ -153,17 +153,6 @@
 						</bean>
 					</list>
 				</entry>
-
-				<entry key="events">
- 					<list>
-						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
-							<property name="browseNames">
-								<list>
-								<value>eventsnombrecorto</value> </list>
-							</property>
-						</bean>
-					</list>
-				</entry> 
 			</map>
 		</property>
 	</bean>
