@@ -58,6 +58,17 @@
          <required>Ingrese los nombres de los autores</required>
        </field>
 
+	<field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>advisor</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Asesores</label>
+         <input-type>onebox</input-type>
+         <hint>Ingrese los nombres de los asesores de esta publicación en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
+         <required></required>
+       </field>	   
+	     
        <field>
 	 <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
