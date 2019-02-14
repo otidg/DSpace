@@ -1,13 +1,5 @@
 <?xml version="1.0"?>
 <dspace-dc-types>
-	<dspace-header>
-		<title></title>
-		<contributor.author>CONCYTEC</contributor.author>
-		<contributor.editor>CONCYTEC</contributor.editor>
-		<date.created>$Date$</date.created>
-		<description></description>
-		<description.version></description.version>
-	</dspace-header>
 	<dc-schema>
 		<name>thesis</name>
 		<namespace>thesis</namespace>
