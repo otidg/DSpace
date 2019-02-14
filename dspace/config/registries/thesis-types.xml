@@ -1,49 +1,49 @@
 <?xml version="1.0"?>
 <dspace-dc-types>
-	<dspace-header>
-		<title></title>
-		<contributor.author>CONCYTEC</contributor.author>
-		<contributor.editor>CONCYTEC</contributor.editor>
-		<date.created>$Date$</date.created>
-		<description></description>
-		<description.version></description.version>
-	</dspace-header>
-	<dc-schema>
-		<name>thesis</name>
-		<namespace>thesis</namespace>
-	</dc-schema>
-	
-	<dc-types>
-		<schema>thesis</schema>
-		<element>degree</element>
-		<qualifier>name</qualifier>
-		<scope_note></scope_note>
-	</dc-types>
-	
-	<dc-types>
-		<schema>thesis</schema>
-		<element>degree</element>
-		<qualifier>level</qualifier>
-		<scope_note></scope_note>
-	</dc-types>
-	
-	<dc-types>
-		<schema>thesis</schema>
-		<element>degree</element>
-		<qualifier>discipline</qualifier>
-		<scope_note></scope_note>
-	</dc-types>
-	<dc-types>
-		<schema>thesis</schema>
-		<element>degree</element>
-		<qualifier>grantor</qualifier>
-		<scope_note></scope_note>
-	</dc-types>
-	
-	<dc-types>
-		<schema>thesis</schema>
-		<element>degree</element>
-		<qualifier>program</qualifier>
-		<scope_note></scope_note>
-	</dc-types>
+        <dspace-header>
+                <title></title>
+                <contributor.author>CONCYTEC</contributor.author>
+                <contributor.editor>CONCYTEC</contributor.editor>
+                <date.created>$Date$</date.created>
+                <description></description>
+                <description.version></description.version>
+        </dspace-header>
+        <dc-schema>
+                <name>thesis</name>
+                <namespace>thesis</namespace>
+        </dc-schema>
+
+        <dc-types>
+                <schema>thesis</schema>
+                <element>degree</element>
+                <qualifier>name</qualifier>
+                <scope_note></scope_note>
+        </dc-types>
+
+        <dc-types>
+                <schema>thesis</schema>
+                <element>degree</element>
+                <qualifier>level</qualifier>
+                <scope_note></scope_note>
+        </dc-types>
+
+        <dc-types>
+                <schema>thesis</schema>
+                <element>degree</element>
+                <qualifier>discipline</qualifier>
+                <scope_note></scope_note>
+        </dc-types>
+        <dc-types>
+                <schema>thesis</schema>
+                <element>degree</element>
+                <qualifier>grantor</qualifier>
+                <scope_note></scope_note>
+        </dc-types>
+
+        <dc-types>
+                <schema>thesis</schema>
+                <element>degree</element>
+                <qualifier>program</qualifier>
+                <scope_note></scope_note>
+        </dc-types>
 </dspace-dc-types>
