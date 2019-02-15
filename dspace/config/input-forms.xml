@@ -57,8 +57,8 @@
          <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
          <required>Ingrese los nombres de los autores</required>
        </field>
-	   
-	    <field>
+
+	   <field>
          <dc-schema>dc</dc-schema>
          <dc-element>contributor</dc-element>
          <dc-qualifier>advisor</dc-qualifier>
@@ -67,16 +67,17 @@
          <input-type>onebox</input-type>
          <hint>Ingrese los nombres de los asesores de esta publicación en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
          <required></required>
-       </field>	   
-
+       </field>	
+	   
+	   
        <field>
-		 <dc-schema>dc</dc-schema>
+	 <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Título</label>
          <input-type>onebox</input-type>
-         <hint>Introduce el título principal del artículo</hint>
+         <hint>Introduce el título principal del documento</hint>
          <required>Debe introducir un título principal para este elemento.</required>
        </field>
 
@@ -87,7 +88,7 @@
          <repeatable>true</repeatable>
          <label>Título alternativo</label>
          <input-type>onebox</input-type>
-         <hint>Si el artículo tiene títulos alternativos, ingréselos aquí..</hint>
+         <hint>Si el documento tiene títulos alternativos, ingréselos aquí.</hint>
          <required></required>
        </field>
 
@@ -98,7 +99,7 @@
          <repeatable>false</repeatable>
          <label>Fecha de Emisión</label>
          <input-type>date</input-type>
-         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables..</hint>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
          <required>Debe ingresar la fecha de emisión del documento.</required>
        </field>
 
@@ -110,7 +111,7 @@
          <label>Editorial</label>
          <input-type>onebox</input-type>
          <hint>Ingrese el nombre del editor de la instancia de este artículo emitida anteriormente.</hint>
-         <required></required>
+         <required>Ingrese el nombre de editor de la instancia</required>
        </field>
 
        <field>
@@ -120,7 +121,7 @@
          <repeatable>false</repeatable>
          <label>Citación</label>
          <input-type>onebox</input-type>
-         <hint>Ingrese la cita estándar para la instancia emitida anteriormente de este artículo.</hint>
+         <hint>Ingrese la cita estándar para la instancia emitida anteriormente de este documento.</hint>
          <required></required>
        </field>
 
@@ -129,7 +130,7 @@
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
+         <label>Series/Nro. de Reporte</label>
          <input-type>series</input-type>
          <hint>Ingrese la serie y el número asignado a este artículo por su comunidad.</hint>
          <required></required>
@@ -143,7 +144,7 @@
          <repeatable>true</repeatable>
          <label>Identificadores</label>
          <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-         <hint>Si el artículo tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales..</hint>
+         <hint>Si el documento tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales.</hint>
          <required></required>
        </field>
 
@@ -154,7 +155,7 @@
          <repeatable>true</repeatable>
          <label>Tipo</label>
          <input-type value-pairs-name="common_types">dropdown</input-type>
-         <hint>Seleccione el tipo (s) de contenido del artículo. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
+         <hint>Seleccione el tipo (s) de contenido. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
          <required></required>
        </field>
 
@@ -165,7 +166,7 @@
          <repeatable>false</repeatable>
          <label>Lenguaje</label>
          <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'..</hint>
+         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'.</hint>
          <required>Ingrese el idioma del documento</required>
        </field>
 
@@ -185,7 +186,7 @@
          <dc-element>degree</dc-element>
          <dc-qualifier>level</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Nivel de Educacion</label>
+         <label>Nivel de Educación</label>
          <input-type value-pairs-name="common_degree">dropdown</input-type>
          <hint>Especifique el nivel de educacion para obtener el titulo o grado. Campo obligatorio si el documento es conducente a grado académico</hint>
          <required></required>
@@ -196,7 +197,7 @@
          <dc-element>degree</dc-element>
          <dc-qualifier>name</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Ingrese la denominacion del estudiante</label>
+         <label>Ingrese la denominación del estudiante</label>
          <input-type>onebox</input-type>
          <hint>Ingrese la denominacion del estudiante asociado con el trabajo de investigacion. Campo obligatorio si el documento es conducente a grado académico</hint>
          <required></required>
@@ -207,7 +208,7 @@
          <dc-element>degree</dc-element>
          <dc-qualifier>grantor</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Ingrese el nombre completo de la institucion y la facultad separado por punto</label>
+         <label>Ingrese el nombre completo de la institución y la facultad separado por punto</label>
          <input-type>onebox</input-type>
          <hint>Ingrese el nombre completo de la institucion y el departamento o area responsable. Campo obligatorio si el documento es coducente a grado académico</hint>
          <required></required>
@@ -240,7 +241,7 @@
          <dc-element>rights</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Rights</label>
+         <label>Tipo de Derecho</label>
          <input-type value-pairs-name="common_rights">dropdown</input-type>
          <hint>Seleccione el tipo de Derecho.</hint>
          <required>Debe registrar este campo</required>
@@ -253,7 +254,7 @@
          <repeatable>false</repeatable>
          <label>Licencia</label>
          <input-type>onebox</input-type>
-         <hint>Ingresar el valor de la licencia, ejemplo: https://creativecommons.org/licenses/by-nc-nd/4.0/</hint>
+         <hint>Ingresar el valor de la licencia: https://creativecommons.org/licenses/by-nc-nd/4.0/</hint>
          <required></required>
        </field>	
 
@@ -290,7 +291,7 @@
          <repeatable>false</repeatable>
          <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Introduzca el resumen del artículo. </hint>
+         <hint>Introduzca el resumen de la publicación</hint>
          <required>Registrar el resumen completo</required>
        </field>
 
@@ -301,7 +302,7 @@
          <repeatable>true</repeatable>
          <label>Espónsor</label>
          <input-type>onebox</input-type>
-         <hint> Ingrese el nombre de cualquier patrocinador.</hint>
+         <hint>Ingrese el nombre de cualquier patrocinador.</hint>
          <required></required>
        </field>
        
@@ -311,7 +312,7 @@
          <repeatable>true</repeatable>
          <label>Nombre del Proyecto</label>
          <input-type>onebox</input-type>
-         <hint> Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación. </hint>
+         <hint>Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación. </hint>
          <required></required>
        </field>
 
@@ -322,7 +323,7 @@
          <repeatable>false</repeatable>
          <label>Nombre de la Revista</label>
          <input-type>onebox</input-type>
-         <hint>Ingrese el nombre de la revista donde el artículo ha sido publicado, si lo hubiera..</hint>
+         <hint>Ingrese el nombre de la revista donde el artículo ha sido publicado, si lo hubiera.</hint>
          <required></required>
        </field>
        
@@ -333,7 +334,7 @@
          <repeatable>true</repeatable>
          <label>Conferencia</label>
          <input-type>onebox</input-type>
-         <hint> Introduzca el nombre de la conferencia en la que se ha presentado el elemento, si corresponde.</hint>
+         <hint>Introduzca el nombre de la conferencia en la que se ha presentado el elemento, si corresponde.</hint>
          <required></required>
        </field>
        
@@ -344,7 +345,7 @@
          <repeatable>false</repeatable>
          <label>Descripción</label>
          <input-type>textarea</input-type>
-         <hint> Ingrese cualquier otra descripción o comentario en este cuadro. </hint>
+         <hint>Ingrese cualquier otra descripción o comentario en este cuadro. </hint>
          <required></required>
        </field>
      </page>
@@ -381,10 +382,10 @@
          <dc-element>contributor</dc-element>
          <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Authors</label>
+         <label>Autores</label>
          <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item in the form Surname, Firstname [i.e. Smith, Josh or Smith, J].</hint>
-         <required></required>
+         <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
+         <required>Ingrese los nombres de los autores</required>
        </field>
 
        <field>
@@ -392,10 +393,10 @@
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Title</label>
+         <label>Título</label>
          <input-type>onebox</input-type>
-         <hint>Enter the main title of the item.</hint>
-         <required>You must enter a main title for this item.</required>
+         <hint>Introduce el título principal del artículo</hint>
+         <required>Debe introducir un título principal para este elemento.</required>
        </field>
 
        <field>
@@ -403,9 +404,9 @@
          <dc-element>title</dc-element>
          <dc-qualifier>alternative</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Other Titles</label>
+         <label>Título Alternativo</label>
          <input-type>onebox</input-type>
-         <hint>If the item has any alternative titles, please enter them here.</hint>
+         <hint>Si el artículo tiene títulos alternativos, ingréselos aquí..</hint>
          <required></required>
        </field>
 
@@ -414,12 +415,10 @@
          <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Fecha de emisión</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day and/or month if they aren't
-                        applicable.</hint>
-         <required>You must enter at least the year.</required>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
+         <required>Debe ingresar la fecha de emisión del documento.</required>
        </field>
 
        <field>
@@ -427,10 +426,10 @@
          <dc-element>publisher</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Publisher</label>
+         <label>Editorial</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
-         <required></required>
+         <hint>Ingrese el nombre del editor de la instancia de este artículo emitida anteriormente.</hint>
+         <required>Ingrese el nombre de editor de la instancia</required>
        </field>
 
        <field>
@@ -438,9 +437,9 @@
          <dc-element>identifier</dc-element>
          <dc-qualifier>citation</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Citation</label>
+         <label>Citación</label>
          <input-type>onebox</input-type>
-         <hint>Enter the standard citation for the previously issued instance of this item.</hint>
+         <hint>Ingrese la cita estándar para la instancia emitida anteriormente de este artículo.</hint>
          <required></required>
        </field>
 
@@ -449,9 +448,9 @@
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
+         <label>Series/Nro. de Reporte</label>
          <input-type>series</input-type>
-         <hint>Enter the series and number assigned to this item by your community.</hint>
+         <hint>Ingrese la serie y el número asignado a este artículo por su comunidad.</hint>
          <required></required>
        </field>
 
@@ -461,10 +460,9 @@
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Identifiers</label>
+         <label>Identificadores</label>
          <input-type value-pairs-name="common_article_identifiers">qualdrop_value</input-type>
-         <hint>If the item has any identification numbers or codes associated with
-it, please enter the types and the actual numbers or codes.</hint>
+         <hint>Si el artículo tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales..</hint>
          <required></required>
        </field>
 
@@ -473,9 +471,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>type</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Type</label>
+         <label>Tipo</label>
          <input-type value-pairs-name="article_types">dropdown</input-type>
-         <hint>Nothing to do here. Note for administrators, this metadata could be completely hide using template item</hint>
+         <hint>Seleccione el tipo (s) de contenido. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
          <required></required>
        </field>
 
@@ -484,9 +482,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>language</dc-element>
          <dc-qualifier>iso</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Language</label>
+         <label>Lenguaje</label>
          <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Select the language of the main content of the item.  If the language does not appear in the list, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'.</hint>
          <required></required>
        </field>
      </page>
@@ -498,10 +496,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of twobox MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
+         <label>Palabras Claves</label>
          <input-type>onebox</input-type>
-         <hint>Enter appropriate subject keywords or phrases. </hint>
-         <required></required>
+         <hint>Ingrese las palabras clave o frases apropiadas del tema</hint>
+         <required>Registrar al menos una palabra clave</required>
          <vocabulary>srsc</vocabulary>
        </field>
 
@@ -510,9 +508,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>abstract</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Abstract</label>
+         <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Enter the abstract of the item. </hint>
+         <hint>Introduzca el resumen de la publicación</hint>
          <required></required>
        </field>
 
@@ -521,9 +519,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>sponsorship</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Sponsors</label>
+         <label>Espónsor</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of any sponsors. </hint>
+         <hint>Ingrese el nombre de cualquier patrocinador.</hint>
          <required></required>
        </field>
        
@@ -531,9 +529,9 @@ it, please enter the types and the actual numbers or codes.</hint>
 		 <dc-schema>dc</dc-schema>
          <dc-element>relation</dc-element>
          <repeatable>true</repeatable>
-         <label>Project</label>
+         <label>Nombre del Proyecto</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of project, if any, that has produced this publication. </hint>
+         <hint>Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación.</hint>
          <required></required>
        </field>
 
@@ -542,10 +540,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartof</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Journal</label>
+         <label>Nombre de la Revista</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the journal where the item has been published, if any.</hint>
-         <required>You need to insert the journal name as you are submitting a Journal Article</required>
+         <hint>Ingrese el nombre de la revista donde el artículo ha sido publicado, si lo hubiera.</hint>
+         <required>Debe insertar el nombre de la revista al enviar un artículo de la revista</required>
        </field>
        
        <field>
@@ -553,9 +551,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>conference</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Conference</label>
+         <label>Conferencia</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of the conference where the item has been presented, if any.</hint>
+         <hint>Introduzca el nombre de la conferencia en la que se ha presentado el elemento, si corresponde.</hint>
          <required></required>
        </field>
        
@@ -566,7 +564,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <repeatable>true</repeatable>
          <label>Dataset</label>
          <input-type>onebox</input-type>
-         <hint>Link the item to one or more existent dataset in the repository used or described by the publication or, put here the dataset citation</hint>
+         <hint>Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio utilizado o descrito por la publicación o, ponga aquí la cita del conjunto de datos</hint>
          <required></required>
        </field>
        
@@ -575,9 +573,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Description</label>
+         <label>Descripción</label>
          <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
+         <hint> Ingrese cualquier otra descripción o comentario en este cuadro.</hint>
          <required></required>
        </field>
      </page>
@@ -590,10 +588,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Authors</label>
+         <label>Autores</label>
          <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item in the form Surname, Firstname [i.e. Smith, Josh or Smith, J].</hint>
-         <required></required>
+         <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
+         <required>Ingrese los nombres de los autores</required>
        </field>
 
        <field>
@@ -601,10 +599,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Title</label>
+         <label>Título</label>
          <input-type>onebox</input-type>
-         <hint>Enter the main title of the item.</hint>
-         <required>You must enter a main title for this item.</required>
+         <hint>Introduce el título principal de la conferencia.</hint>
+         <required>Debe introducir un título principal para este elemento.</required>
        </field>
 
        <field>
@@ -612,9 +610,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier>alternative</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Other Titles</label>
+         <label>Títulos Alternativos</label>
          <input-type>onebox</input-type>
-         <hint>If the item has any alternative titles, please enter them here.</hint>
+         <hint>Si la conferencia tiene títulos alternativos, ingréselos aquí.</hint>
          <required></required>
        </field>
 
@@ -623,12 +621,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Fecha de Emisión</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day and/or month if they aren't
-                        applicable.</hint>
-         <required>You must enter at least the year.</required>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
+         <required>Debe ingresar la fecha de emisión de la conferencia.</required>
        </field>
 
        <field>
@@ -636,10 +632,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>publisher</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Publisher</label>
+         <label>Editorial</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
-         <required></required>
+         <hint>Ingrese el nombre del editor de la instancia de esta conferencia emitida anteriormente.</hint>
+         <required>Ingrese el nombre de editor de la instancia</required>
        </field>
 
        <field>
@@ -647,9 +643,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>identifier</dc-element>
          <dc-qualifier>citation</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Citation</label>
+         <label>Citación</label>
          <input-type>onebox</input-type>
-         <hint>Enter the standard citation for the previously issued instance of this item.</hint>
+         <hint>Ingrese la cita estándar para la instancia emitida anteriormente de esta conferencia.</hint>
          <required></required>
        </field>
 
@@ -658,9 +654,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
+         <label>Series/Nro. de Reporte</label>
          <input-type>series</input-type>
-         <hint>Enter the series and number assigned to this item by your community.</hint>
+         <hint>Ingrese la serie y el número asignado a esta conferencia por su comunidad.</hint>
          <required></required>
        </field>
 
@@ -670,10 +666,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Identifiers</label>
+         <label>Identificadores</label>
          <input-type value-pairs-name="common_conference_material_identifiers">qualdrop_value</input-type>
-         <hint>If the item has any identification numbers or codes associated with
-it, please enter the types and the actual numbers or codes.</hint>
+         <hint>Si la conferencia tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales. </hint>
          <required></required>
        </field>
 
@@ -682,9 +677,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>type</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Type</label>
+         <label>Tipo</label>
          <input-type value-pairs-name="conference_material_types">dropdown</input-type>
-         <hint> Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
+         <hint>Seleccione el tipo (s) de contenido. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
          <required></required>
        </field>
 
@@ -693,9 +688,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>language</dc-element>
          <dc-qualifier>iso</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Language</label>
+         <label>Lenguaje</label>
          <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Select the language of the main content of the item.  If the language does not appear in the list, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'.</hint>
          <required></required>
        </field>
      </page>
@@ -707,10 +702,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of twobox MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
+         <label>Palabras Claves</label>
          <input-type>onebox</input-type>
-         <hint>Enter appropriate subject keywords or phrases. </hint>
-         <required></required>
+         <hint>Ingrese las palabras clave o frases apropiadas del tema</hint>
+         <required>Registrar al menos una palabra clave</required>
          <vocabulary>srsc</vocabulary>
        </field>
 
@@ -719,10 +714,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>abstract</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Abstract</label>
+         <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Enter the abstract of the item. </hint>
-         <required></required>
+         <hint>Introduzca el resumen de la publicación</hint>
+         <required>Debe registrar el resumen</required>
        </field>
 
        <field>
@@ -730,9 +725,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>sponsorship</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Sponsors</label>
+         <label>Espónsor</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of any sponsors. </hint>
+         <hint>Ingrese el nombre de cualquier patrocinador.</hint>
          <required></required>
        </field>
        
@@ -740,9 +735,9 @@ it, please enter the types and the actual numbers or codes.</hint>
 		 <dc-schema>dc</dc-schema>
          <dc-element>relation</dc-element>
          <repeatable>true</repeatable>
-         <label>Project</label>
+         <label>Nombre del Proyecto</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of project, if any, that has produced this publication. </hint>
+         <hint>Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación.</hint>
          <required></required>
        </field>
 
@@ -751,9 +746,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartof</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Journal</label>
+         <label>Nombre de la Revista</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the journal where the item has been published, if any.</hint>
+         <hint>Ingrese el nombre de la revista donde el artículo ha sido publicado, si lo hubiera.</hint>
          <required></required>
        </field>
        
@@ -762,10 +757,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>conference</dc-qualifier>
          <repeatable></repeatable>
-         <label>Conference</label>
+         <label>Conferencia</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of the conference where the item has been presented, if any.</hint>
-         <required>You need to insert the conference name as you are submitting a Conference Material</required>
+         <hint>Introduzca el nombre de la conferencia en la que se ha presentado el elemento, si corresponde.</hint>
+         <required>Debe insertar el nombre de la conferencia al enviar un material de la conferencia</required>
        </field>
 
        <field>
@@ -775,7 +770,8 @@ it, please enter the types and the actual numbers or codes.</hint>
          <repeatable>true</repeatable>
          <label>Dataset</label>
          <input-type>onebox</input-type>
-         <hint>Link the item to one or more existent dataset in the repository used or described by the publication or, put here the dataset citation</hint>
+         <hint>
+Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio utilizado o descrito por la publicación o, ponga aquí la cita del conjunto de datos</hint>
          <required></required>
        </field>
        
@@ -784,9 +780,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Description</label>
+         <label>Descripción</label>
          <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
+         <hint>Ingrese cualquier otra descripción o comentario en este cuadro.</hint>
          <required></required>
        </field>
      </page>
@@ -799,10 +795,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Authors</label>
+         <label>Autores</label>
          <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item in the form Surname, Firstname [i.e. Smith, Josh or Smith, J].</hint>
-         <required></required>
+         <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
+         <required>Ingrese los nombres de los autores</required>
        </field>
 
        <field>
@@ -810,10 +806,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Title</label>
+         <label>Título</label>
          <input-type>onebox</input-type>
-         <hint>Enter the main title of the item.</hint>
-         <required>You must enter a main title for this item.</required>
+         <hint>Introduce el título principal del libro</hint>
+         <required>Debe introducir un título principal para este elemento.</required>
        </field>
 
        <field>
@@ -821,9 +817,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier>alternative</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Other Titles</label>
+         <label>Título Alternativo</label>
          <input-type>onebox</input-type>
-         <hint>If the item has any alternative titles, please enter them here.</hint>
+         <hint>Si el documento tiene títulos alternativos, ingréselos aquí.</hint>
          <required></required>
        </field>
 
@@ -832,12 +828,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Fecha de emisión</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day and/or month if they aren't
-                        applicable.</hint>
-         <required>You must enter at least the year.</required>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
+         <required>Debe ingresar la fecha de emisión del documento.</required>
        </field>
 
        <field>
@@ -845,10 +839,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>publisher</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Publisher</label>
+         <label>Editorial</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
-         <required></required>
+         <hint>Ingrese el nombre del editor de la instancia de este artículo emitida anteriormente.</hint>
+         <required>Ingrese el nombre de editor de la instancia</required>
        </field>
 
        <field>
@@ -858,7 +852,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <repeatable>false</repeatable>
          <label>Citation</label>
          <input-type>onebox</input-type>
-         <hint>Enter the standard citation for the previously issued instance of this item.</hint>
+         <hint>Ingrese la cita estándar para la instancia emitida anteriormente de este libro.</hint>
          <required></required>
        </field>
 
@@ -867,9 +861,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
+         <label>Series/Nro. de Reporte</label>
          <input-type>series</input-type>
-         <hint>Enter the series and number assigned to this item by your community.</hint>
+         <hint>Ingrese la serie y el número asignado a este libro por su comunidad.</hint>
          <required></required>
        </field>
 
@@ -879,10 +873,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Identifiers</label>
+         <label>Identificadores</label>
          <input-type value-pairs-name="common_book_identifiers">qualdrop_value</input-type>
-         <hint>If the item has any identification numbers or codes associated with
-it, please enter the types and the actual numbers or codes.</hint>
+         <hint>Si el libro tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales.</hint>
          <required></required>
        </field>
 
@@ -891,9 +884,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>type</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Type</label>
+         <label>Tipo</label>
          <input-type value-pairs-name="book_types">dropdown</input-type>
-         <hint>Nothing to do here. Note for administrators, this metadata could be completely hide using template item</hint>
+         <hint>Seleccione el tipo (s) de contenido. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
          <required></required>
        </field>
 
@@ -902,9 +895,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>language</dc-element>
          <dc-qualifier>iso</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Language</label>
+         <label>Lenguaje</label>
          <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Select the language of the main content of the item.  If the language does not appear in the list, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'.</hint>
          <required></required>
        </field>
      </page>
@@ -916,10 +909,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of twobox MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
+         <label>Palabras Claves</label>
          <input-type>onebox</input-type>
-         <hint>Enter appropriate subject keywords or phrases. </hint>
-         <required></required>
+         <hint>Ingrese las palabras clave o frases apropiadas del tema</hint>
+         <required>Registrar al menos una palabra clave</required>
          <vocabulary>srsc</vocabulary>
        </field>
 
@@ -928,9 +921,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>abstract</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Abstract</label>
+         <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Enter the abstract of the item. </hint>
+         <hint>Introduzca el resumen de la publicación</hint>
          <required></required>
        </field>
 
@@ -939,9 +932,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>sponsorship</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Sponsors</label>
+         <label>Espónsor</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of any sponsors. </hint>
+         <hint>Ingrese el nombre de cualquier patrocinador. </hint>
          <required></required>
        </field>
        
@@ -949,9 +942,9 @@ it, please enter the types and the actual numbers or codes.</hint>
 		 <dc-schema>dc</dc-schema>
          <dc-element>relation</dc-element>
          <repeatable>true</repeatable>
-         <label>Project</label>
+         <label>Nombre del Proyecto</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of project, if any, that has produced this publication. </hint>
+         <hint>Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación. </hint>
          <required></required>
        </field>
        
@@ -960,9 +953,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>conference</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Conference</label>
+         <label>Conferencia</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of the conference where the item has been presented, if any.</hint>
+         <hint>Introduzca el nombre de la conferencia en la que se ha presentado el elemento, si corresponde.</hint>
          <required></required>
        </field>
        
@@ -971,9 +964,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>dataset</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Dataset</label>
+         <label>Data set</label>
          <input-type>onebox</input-type>
-         <hint>Link the item to one or more existent dataset in the repository used or described by the publication or, put here the dataset citation</hint>
+         <hint>Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio utilizado o descrito por la publicación o, ponga aquí la cita del conjunto de datos</hint>
          <required></required>
        </field>
        
@@ -982,9 +975,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Description</label>
+         <label>Descripción</label>
          <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
+         <hint>Ingrese cualquier otra descripción o comentario en este cuadro.</hint>
          <required></required>
        </field>
      </page>
@@ -997,10 +990,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Authors</label>
+         <label>Autores</label>
          <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item in the form Surname, Firstname [i.e. Smith, Josh or Smith, J].</hint>
-         <required></required>
+         <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
+         <required>Ingrese los nombres de los autores</required>
        </field>
 
        <field>
@@ -1008,10 +1001,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Title</label>
+         <label>Título</label>
          <input-type>onebox</input-type>
-         <hint>Enter the main title of the item.</hint>
-         <required>You must enter a main title for this item.</required>
+         <hint>Introduce el título principal del dataset.</hint>
+         <required>Debe introducir un título principal para este elemento.</required>
        </field>
 
        <field>
@@ -1019,9 +1012,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier>alternative</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Other Titles</label>
+         <label>Título Alternativo</label>
          <input-type>onebox</input-type>
-         <hint>If the item has any alternative titles, please enter them here.</hint>
+         <hint>Si el artículo tiene títulos alternativos, ingréselos aquí.</hint>
          <required></required>
        </field>
 
@@ -1030,12 +1023,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Fecha de Emisión</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day and/or month if they aren't
-                        applicable.</hint>
-         <required>You must enter at least the year.</required>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
+         <required>Debe ingresar la fecha de emisión del documento.</required>
        </field>
 
        <field>
@@ -1043,9 +1034,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
+         <label>Series/Nro. de Reporte</label>
          <input-type>series</input-type>
-         <hint>Enter the series and number assigned to this item by your community.</hint>
+         <hint>Ingrese la serie y el número asignado a este data set por su comunidad.</hint>
          <required></required>
        </field>
 
@@ -1055,10 +1046,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Identifiers</label>
+         <label>Identificadores</label>
          <input-type value-pairs-name="common_dataset_identifiers">qualdrop_value</input-type>
-         <hint>If the item has any identification numbers or codes associated with
-it, please enter the types and the actual numbers or codes.</hint>
+         <hint>Si el data set tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales.</hint>
          <required></required>
        </field>
 
@@ -1067,9 +1057,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>type</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Type</label>
+         <label>Tipo</label>
          <input-type value-pairs-name="dataset_types">dropdown</input-type>
-         <hint>Nothing to do here. Note for administrators, this metadata could be completely hide using template item</hint>
+         <hint>Seleccione el tipo (s) de contenido. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
          <required></required>
        </field>
 
@@ -1078,9 +1068,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>language</dc-element>
          <dc-qualifier>iso</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Language</label>
+         <label>Lenguaje</label>
          <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Select, if applicable, the language of the main content of the item.  If the language does not appear in the list, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'.</hint>
          <required></required>
        </field>
      </page>
@@ -1092,10 +1082,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of twobox MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
+         <label>Palabras Claves</label>
          <input-type>onebox</input-type>
-         <hint>Enter appropriate subject keywords or phrases. </hint>
-         <required></required>
+         <hint>Ingrese las palabras clave o frases apropiadas del tema</hint>
+         <required>Registrar al menos una palabra clave</required>
          <vocabulary>srsc</vocabulary>
        </field>
 
@@ -1104,9 +1094,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>abstract</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Abstract</label>
+         <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Enter the abstract of the item. </hint>
+         <hint>Introduzca el resumen de la publicación</hint>
          <required></required>
        </field>
 
@@ -1115,9 +1105,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>sponsorship</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Sponsors</label>
+         <label>Espónsor</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of any sponsors. </hint>
+         <hint>Ingrese el nombre de cualquier patrocinador.</hint>
          <required></required>
        </field>
        
@@ -1125,9 +1115,9 @@ it, please enter the types and the actual numbers or codes.</hint>
 		 <dc-schema>dc</dc-schema>
          <dc-element>relation</dc-element>
          <repeatable>true</repeatable>
-         <label>Project</label>
+         <label>Nombre del Proyecto</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of project, if any, that has produced this publication. </hint>
+         <hint>Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación. </hint>
          <required></required>
        </field>
 
@@ -1136,9 +1126,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>publication</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Publication</label>
+         <label>Publicaciones</label>
          <input-type>onebox</input-type>
-         <hint>Link the dataset to one or more existent publications in the repository that make use of it or, put here the publication citation</hint>
+         <hint>Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio utilizado o descrito por la publicación o, ponga aquí la cita del conjunto de datos</hint>
          <required></required>
        </field>
        
@@ -1147,9 +1137,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Description</label>
+         <label>Descripción</label>
          <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
+         <hint>Ingrese cualquier otra descripción o comentario en este cuadro.</hint>
          <required></required>
        </field>
      </page>
@@ -1162,10 +1152,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Authors</label>
+         <label>Autores</label>
          <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item in the form Surname, Firstname [i.e. Smith, Josh or Smith, J].</hint>
-         <required></required>
+         <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
+         <required>Ingrese los nombres de los autores</required>
        </field>
 
        <field>
@@ -1173,10 +1163,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Title</label>
+         <label>Título</label>
          <input-type>onebox</input-type>
-         <hint>Enter the main title of the item.</hint>
-         <required>You must enter a main title for this item.</required>
+         <hint>Introduce el título principal del documento.</hint>
+         <required>Debe introducir un título principal para este elemento.</required>
        </field>
 
        <field>
@@ -1184,7 +1174,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>title</dc-element>
          <dc-qualifier>alternative</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Other Titles</label>
+         <label>Título Alternativo</label>
          <input-type>onebox</input-type>
          <hint>If the item has any alternative titles, please enter them here.</hint>
          <required></required>
@@ -1195,12 +1185,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Fecha de Emisión</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day and/or month if they aren't
-                        applicable.</hint>
-         <required>You must enter at least the year.</required>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
+         <required>Debe ingresar la fecha de emisión del documento.</required>
        </field>
 
        <field>
@@ -1208,10 +1196,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>publisher</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Publisher</label>
+         <label>Editorial</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
-         <required></required>
+         <hint>Ingrese el nombre del editor de la instancia de este artículo emitida anteriormente.</hint>
+         <required>Ingrese el nombre de editor de la instancia</required>
        </field>
 
        <field>
@@ -1219,9 +1207,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>identifier</dc-element>
          <dc-qualifier>citation</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Citation</label>
+         <label>Citación</label>
          <input-type>onebox</input-type>
-         <hint>Enter the standard citation for the previously issued instance of this item.</hint>
+         <hint>Ingrese la cita estándar para la instancia emitida anteriormente de este documento.</hint>
          <required></required>
        </field>
 
@@ -1230,9 +1218,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
+         <label>Series/Nro. de Reporte</label>
          <input-type>series</input-type>
-         <hint>Enter the series and number assigned to this item by your community.</hint>
+         <hint>Ingrese la serie y el número asignado a este libro por su comunidad.</hint>
          <required></required>
        </field>
 
@@ -1242,10 +1230,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Identifiers</label>
+         <label>Identificadores</label>
          <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-         <hint>If the item has any identification numbers or codes associated with
-it, please enter the types and the actual numbers or codes.</hint>
+         <hint>Si el documento tiene números o códigos de identificación asociados, ingrese los tipos y los números o códigos reales.</hint>
          <required></required>
        </field>
 
@@ -1254,9 +1241,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>type</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Type</label>
+         <label>Tipo</label>
          <input-type value-pairs-name="common_types">dropdown</input-type>
-         <hint> Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
+         <hint>Seleccione el tipo (s) de contenido. Para seleccionar más de un valor en la lista, es posible que tenga que mantener presionada la tecla "CTRL" o "Shift"</hint>
          <required></required>
        </field>
 
@@ -1265,9 +1252,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>language</dc-element>
          <dc-qualifier>iso</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Language</label>
+         <label>Lenguaje</label>
          <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Select the language of the main content of the item.  If the language does not appear in the list, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+         <hint>Seleccione el idioma del contenido principal del elemento. Si el idioma no aparece en la lista, seleccione 'Otro'. Si el contenido no tiene realmente un idioma (por ejemplo, si es un conjunto de datos o una imagen), seleccione 'N / A'.</hint>
          <required></required>
        </field>
      </page>
@@ -1279,10 +1266,10 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of twobox MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
+         <label>Palabras Claves</label>
          <input-type>onebox</input-type>
-         <hint>Enter appropriate subject keywords or phrases. </hint>
-         <required></required>
+         <hint>Ingrese las palabras clave o frases apropiadas del tema</hint>
+         <required>Registrar al menos una palabra clave</required>
          <vocabulary>srsc</vocabulary>
        </field>
 
@@ -1291,9 +1278,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>abstract</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Abstract</label>
+         <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Enter the abstract of the item. </hint>
+         <hint>Introduzca el resumen de la publicación</hint>
          <required></required>
        </field>
 
@@ -1302,9 +1289,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>sponsorship</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Sponsors</label>
+         <label>Espónsor</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of any sponsors. </hint>
+         <hint>Ingrese el nombre de cualquier patrocinador.</hint>
          <required></required>
        </field>
        
@@ -1312,9 +1299,9 @@ it, please enter the types and the actual numbers or codes.</hint>
 		 <dc-schema>dc</dc-schema>
          <dc-element>relation</dc-element>
          <repeatable>true</repeatable>
-         <label>Project</label>
+         <label>Nombre del Proyecto</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of project, if any, that has produced this publication. </hint>
+         <hint>Ingrese el nombre del proyecto, si lo hubiera, que haya producido esta publicación. </hint>
          <required></required>
        </field>
 
@@ -1323,9 +1310,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartof</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Journal</label>
+         <label>Revista</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the journal where the item has been published, if any.</hint>
+         <hint>Ingrese el nombre de la revista donde el artículo ha sido publicado, si lo hubiera.</hint>
          <required>You need to insert the journal name as you are submitting a Journal Article</required>
        </field>
        
@@ -1334,9 +1321,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>conference</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Conference</label>
+         <label>Conferencia</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of the conference where the item has been presented, if any.</hint>
+         <hint>Introduzca el nombre de la conferencia en la que se ha presentado el elemento, si corresponde.</hint>
          <required></required>
        </field>
 
@@ -1345,9 +1332,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>relation</dc-element>
          <dc-qualifier>dataset</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Dataset</label>
+         <label>Fecha de emisión</label>
          <input-type>onebox</input-type>
-         <hint>Link the item to one or more existent dataset in the repository used or described by the publication or, put here the dataset citation</hint>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
          <required></required>
        </field>
        
@@ -1356,9 +1343,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Description</label>
+         <label>Descripción</label>
          <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
+         <hint>Ingrese cualquier otra descripción o comentario en este cuadro.</hint>
          <required></required>
        </field>
      </page>
@@ -1606,7 +1593,7 @@ it, please enter the types and the actual numbers or codes.</hint>
 
    <value-pairs value-pairs-name="common_types" dc-term="type">
      <pair>
-       <displayed-value>Articulo</displayed-value>
+       <displayed-value>Artículo</displayed-value>
        <stored-value>info:eu-repo/semantics/article</stored-value>
      </pair>
      <pair>
@@ -1638,7 +1625,7 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>info:eu-repo/semantics/bookPart</stored-value>
      </pair>
      <pair>
-       <displayed-value>Revision</displayed-value>
+       <displayed-value>Revisión</displayed-value>
        <stored-value>info:eu-repo/semantics/review</stored-value>
      </pair>
      <pair>
@@ -1646,19 +1633,19 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>info:eu-repo/semantics/conferenceObject</stored-value>
      </pair>
      <pair>
-       <displayed-value>Presentacion</displayed-value>
+       <displayed-value>Presentación</displayed-value>
        <stored-value>info:eu-repo/semantics/lecture</stored-value>
      </pair>
        <pair>
-       <displayed-value>Articulo preliminar</displayed-value>
+       <displayed-value>Artículo preliminar</displayed-value>
        <stored-value>info:eu-repo/semantics/workingPaper</stored-value>
      </pair>
      <pair>
-       <displayed-value>Articulo antes de ser publicado</displayed-value>
+       <displayed-value>Artículo antes de ser publicado</displayed-value>
        <stored-value>info:eu-repo/semantics/preprint</stored-value>
      </pair>
      <pair>
-       <displayed-value>Articulo de prensa</displayed-value>
+       <displayed-value>Artículo de prensa</displayed-value>
        <stored-value>info:eu-repo/semantics/contributionToPeriodical</stored-value>
      </pair>
      <pair>
@@ -1681,15 +1668,15 @@ it, please enter the types and the actual numbers or codes.</hint>
 
    <value-pairs value-pairs-name="article_types" dc-term="type">
      <pair>
-       <displayed-value>Article</displayed-value>
-       <stored-value>Article</stored-value>
+       <displayed-value>Artículo</displayed-value>
+       <stored-value>info:eu-repo/semantics/article</stored-value>
      </pair>
    </value-pairs>
 
    <value-pairs value-pairs-name="book_types" dc-term="type">
      <pair>
-       <displayed-value>Book</displayed-value>
-       <stored-value>Book</stored-value>
+       <displayed-value>Libro</displayed-value>
+       <stored-value>info:eu-repo/semantics/book</stored-value>
      </pair>
    </value-pairs>
 
@@ -1703,8 +1690,8 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>Conference Paper</stored-value>
      </pair>
      <pair>
-       <displayed-value>Presentation</displayed-value>
-       <stored-value>Presentation</stored-value>
+       <displayed-value>Presentación</displayed-value>
+       <stored-value>info:eu-repo/semantics/lecture</stored-value>
      </pair>
      <pair>
      	<displayed-value>Poster</displayed-value>
@@ -1722,19 +1709,19 @@ it, please enter the types and the actual numbers or codes.</hint>
 
     <value-pairs value-pairs-name="common_rights" dc-term="rights">
 	<pair>
-       <displayed-value>info:eu-repo/semantics/openAccess</displayed-value>
+       <displayed-value>Acceso Abierto</displayed-value>
        <stored-value>info:eu-repo/semantics/openAccess</stored-value>
      </pair>
      <pair>
-       <displayed-value>info:eu-repo/semantics/restrictedAccess</displayed-value>
+       <displayed-value>Acceso Restringido</displayed-value>
        <stored-value>info:eu-repo/semantics/restrictedAccess</stored-value>
      </pair>
      <pair>
-       <displayed-value>info:eu-repo/semantics/embargoedAccess</displayed-value>
+       <displayed-value>Acceso embargado</displayed-value>
        <stored-value>info:eu-repo/semantics/embargoedAccess</stored-value>
      </pair>
      <pair>
-       <displayed-value>info:eu-repo/semantics/closedAccess</displayed-value>
+       <displayed-value>Acceso Cerrado</displayed-value>
        <stored-value>info:eu-repo/semantics/closedAccess</stored-value>
      </pair>
  </value-pairs>  
