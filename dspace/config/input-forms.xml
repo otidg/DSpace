@@ -58,7 +58,7 @@
          <required>Ingrese los nombres de los autores</required>
        </field>
 
-	<field>
+	   <field>
          <dc-schema>dc</dc-schema>
          <dc-element>contributor</dc-element>
          <dc-qualifier>advisor</dc-qualifier>
@@ -67,8 +67,9 @@
          <input-type>onebox</input-type>
          <hint>Ingrese los nombres de los asesores de esta publicación en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
          <required></required>
-       </field>	   
-	     
+       </field>	
+	   
+	   
        <field>
 	 <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
@@ -1153,7 +1154,7 @@ Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio 
          <repeatable>true</repeatable>
          <label>Autores</label>
          <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item in the form Surname, Firstname [i.e. Smith, Josh or Smith, J].</hint>
+         <hint>Ingrese los nombres de los autores de este artículo en la forma Apellido, Nombre [es decir, Smith, Josh o Smith, J]</hint>
          <required>Ingrese los nombres de los autores</required>
        </field>
 
@@ -1279,7 +1280,7 @@ Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio 
          <repeatable>false</repeatable>
          <label>Resumen</label>
          <input-type>textarea</input-type>
-         <hint>Enter the abstract of the item. </hint>
+         <hint>Introduzca el resumen de la publicación</hint>
          <required></required>
        </field>
 
@@ -1331,9 +1332,9 @@ Enlace el elemento a uno o más conjuntos de datos existentes en el repositorio 
          <dc-element>relation</dc-element>
          <dc-qualifier>dataset</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Data set</label>
+         <label>Fecha de emisión</label>
          <input-type>onebox</input-type>
-         <hint>Link the item to one or more existent dataset in the repository used or described by the publication or, put here the dataset citation</hint>
+         <hint>Favor de indicar la fecha de publicación previa o distribución pública. Puede omitir el día y / o el mes si no son aplicables.</hint>
          <required></required>
        </field>
        
