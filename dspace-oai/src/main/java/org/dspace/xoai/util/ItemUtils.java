@@ -12,6 +12,7 @@ import com.lyncode.xoai.dataprovider.xml.xoai.Metadata;
 import com.lyncode.xoai.util.Base64Utils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.dspace.app.util.MetadataExposure;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
@@ -20,6 +21,7 @@ import org.dspace.content.Item;
 import org.dspace.content.authority.Choices;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
+import org.dspace.core.Context;
 import org.dspace.core.Utils;
 import org.dspace.xoai.data.DSpaceItem;
 
@@ -127,7 +129,7 @@ public class ItemUtils
         return valueElem;
 
     }
-    public static Metadata retrieveMetadata (Item item) {
+    public static Metadata retrieveMetadata (Context context, Item item) {
         Metadata metadata;
         
         //DSpaceDatabaseItem dspaceItem = new DSpaceDatabaseItem(item);
@@ -138,13 +140,26 @@ public class ItemUtils
         Metadatum[] vals = item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
         for (Metadatum val : vals)
         {
+            // Don't expose fields that are hidden by configuration
+            try {
+                if (MetadataExposure.isHidden(context,
+                        val.schema,
+                        val.element,
+                        val.qualifier))
+                {
+                    continue;
+                }
+            } catch(SQLException se) {
+                throw new RuntimeException(se);
+            }
+
             Element schema = getElement(metadata.getElement(), val.schema);
             if (schema == null)
             {
                 schema = create(val.schema);
                 metadata.getElement().add(schema);
             }
-        	Element element = writeMetadata(schema, val);
+            Element element = writeMetadata(schema, val);
             metadata.getElement().add(element);
         }
 
@@ -186,6 +201,7 @@ public class ItemUtils
                     
                     String url = "";
                     String bsName = bit.getName();
+                    String bitID= Integer.toString(bit.getID());
                     String sid = String.valueOf(bit.getSequenceID());
                     String baseUrl = ConfigurationManager.getProperty("oai",
                             "bitstream.baseUrl");
@@ -225,6 +241,7 @@ public class ItemUtils
                     String name = bit.getName();
                     String description = bit.getDescription();
 
+                    bitstream.getField().add(createValue("id", bitID));
                     if (name != null)
                         bitstream.getField().add(
                                 createValue("name", name));
