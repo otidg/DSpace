@@ -91,8 +91,13 @@
 			<value>dc.relation.ispartof_authority:{0}</value>
 		</property>
 	</bean>
-
-						
+	<bean id="relationEVENTVSItemConfiguration" class="org.dspace.app.cris.configuration.RelationConfiguration">                 
+    		<property name="relationName" value="crisevents.publications" />
+    		<property name="relationClass" value="org.dspace.content.Item" />
+    		<property name="query">
+            		<value>dc.relation.conference_authority:{0}</value>
+    		</property>
+	</bean>					
 	<bean
 		class="org.dspace.app.cris.configuration.RelationPreferenceServiceConfiguration">
 		<property name="list">
