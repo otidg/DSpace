@@ -169,7 +169,13 @@
                                                 <bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
                                                         <property name="browseNames">
                                                                 <list>
-                                                                <value>fundingcfFundingName</value> </list>
+	                                                             	<value>fundingcfFundingName</value>
+									<value>fundingoaType</value>
+									<value>fundingcfFundingKeywords</value>
+									<value>fundingpeClasificacionOCDE</value>
+									<value>fundingpeOuFunder</value>
+									<value>fundingpePartOfFunding</value>
+								</list>
                                                         </property>
                                                 </bean>
                                         </list>
