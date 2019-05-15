@@ -1586,8 +1586,8 @@
 		<!--The search filters which can be used on the discovery search page -->
 		<property name="searchFilters">
 			<list>
-				<ref bean="searchFilterObjectName" />
-				<ref bean="searchFilterStartDate" />
+				<ref bean="searchFilterEventLocation" />
+				<ref bean="searchFilterEventStartDate" />
 			</list>
 		</property>
 		<!--The sort filters for the discovery search -->
@@ -2223,6 +2223,28 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="searchFilterEventLocation"
+		class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+		<property name="indexFieldName" value="ubicacion" />
+		<property name="metadataFields">
+			<list>
+				<value>crisevents.eventslocation</value>
+
+			</list>
+		</property>
+	</bean>
+        <bean id="searchFilterEventStartDate"
+		class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+		<property name="indexFieldName" value="startdate" />
+		<property name="metadataFields">
+			<list>
+				<value>crisevents.eventsstartdate</value>
+
+			</list>
+		</property>
+		<property name="type" value="date" />
+		<property name="sortOrder" value="VALUE" />
+	</bean>
 
 
 	<!--Sort properties -->
@@ -2379,6 +2401,8 @@
 	<bean id="facetsEventsConfiguration" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
+				<ref bean="searchFilterEventLocation" />
+				<ref bean="searchFilterEventStartDate" />
 			</list>
 		</constructor-arg>
 	</bean>
