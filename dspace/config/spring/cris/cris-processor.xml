@@ -69,7 +69,6 @@
 						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
 							<property name="browseNames">
 								<list>
-									<value>itemdept</value>
 									<value>author</value>
 									<value>title</value>
 									<value>type</value>
