@@ -125,7 +125,6 @@
 							<property name="browseNames">
 								<list>
 									<value>rpname</value>
-									<value>rpdept</value>
 								</list>
 							</property>
 						</bean>
