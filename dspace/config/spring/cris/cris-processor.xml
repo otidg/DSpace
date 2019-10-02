@@ -170,9 +170,8 @@
 	                             	<value>fundingcfFundingName</value>
 									<value>fundingoaType</value>
 									<value>fundingcfFundingKeywords</value>
-									<value>fundingpeClasificacionOCDE</value>
-									<value>fundingpeOuFunder</value>
-									<value>fundingpePartOfFunding</value>
+<!--									<value>fundingpeClasificacionOCDE</value>-->
+<!--									<value>fundingpePartOfFunding</value>-->
 								</list>
                             </property>
                         </bean>
