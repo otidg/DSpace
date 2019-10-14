@@ -1773,9 +1773,6 @@
 			<list>
 				<ref bean="searchFilterFundingType" />
 				<ref bean="searchFilterFundingKeywords" />
-                <ref bean="searchFilterFundingOCDEClasification" />
-		        <ref bean="searchFilterFundingOUFunder" />
-                <ref bean="searchFilterFundingPartOfFunding" />
 			</list>
 		</property>
 		<!--The sort filters for the discovery search -->
@@ -2173,7 +2170,7 @@
 	</bean>
 	
 	<bean id="searchFilterFundingType"
-		class="org.dspace.discovery.configuration.DiscoverySearchMultilanguageFilterFacet">
+		class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
 		<property name="indexFieldName" value="funding.type" />
 		<property name="metadataFields">
 			<list>
@@ -2184,7 +2181,7 @@
 
 
    	 <bean id="searchFilterFundingKeywords"
-		class="org.dspace.discovery.configuration.DiscoverySearchMultilanguageFilterFacet">
+		class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
 		<property name="indexFieldName" value="funding.keywords" />
 		<property name="metadataFields">
 			<list>
@@ -2417,11 +2414,8 @@
 	<bean id="facetsFundingConfiguration" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
-                <ref bean="searchFilterFundingType" />
-		<ref bean="searchFilterFundingKeywords" />
-                <ref bean="searchFilterFundingOCDEClasification" />
-                <ref bean="searchFilterFundingOUFunder" />
-                <ref bean="searchFilterFundingPartOfFunding" />
+				<ref bean="searchFilterFundingType" />
+				<ref bean="searchFilterFundingKeywords" />
 			</list>
 		</constructor-arg>
 	</bean>
