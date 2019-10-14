@@ -168,7 +168,7 @@
 	                        <property name="browseNames">
 	                            <list>
 	                             	<value>fundingcfFundingName</value>
-									<value>fundingoaType</value>
+<!--									<value>fundingoaType</value>-->
 									<value>fundingcfFundingKeywords</value>
 <!--									<value>fundingpeClasificacionOCDE</value>-->
 <!--									<value>fundingpePartOfFunding</value>-->
