@@ -162,22 +162,19 @@
 						</bean>
 					</list>
 				</entry> 
-				<entry key="crisfunding">
-	                <list>
-	                    <bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
-	                        <property name="browseNames">
-	                            <list>
-	                             	<value>fundingcfFundingName</value>
-<!--									<value>fundingoaType</value>-->
-									<value>fundingcfFundingKeywords</value>
-<!--									<value>fundingpeClasificacionOCDE</value>-->
-<!--									<value>fundingpePartOfFunding</value>-->
+				<entry key="crisevents">
+					<list>
+						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
+							<property name="browseNames">
+								<list>
+									<value>eventsnombrecorto</value>
+									<value>webui_crisevents_location</value>
+									<value>webui_crisevents_startdate</value>
 								</list>
-                            </property>
-                        </bean>
-                    </list>
-                </entry>
-
+							</property>
+						</bean>
+					</list>
+				</entry>
 			</map>
 		</property>
 	</bean>
