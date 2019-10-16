@@ -152,7 +152,19 @@
 					</list>
 				</entry>
 				-->
-
+				<entry key="crisfunding">
+					<list>
+						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
+							<property name="browseNames">
+								<list>
+									<value>webui_crisfundingcode</value>
+									<value>fundingcfFundingName</value>
+									<value>fundingcfFundingKeywords</value>
+								</list>
+							</property>
+						</bean>
+					</list>
+				</entry>
 
 				<entry key="crisevents">
 					<list>
