@@ -140,7 +140,7 @@
 						</bean>
 					</list>
 				</entry>
-				<entry key="fundings">
+				<!--				<entry key="fundings">
 					<list>
 						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
 							<property name="browseNames">
@@ -151,17 +151,9 @@
 						</bean>
 					</list>
 				</entry>
+				-->
 
-				<entry key="crisevents">
- 					<list>
-						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
-							<property name="browseNames">
-								<list>
-								<value>eventsnombrecorto</value> </list>
-							</property>
-						</bean>
-					</list>
-				</entry> 
+
 				<entry key="crisevents">
 					<list>
 						<bean class="org.dspace.app.webui.cris.components.BrowseProcessor">
