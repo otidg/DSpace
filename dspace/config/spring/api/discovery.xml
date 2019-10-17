@@ -1799,7 +1799,7 @@
 		<property name="recentSubmissionConfiguration">
 			<bean
 				class="org.dspace.discovery.configuration.DiscoveryRecentSubmissionsConfiguration">
-				<property name="metadataSortField" value="fundingcfFundingName" />
+				<property name="metadataSortField" value="fundingname" />
 				<property name="type" value="date" />
 				<property name="max" value="5" />
 				<property name="metadataFields">
@@ -1810,7 +1810,7 @@
 						<bean
 							class="org.dspace.discovery.configuration.DiscoveryViewFieldConfiguration">
 							<property name="mandatory" value="true"/>
-							<property name="field" value="fundingcfFundingName" />
+							<property name="field" value="fundingname" />
 							<property name="decorator" value="cristitle" />
 							<property name="preHtml" value="&lt;h4 class='text-primary'&gt;" />
 							<property name="postHtml" value="&lt;/h4&gt;" />							
@@ -2293,7 +2293,7 @@
 
 	<bean id="sortFundingName"
 		class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
-		<property name="metadataField" value="crisevents.fundingcfFundingName" />
+		<property name="metadataField" value="crisevents.fundingname" />
         </bean>
 	
 	<!-- Facets configuration -->
