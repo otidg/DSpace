@@ -29,6 +29,7 @@
 			<map>
 				<entry key="dspaceitems" value-ref="publicationlist" />
 				<entry key="projects" value-ref="projectlist" />
+				<entry key="dspaceitemsforadvisor" value-ref="publicationlistforadvisor" />
 			</map>
 		</property>
 	</bean>
@@ -50,6 +51,25 @@
 				<entry key="dataset" value-ref="datasetComponent" />
 				<entry key="other" value-ref="otherComponent" />
 			</map>
+		</property>
+	</bean>
+
+	<bean id="publicationlistforadvisor"
+		class="org.dspace.app.webui.cris.components.ItemsConfigurerComponent">
+		<property name="relationConfiguration" ref="relationAdvisorVSItemConfiguration" />
+		<property name="commonFilter"><util:constant static-field="org.dspace.app.webui.cris.util.RelationPreferenceUtil.HIDDEN_FILTER" /></property>
+		<property name="target" value="org.dspace.app.cris.model.ResearcherPage" />
+		<property name="facets" ref="facetsItemConfiguration" />
+		<property name="types">
+		    <map>
+			    <entry key="selected" value-ref="selectedComponent" />
+			    <entry key="journal" value-ref="journalComponent" />
+			    <entry key="conference" value-ref="conferenceComponent" />
+			    <entry key="book" value-ref="bookComponent" />
+			    <entry key="patent" value-ref="patentComponent" />
+			    <entry key="dataset" value-ref="datasetComponent" />
+			    <entry key="other" value-ref="otherComponent" />
+		    </map>
 		</property>
 	</bean>
 
@@ -420,6 +440,7 @@
 			<map>
 				<entry key="journalspublications" value-ref="publicationlistforjournals" />
 				<entry key="eventspublications" value-ref="publicationlistforevents" />
+				<entry key="fundingsfundings" value-ref="fundinglistforfundings" />
 			</map>
 		</property>
 	</bean>
@@ -517,4 +538,53 @@
 			<value>1</value>
 		</property>
 	</bean>
+
+	<bean id="fundinglistforfundings"
+		class="org.dspace.app.webui.cris.components.CRISDOConfigurerComponent">
+		<property name="relationConfiguration" ref="relationFUNDINGVSFUNDINGConfiguration" />
+		<property name="commonFilter"><util:constant static-field="org.dspace.app.webui.cris.util.RelationPreferenceUtil.HIDDEN_FILTER" /></property>		
+		<property name="target" value="org.dspace.app.cris.model.ResearchObject" />
+		<property name="facets" ref="facetsJournalsConfiguration"/>		
+		<property name="types">
+			<map>
+				<entry key="selected" value-ref="selectedFundingForFundingComponent" />				
+				<entry key="all" value-ref="allFundingForFundingComponent" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="selectedFundingForFundingComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
+		<property name="componentIdentifier" value="selected" />
+		<property name="facetQuery">
+			<value>relationpreferences.crisfunding.fundingpePartOfFunding.selected:{1}
+			</value>
+		</property>
+		<property name="order">
+			<value>asc</value>
+		</property>
+		<property name="rpp">
+			<value>20</value>
+		</property>
+		<property name="sortby">
+			<value>1</value>
+		</property>
+	</bean>
+
+	<bean id="allFundingForFundingComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
+		<property name="componentIdentifier" value="all" />
+		<property name="facetQuery">
+			<value>*:*</value>
+		</property>
+		<property name="order">
+			<value>asc</value>
+		</property>
+		<property name="rpp">
+			<value>20</value>
+		</property>
+		<property name="sortby">
+			<value>1</value>
+		</property>
+	</bean>
+
+
 </beans>
