@@ -111,7 +111,7 @@
 			<value>crisfunding.fundingpePartOfFunding_authority:{0}</value>
 		</property>
 	</bean>
-	<bean id="relationFUNDINGVSItemConfiguration" class="org.dspace.app.cris.configuration. RelationConfiguration">
+	<bean id="relationFUNDINGVSItemConfiguration" class="org.dspace.app.cris.configuration.RelationConfiguration">
 		<property name="relationName" value="crisfunding.publications" />
 		<property name="relationClass" value="org.dspace.content.Item" />
 		<property name="query">
