@@ -31,6 +31,7 @@
 				<entry key="dspaceitems" value-ref="publicationlist" />
 				<entry key="projects" value-ref="projectlist" />
 				<entry key="dspaceitemsforadvisor" value-ref="publicationlistforadvisor" />
+				<entry key="fundingcontractsforperson" value-ref="fundingcontractlistforperson" />
 			</map>
 		</property>
 	</bean>
@@ -76,6 +77,52 @@
 		</property>
 	</bean>
 
+	<bean id="fundingcontractlistforperson" class="org.dspace.app.webui.cris.components.CRISDOConfigurerComponent">
+		<property name="relationConfiguration" ref="relationRPVSFundingContract" />
+		<property name="commonFilter">
+			<util:constant static-field="org.dspace.app.webui.cris.util.RelationPreferenceUtil.HIDDEN_FILTER" />
+		</property>
+		<property name="target" value="org.dspace.app.cris.model.ResearcherPage" />
+		<property name="facets" ref="facetsItemConfiguration" />
+		<property name="types">
+			<map>
+				<entry key="selected" value-ref="selectedFundingContractForRPComponent" />
+				<entry key="all" value-ref="allFundingContractForRPComponent" />
+			</map>
+		</property>
+	</bean>
+	<bean id="selectedFundingContractForRPComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
+		<property name="componentIdentifier" value="selected" />
+		<property name="facetQuery">
+			<value>relationpreferences.crisfunding.fundingpeContractorPerson.selected:{1}
+			</value>
+		</property>
+		<property name="order">
+			<value>asc</value>
+		</property>
+		<property name="rpp">
+			<value>20</value>
+		</property>
+		<property name="sortby">
+			<value>1</value>
+		</property>
+	</bean>
+	<bean id="allFundingContractForRPComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
+		<property name="componentIdentifier" value="all" />
+		<property name="facetQuery">
+			<value>*:*</value>
+		</property>
+		<property name="order">
+			<value>asc</value>
+		</property>
+		<property name="rpp">
+			<value>20</value>
+		</property>
+		<property name="sortby">
+			<value>1</value>
+		</property>
+	</bean>
+	
 	<bean id="selectedComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
 		<property name="componentIdentifier" value="selected" />
 		<property name="facetQuery">
@@ -790,7 +837,7 @@
 			<value>1</value>
 		</property>
 	</bean>
-	
+
 	<bean id="allPublicationForFundingComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
 		<property name="componentIdentifier" value="all" />
 		<property name="facetQuery">
