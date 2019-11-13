@@ -31,7 +31,7 @@
 				<entry key="dspaceitems" value-ref="publicationlist" />
 				<entry key="projects" value-ref="projectlist" />
 				<entry key="dspaceitemsforadvisor" value-ref="publicationlistforadvisor" />
-				<entry key="fundingcontractsforperson" value-ref="fundingcontractlistforperson" />
+				<entry key="funding" value-ref="fundingcontractlistforperson" />
 			</map>
 		</property>
 	</bean>
@@ -122,7 +122,7 @@
 			<value>1</value>
 		</property>
 	</bean>
-	
+
 	<bean id="selectedComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
 		<property name="componentIdentifier" value="selected" />
 		<property name="facetQuery">
@@ -309,10 +309,54 @@
 				<entry key="rpprojects" value-ref="projectlistinvestigatorforou" />
 				<entry key="rp" value-ref="personslist" />
 				<entry key="organizations" value-ref="organizationslist" />
+				<entry key="fundings" value-ref="fundingcontractlistfororgunit" />
 			</map>
 		</property>
 	</bean>
-
+	<bean id="fundingcontractlistfororgunit" class="org.dspace.app.webui.cris.components.CRISDOConfigurerComponent">
+		<property name="relationConfiguration" ref="relationOUVSFundingContract" />
+		<property name="commonFilter">
+			<util:constant static-field="org.dspace.app.webui.cris.util.RelationPreferenceUtil.HIDDEN_FILTER" />
+		</property>
+		<property name="target" value="org.dspace.app.cris.model.OrganizationUnit" />
+		<property name="facets" ref="facetsItemConfiguration" />
+		<property name="types">
+			<map>
+				<entry key="selected" value-ref="selectedFundingContractForOUComponent" />
+				<entry key="all" value-ref="allFundingContractForOUComponent" />
+			</map>
+		</property>
+	</bean>
+	<bean id="selectedFundingContractForOUComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
+		<property name="componentIdentifier" value="selected" />
+		<property name="facetQuery">
+			<value>relationpreferences.crisfunding.fundingpeContractorOrgUnit.selected:{1}</value>
+		</property>
+		<property name="order">
+			<value>asc</value>
+		</property>
+		<property name="rpp">
+			<value>20</value>
+		</property>
+		<property name="sortby">
+			<value>1</value>
+		</property>
+	</bean>
+	<bean id="allFundingContractForOUComponent" class="org.dspace.app.webui.cris.components.BeanFacetComponent">
+		<property name="componentIdentifier" value="all" />
+		<property name="facetQuery">
+			<value>*:*</value>
+		</property>
+		<property name="order">
+			<value>asc</value>
+		</property>
+		<property name="rpp">
+			<value>20</value>
+		</property>
+		<property name="sortby">
+			<value>1</value>
+		</property>
+	</bean>
 	<!-- Publication list for OU entity -->
 	<bean id="publicationlistforou" class="org.dspace.app.webui.cris.components.ItemsConfigurerComponent">
 		<property name="relationConfiguration" ref="relationOUVSItemConfiguration" />
