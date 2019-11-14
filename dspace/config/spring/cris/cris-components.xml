@@ -31,7 +31,7 @@
 				<entry key="dspaceitems" value-ref="publicationlist" />
 				<entry key="projects" value-ref="projectlist" />
 				<entry key="dspaceitemsforadvisor" value-ref="publicationlistforadvisor" />
-				<entry key="funding" value-ref="fundingcontractlistforperson" />
+				<entry key="fundings" value-ref="fundingcontractlistforperson" />
 			</map>
 		</property>
 	</bean>
