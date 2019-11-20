@@ -701,7 +701,7 @@
 				<entry key="journalspublications" value-ref="publicationlistforjournals" />
 				<entry key="eventspublications" value-ref="publicationlistforevents" />
 				<entry key="fundingsfundings" value-ref="fundinglistforfundings" />
-				<entry key="fundingspublicactions" value-ref="publicationlistforfundings" />
+				<entry key="fundingspublications" value-ref="publicationlistforfundings" />
 			</map>
 		</property>
 	</bean>
