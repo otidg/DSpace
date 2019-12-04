@@ -2042,6 +2042,8 @@
 				<value>crisfunding.fundingcfFundingStartDate</value>
 			</list>
 		</property>
+		<property name="type" value="date" />
+		<property name="sortOrder" value="VALUE" />
 	</bean>
 
 	<bean id="searchFilterFundingOCDEClasification" class="org.dspace.discovery.configuration.DiscoverySearchMultilanguageFilterFacet">
