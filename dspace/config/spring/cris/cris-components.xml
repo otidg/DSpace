@@ -67,13 +67,7 @@
 		<property name="facets" ref="facetsItemConfiguration" />
 		<property name="types">
 			<map>
-				<entry key="selected" value-ref="selectedComponent" />
-				<entry key="journal" value-ref="journalComponent" />
-				<entry key="conference" value-ref="conferenceComponent" />
-				<entry key="book" value-ref="bookComponent" />
-				<entry key="patent" value-ref="patentComponent" />
-				<entry key="dataset" value-ref="datasetComponent" />
-				<entry key="other" value-ref="otherComponent" />
+				<entry key="all" value-ref="allTypesComponent" />
 			</map>
 		</property>
 	</bean>
