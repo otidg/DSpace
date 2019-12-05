@@ -1647,6 +1647,7 @@
 			<list>
 				<ref bean="searchFilterFundingType" />
 				<ref bean="searchFilterFundingKeywords" />
+				<ref bean="searchFilterFundingStartDate" />
 			</list>
 		</property>
 		<!--The sort filters for the discovery search -->
@@ -2034,6 +2035,17 @@
 		</property>
 	</bean>
 
+	<bean id="searchFilterFundingStartDate" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+		<property name="indexFieldName" value="fundingstardate" />
+		<property name="metadataFields">
+			<list>
+				<value>crisfunding.fundingcfFundingStartDate</value>
+			</list>
+		</property>
+		<property name="type" value="date" />
+		<property name="sortOrder" value="VALUE" />
+	</bean>
+
 	<bean id="searchFilterFundingOCDEClasification" class="org.dspace.discovery.configuration.DiscoverySearchMultilanguageFilterFacet">
 		<property name="indexFieldName" value="funding.ocde.clasification" />
 		<property name="metadataFields">
@@ -2239,12 +2251,13 @@
 			</list>
 		</constructor-arg>
 	</bean>
-	
+
 	<bean id="facetsFundingConfiguration" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
 				<ref bean="searchFilterFundingType" />
 				<ref bean="searchFilterFundingKeywords" />
+				<ref bean="searchFilterFundingStartDate" />
 			</list>
 		</constructor-arg>
 	</bean>

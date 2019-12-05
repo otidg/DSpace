@@ -118,7 +118,20 @@
 			<value>dc.relation.isFundedBy_authority:{0}</value>
 		</property>
 	</bean>
-
+	<bean id="relationRPVSFundingContract" class="org.dspace.app.cris.configuration.RelationConfiguration">
+		<property name="relationName" value="crisfunding.fundingpeContractorPerson" />
+		<property name="relationClass" value="org.dspace.app.cris.model.ResearchObject" />
+		<property name="query">
+			<value>crisfunding.fundingpeContractorPerson_authority:{0}</value>
+		</property>
+	</bean>
+	<bean id="relationOUVSFundingContract" class="org.dspace.app.cris.configuration.RelationConfiguration">
+		<property name="relationName" value="crisfunding.fundingpeContractorOrgUnit" />
+		<property name="relationClass" value="org.dspace.app.cris.model.ResearchObject" />
+		<property name="query">
+			<value>crisfunding.fundingpeContractorOrgUnit_authority:{0}</value>
+		</property>
+	</bean>
 	<bean class="org.dspace.app.cris.configuration.RelationPreferenceServiceConfiguration">
 		<property name="list">
 			<list>

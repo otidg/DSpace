@@ -18,6 +18,7 @@
 
 <%@ taglib uri="jdynatags" prefix="dyna"%>
 <%@ taglib uri="researchertags" prefix="researcher"%>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/cris-render-utils.js"></script>
 <c:set var="root" scope="request"><%=request.getContextPath()%></c:set>
 <c:set var="entity" value="${entity}" scope="request" />
 <c:choose>
