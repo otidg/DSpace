@@ -85,20 +85,24 @@
 	<%@ include file="discovery/static-globalsearch-component-facet.jsp" %>
 	<% } %>        
 		  </div>
-	<div class="col-md-4 sm-12 pull-<%= isRtl? "left":"right" %>">
-    <%@ include file="components/recent-submissions.jsp" %>
-	</div>
+	
+    
+	
+</div>
+<div class="row">
 	<div class="col-md-4 <%= isRtl ? "pull-right":""%>">
 		<%@ include file="components/most-viewed.jsp" %>	
 	</div>
 	<div class="col-md-4 <%= isRtl ? "pull-right":""%>">
 		<%@ include file="components/most-downloaded.jsp" %>
 	</div>
-	<!--<div class="col-md-4 <%= isRtl ? "pull-left":""%>">
+	<div class="col-md-4 sm-12 pull-<%= isRtl? "left":"right" %>">
+		<%@ include file="components/recent-submissions.jsp" %>
+	</div>
 	<%= sideNews %>
 	<%-- <%@ include file="discovery/static-tagcloud-facet.jsp" %> --%>
 	<%-- <%@ include file="components/most-cited.jsp" %> --%>
-	</div>-->
+	</div>
 </div>
 <%
 if (communities != null && communities.length != 0)
