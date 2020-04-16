@@ -17,7 +17,7 @@
                 <c:set var="drillDownInfo" >drillDown-${pieType}-${objectName}</c:set>
 
                 <c:set var="marker">${markerasnumber}e)</c:set>
-                <%@include file="../modules/map/map.jsp" %> 
+<%--                <%@include file="../modules/map/map.jsp" %> --%>
 
 <div id="statstabs">
 <div id="statstab-menu">

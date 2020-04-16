@@ -17,7 +17,7 @@
 	<c:when test="${data.resultBean.dataBeans[statType][objectName]['total'].dataTable[0][0] > 0}">
 		<c:set var="drillDownInfo" >drillDown-${pieType}-${objectName}</c:set>
 	
-		<%@include file="../modules/map/map.jsp" %> 
+<%--		<%@include file="../modules/map/map.jsp" %> --%>
 <div id="statstabs">
 <div id="statstab-menu">
 <ul>
