@@ -17,25 +17,25 @@
 	<c:when test="${data.resultBean.dataBeans[statType][objectName]['total'].dataTable[0][0] > 0}">
 		<c:set var="drillDownInfo" >drillDown-${pieType}-${objectName}</c:set>
 	
-		<%@include file="../modules/map/map.jsp" %> 
+<%--		<%@include file="../modules/map/map.jsp" %> --%>
 <div id="statstabs">
 <div id="statstab-menu">
 <ul>
-	<li id="statstab-menu-continent" class="statstab-current"><a id="statstab-ahref-continent" class="statstabahref" href="#statstab-content-continent">Region</a></li>
-	<li id="statstab-menu-countryCode"><a id="statstab-ahref-countryCode" class="statstabahref" href="#statstab-content-countryCode">Country</a></li>
-	<li id="statstab-menu-city"><a id="statstab-ahref-city" class="statstabahref" href="#statstab-content-city">City</a></li>
+	<li id="statstab-menu-continent" class="statstab-current"><a id="statstab-ahref-continent" class="statstabahref" href="#statstab-content-continent"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.region" /></a></li>
+	<li id="statstab-menu-countryCode"><a id="statstab-ahref-countryCode" class="statstabahref" href="#statstab-content-countryCode"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.country" /></a></li>
+	<li id="statstab-menu-city"><a id="statstab-ahref-city" class="statstabahref" href="#statstab-content-city"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.city" /></a></a></li>
 	<c:choose>
 	<c:when test="${mode == 'download' && objectName!='bitstream'}">	
 		<li id="statstab-menu-id"><a id="statstab-ahref-id" class="statstabahref" href="#statstab-content-id">File</a></li>
 	</c:when>
 	<c:otherwise>
-		<li id="statstab-menu-id" style="text-transform: capitalize"><a id="statstab-ahref-id" class="statstabahref" href="#statstab-content-id">${objectName}</a></li>
+		<li id="statstab-menu-id" style="text-transform: capitalize"><a id="statstab-ahref-id" class="statstabahref" href="#statstab-content-id"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.${objectName}" /></a></li>
 	</c:otherwise>
 	</c:choose>
 	<c:if test="${data.showExtraTab}">
-		<li id="statstab-menu-category"><a id="statstab-ahref-category" class="statstabahref" href="#statstab-content-category">Category</a></li>
+		<li id="statstab-menu-category"><a id="statstab-ahref-category" class="statstabahref" href="#statstab-content-category"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.category" /></a></a></li>
 	</c:if>
-	<li id="statstab-menu-time"><a id="statstab-ahref-time" class="statstabahref" href="#statstab-content-time">Time</a></li>
+	<li id="statstab-menu-time"><a id="statstab-ahref-time" class="statstabahref" href="#statstab-content-time"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.time" /></a></a></li>
 </ul>
 </div>
 <div id="statstab-content">

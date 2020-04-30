@@ -17,16 +17,16 @@
                 <c:set var="drillDownInfo" >drillDown-${pieType}-${objectName}</c:set>
 
                 <c:set var="marker">${markerasnumber}e)</c:set>
-                <%@include file="../modules/map/map.jsp" %> 
+<%--                <%@include file="../modules/map/map.jsp" %> --%>
 
 <div id="statstabs">
 <div id="statstab-menu">
 <ul>
-		<li id="statstab-menu-continent" class="statstab-current"><a id="statstab-ahref-continent" class="statstabahref" href="#statstab-content-continent">Region</a></li>
-		<li id="statstab-menu-countryCode"><a id="statstab-ahref-countryCode" class="statstabahref" href="#statstab-content-countryCode">Country</a></li>
-		<li id="statstab-menu-city"><a id="statstab-ahref-city" class="statstabahref" href="#statstab-content-city">City</a></li>        
-        <li id="statstab-menu-id"><a id="statstab-ahref-id" class="statstabahref" href="#statstab-content-id">Bitstream</a></li>
-        <li id="statstab-menu-time"><a id="statstab-ahref-time" class="statstabahref" href="#statstab-content-time">Time</a></li>
+		<li id="statstab-menu-continent" class="statstab-current"><a id="statstab-ahref-continent" class="statstabahref" href="#statstab-content-continent"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.region" /></a></li>
+		<li id="statstab-menu-countryCode"><a id="statstab-ahref-countryCode" class="statstabahref" href="#statstab-content-countryCode"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.country" /></a></li>
+		<li id="statstab-menu-city"><a id="statstab-ahref-city" class="statstabahref" href="#statstab-content-city"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.city" /></a></li>        
+        <li id="statstab-menu-id"><a id="statstab-ahref-id" class="statstabahref" href="#statstab-content-id"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.bitstream" /></a></li>
+        <li id="statstab-menu-time"><a id="statstab-ahref-time" class="statstabahref" href="#statstab-content-time"><fmt:message key="view.${data.jspKey}.${statType}.${objectName}.tab.time" /></a></li>
 </ul>
 </div>
 <div id="statstab-content">

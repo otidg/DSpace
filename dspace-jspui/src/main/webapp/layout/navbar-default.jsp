@@ -40,6 +40,7 @@
     // Is the logged in user an admin
     Boolean admin = (Boolean)request.getAttribute("is.admin");
     boolean isAdmin = (admin == null ? false : admin.booleanValue());
+    String handlePrefix = ConfigurationManager.getProperty("handle.prefix");
 
     // Get the current page, minus query string
     String currentPage = UIUtil.getOriginalURL(request);
@@ -136,6 +137,7 @@
 <%
  }
 %>
+          <li><a href="<%= request.getContextPath() %>/cris/stats/site.html?handle=<%=handlePrefix%>/0"><fmt:message key="jsp.layout.navbar-admin.sitestatistics"/></a></li>
           <li id="help-top-menu" class="<%= ( currentPage.endsWith( "/help" ) ? "active" : "" ) %>"><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") %>"><fmt:message key="jsp.layout.navbar-default.help"/></dspace:popup></li>
        </ul>
 
