@@ -30,7 +30,6 @@
 	Map<String, IComponent> mapInfo = ((Map<String, IComponent>)(request.getAttribute("components"))); 
 	boolean showBadgeCount = ConfigurationManager.getBooleanProperty("cris", "webui.tab.show.count.for.firstcomponent", false);
 %>
-	
 	<div id="tabs">
 		<ul>
 					<c:forEach items="${tabList}" var="area" varStatus="rowCounter">

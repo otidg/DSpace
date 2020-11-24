@@ -27,6 +27,7 @@
 <%@ page import="java.util.Locale"%>
 <%@ page import="javax.servlet.jsp.jstl.core.*" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+
 <%@ page import="org.dspace.core.I18nUtil" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.dspace.app.webui.components.RecentSubmissions" %>
@@ -70,10 +71,17 @@
 %>
 
 <dspace:layout locbar="nolink" titlekey="jsp.home.title" feedData="<%= feedData %>">
-<div class="row">
-	<div class="col-md-12 sm-12 pull-<%= isRtl? "right":"left" %>">
-        <%= topNews %>
-
+<div class="row nomargintop" >
+    
+    <div class="rowimage">
+        <img  class="topimgcytc img-responsive" src="<%= request.getContextPath() %>/image/s.1 .2-.png" width="100%" alt=""/>  
+    </div>    
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>
+    
+	<div class="col-md-12 sm-12 pull-<%= isRtl? "right":"left" %>">                                  
+        
 	<%
     	int discovery_panel_cols = 8;
     	int discovery_facet_cols = 4;
@@ -89,21 +97,21 @@
     
 	
 </div>
-<div class="row">
-	<div class="col-md-4 <%= isRtl ? "pull-right":""%>">
-		<%@ include file="components/most-viewed.jsp" %>	
+
+	<div class="col-md-12 <%= isRtl ? "pull-right":""%>">
+		<%@ include file="components/recent-submissions.jsp" %>	
 	</div>
-	<div class="col-md-4 <%= isRtl ? "pull-right":""%>">
+	<div class="col-md-12 <%= isRtl ? "pull-right":""%>">
+		<%@ include file="components/most-viewed.jsp" %>
+	</div>
+	<div class="col-md-12 sm-12 pull-<%= isRtl? "left":"right" %>">
 		<%@ include file="components/most-downloaded.jsp" %>
-	</div>
-	<div class="col-md-4 sm-12 pull-<%= isRtl? "left":"right" %>">
-		<%@ include file="components/recent-submissions.jsp" %>
 	</div>
 	<%= sideNews %>
 	<%-- <%@ include file="discovery/static-tagcloud-facet.jsp" %> --%>
 	<%-- <%@ include file="components/most-cited.jsp" %> --%>
-	</div>
-</div>
+	
+
 <%
 if (communities != null && communities.length != 0)
 {
@@ -125,6 +133,7 @@ if (communities != null && communities.length != 0)
         <img alt="Logo" class="img-responsive" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" /> 
 	</div>
 	<div class="col-md-9">
+            
 <% } else { %>
 	<div class="col-md-12">
 <% }  %>		
@@ -154,6 +163,7 @@ if (communities != null && communities.length != 0)
 	</div>
 	<% } %>	
 </div>
+
 <div class="row">
 	<%@ include file="discovery/static-tagcloud-facet.jsp" %>
 </div>

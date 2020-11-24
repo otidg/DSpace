@@ -25,7 +25,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-	
+
+
 <%@ page import="org.dspace.app.webui.servlet.admin.EditCommunitiesServlet" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.dspace.browse.ItemCountException" %>
@@ -33,14 +34,29 @@
 <%@ page import="org.dspace.content.Collection" %>
 <%@ page import="org.dspace.content.Community" %>
 <%@ page import="org.dspace.core.ConfigurationManager" %>
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+
+<%@ page import="java.util.Enumeration" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.Locale"%>
+<%@ page import="javax.servlet.jsp.jstl.core.*" %>
+
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.Map" %>
 
+
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
+
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
 <%
+    
+    Locale sessionLocale = UIUtil.getSessionLocale(request);
+    Config.set(request.getSession(), Config.FMT_LOCALE, sessionLocale);
+    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+    
     Community[] communities = (Community[]) request.getAttribute("communities");
     Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
@@ -62,7 +78,7 @@
         		+ c.getHandle() + "\"><img class=\"media-object img-responsive\" src=\"" + 
         		request.getContextPath() + "/retrieve/" + logo.getID() + "\" alt=\"community logo\"></a>");
         }
-        out.println( "<div class=\"media-body\"><h4 class=\"media-heading\"><a href=\"" + request.getContextPath() + "/handle/" 
+        out.println( "<div class=\"media-body\"><div class=\"divtitlecomuni  brdradius2\" ><h4 class=\"media-heading  cytc_mediaheading \"><a class=\"clrcytc_blue font_bolder \" href=\"" + request.getContextPath() + "/handle/" 
         	+ c.getHandle() + "\">" + c.getMetadata("name") + "</a>");
         if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
         {
@@ -71,9 +87,9 @@
 		out.println("</h4>");
 		if (StringUtils.isNotBlank(c.getMetadata("short_description")))
 		{
-			out.println(c.getMetadata("short_description"));
+			out.println(" <div class=\"divshortdesc bgcytc_lightblue clrcytc_white brdradiusright\">" +c.getMetadata("short_description")+ "</div>");
 		}
-		out.println("<br>");
+		out.println("</div><br>");
         // Get the collections in this community
         Collection[] cols = (Collection[]) collectionMap.get(c.getID());
         if (cols != null && cols.length > 0)
@@ -81,7 +97,7 @@
             out.println("<ul class=\"media-list\">");
             for (int j = 0; j < cols.length; j++)
             {
-                out.println("<li class=\"media well\">");
+                out.println("<li class=\"media well cytc_mediawell nobrdradius\">");
                 
                 Bitstream logoCol = cols[j].getLogo();
                 if (showLogos && logoCol != null)
@@ -90,7 +106,7 @@
                 		+ cols[j].getHandle() + "\"><img class=\"media-object img-responsive\" src=\"" + 
                 		request.getContextPath() + "/retrieve/" + logoCol.getID() + "\" alt=\"collection logo\"></a>");
                 }
-                out.println("<div class=\"media-body\"><h4 class=\"media-heading\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a>");
+                out.println("<div class=\"media-body\"><h4 class=\"media-heading \"><a class=\"clrcytc_darkgray \" href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a>");
 				if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
                 {
                     out.println(" [" + ic.getCount(cols[j]) + "]");
@@ -123,7 +139,25 @@
 %>
 
 <dspace:layout titlekey="jsp.community-list.title">
-
+<div class="row nomargintop" >
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>        
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>     
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div>    
+        
 <%
     if (admin_button)
     {
@@ -146,13 +180,20 @@
 <%
     }
 %>
-	<h1><fmt:message key="jsp.community-list.title"/></h1>
-	<p><fmt:message key="jsp.community-list.text1"/></p>
+<div class="col-md-12">
+    
+    <div class="container">
+        
+    
+
+        <br/>
+	<h1 class="clrcytc_blue htitlecomu padding_left"><fmt:message key="jsp.community-list.title"/></h1>
+        <p class="clrcytc_blue padding_left"><fmt:message key="jsp.community-list.text1"/></p>
 
 <% if (communities.length != 0)
 {
 %>
-    <ul class="media-list">
+    <ul class="media-list cytc_comunitylist">
 <%
         for (int i = 0; i < communities.length; i++)
         {
@@ -163,4 +204,6 @@
  
 <% }
 %>
+    </div>
+</div>
 </dspace:layout>

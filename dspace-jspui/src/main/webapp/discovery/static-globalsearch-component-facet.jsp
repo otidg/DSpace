@@ -26,8 +26,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils"%>
 <script type="text/javascript">
 <!--
-	jQuery(document).ready(function(){
-		
+	jQuery(document).ready(function(){		
 			jQuery("#searchglobalprocessor .search-panel .dropdown-menu li a").click(function(){
 				  jQuery('#search_param').val('');  
 				  jQuery('#search_param').val(jQuery(this).attr('title'));
@@ -97,13 +96,13 @@
 %>
 		
 		
-<hr/>
-<div class="row">
+
+<div class="row bgcytc_lightblue rowsearch">
 <form id="searchglobalprocessor" name="searchglobalprocessor" class="col-md-10 col-md-offset-1" action="<%= request.getContextPath() %>/simple-search" method="get">
 <div class="input-group">
-    <input type="text" class="form-control" name="query" placeholder="Search term...">
+    <input type="text" class="form-control" name="query" placeholder="T&eacute;mino de b&uacute;squeda / Search term" style="padding-left: 23px;">
     <span class="input-group-btn">
-        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+        <button class="btn btn-primary btncytc" type="submit"><i class="fa fa-search"></i></button>
     </span>    
     <div class="input-group-btn search-panel">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -142,7 +141,7 @@
 </div>
 </form>
 </div>
-<hr/>
+
 
 
 <%
@@ -173,28 +172,46 @@
 			}
 		}
 %>
-<div class="row">
+<div class="container">    
+	<a href="#group-right-info-popover-content"><div class="col-md-4 text-center" >
+		<p>                    
+                    <img src="<%= request.getContextPath() %>/image/v.4.1-.png" width="60%" alt="" id="group-left-info"  data-placement="right">
+                    <!--<span class="fa fa-file-text-o fa-5x" id="group-right-info"  data-placement="left"></span> -->
+                    <span class="badge numberbadge"><%= totGroupRight %></span>
+                </p>
+		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-right-info" /></h4>
+                <h4 class="smallh4">
+                    <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-right-info" /></small>                    
+                </h4>
+	</div></a>
 	<a href="#group-left-info-popover-content"><div class="col-md-4 text-center">
-		<h4 class="text-success"><fmt:message key="jsp.home.explore.group-left-info" /></h4>
-		<p><span class="fa fa-users fa-5x" id="group-left-info" data-placement="right"></span> <span class="badge"><%= totGroupLeft %></span></p>
-		<small class="label label-success"><fmt:message key="jsp.home.explore.title.group-left-info" /></small>
+		<p>
+                    <img src="<%= request.getContextPath() %>/image/i.2-.png" width="60%" alt="" id="group-center-info" data-placement="bottom">
+                    <!--<span class="fa fa-users fa-5x" id="group-left-info" data-placement="right"></span> -->
+                    <span class="badge numberbadge"><%= totGroupLeft %></span>
+                </p>
+		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-left-info" /></h4>
+                <h4 class="smallh4">
+                    <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-left-info" /></small>                    
+                </h4>
 	</div></a>
 	
 	<a href="#group-center-info-popover-content"><div class="col-md-4 text-center">
-		<h4 class="text-success"><fmt:message key="jsp.home.explore.group-center-info" /></h4>
-		<p><span class="fa fa-cogs fa-5x" id="group-center-info"  data-placement="bottom"></span> <span class="badge"><%= totGroupCenter%></span></p>
-		<small class="label label-success"><fmt:message key="jsp.home.explore.title.group-center-info" /></small>
+		<p>
+                    <img src="<%= request.getContextPath() %>/image/v.2-.png" width="60%" alt="" id="group-right-info"  data-placement="left">                    
+                    <!--<span class="fa fa-cogs fa-5x" id="group-center-info"  data-placement="bottom"></span> -->
+                    <span class="badge numberbadge"><%= totGroupCenter%></span>
+                </p>
+		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-center-info" /></h4>
+                <h4 class="smallh4">
+                    <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-center-info" /></small>                    
+                </h4>
 	</div></a>
 	
-	<a href="#group-right-info-popover-content"><div class="col-md-4 text-center">
-		<h4 class="text-success"><fmt:message key="jsp.home.explore.group-right-info" /></h4>
-		<p><span class="fa fa-file-text-o fa-5x" id="group-right-info"  data-placement="left"></span> <span class="badge"><%= totGroupRight %></span></p>
-		<small class="label label-success"><fmt:message key="jsp.home.explore.title.group-right-info" /></small>
-	</div></a>
 </div>
 
+<br/><br/><br/><br/>
 
-<hr/>
 
 <div id="group-left-info-popover-head" class="hide">
 	<fmt:message key="jsp.home.group-left.head"/>

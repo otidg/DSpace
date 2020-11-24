@@ -28,8 +28,14 @@
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
 <%
-    request.setAttribute("LanguageSwitch", "hide");
+    
+        String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));     
+        
+        request.setAttribute("LanguageSwitch", "hide");
 
 	//First, get the browse info object
 	BrowseInfo bi = (BrowseInfo) request.getAttribute("browse.info");
@@ -120,10 +126,32 @@
  jsp.layout.navbar-default.cris.${location}
 </c:set>
 <c:set var="locbarType"><c:choose><c:when test="${location eq null}"><c:set var="fmtkey"></c:set></c:when><c:otherwise>link</c:otherwise></c:choose></c:set>
+                
 <dspace:layout titlekey="browse.page-title" locbar="${locbarType}" parenttitlekey="${fmtkey}" parentlink="/cris/explore/${location}">
-
+<div class="row nomargintop" >
+    <h1 class="pagehidden">single.jsp</h1>
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>       
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div> 
+        <br/>    
+<div class="container ">
+    <div class="bgcytc_lightgray">
 	<%-- Build the header (careful use of spacing) --%>
-	<h2>
+	<h2 class="clrcytc_blue h2full">
 		<fmt:message key="browse.single.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/>
 	</h2>
 	
@@ -146,7 +174,7 @@
 	{
 %>
 		<span><fmt:message key="browse.nav.date.jump"/> </span>
-		<select name="year">
+		<select  name="year">
             <option selected="selected" value="-1"><fmt:message key="browse.nav.year"/></option>
 <%
 		int thisYear = DCDate.getCurrent().getYear();
@@ -175,8 +203,9 @@
 		}
 %>
         </select>
+        <br/>
         <input type="submit" class="btn btn-default" value="<fmt:message key="browse.nav.go"/>" />
-		<br/>
+		
         <label for="starts_with"><fmt:message key="browse.nav.type-year"/></label>
         <input type="text" name="starts_with" size="4" maxlength="4"/>
 <%
@@ -192,14 +221,17 @@
 		<label class="sr-only" for="starts_with"><fmt:message key="<%= browseNavKey %>"/></label>
 		<input type="text" name="vfocus" class="form-control" size="60" 
 			placeholder="<fmt:message key="<%= browseStartKey %>" />" />
-		<input type="submit" class="btn btn-default" value="<fmt:message key="browse.nav.go"/>" />
+                <br/>
+                <br/>
+		<input type="submit" class="bgcytc_blue clrcytc_white btn btn-default brdradius" value="<fmt:message key="browse.nav.go"/>" />
 		<br/>
+                <br/>
 		<span><fmt:message key="<%= browseJumpKey %>"/></span><br/>
 <%
 	    for (char c = 'A'; c <= 'Z'; c++)
 	    {
 %>
-        <a class="label label-default" href="<%= sharedLink %>&amp;starts_with=<%= c %>"><%= c %></a>
+        <a class="labelalpha label bgcytc_lightblue" href="<%= sharedLink %>&amp;starts_with=<%= c %>"><%= c %></a>
 <%
 	    }
 	}
@@ -222,13 +254,13 @@
 		}
 --%>
 		<label for="order"><fmt:message key="browse.single.order"/></label>
-		<select name="order">
+		<select name="order" class="moreclass bgcytc_lightgray clrcytc_darkgray font_bolder">
 			<option value="ASC" <%= ascSelected %>><fmt:message key="browse.order.asc" /></option>
 			<option value="DESC" <%= descSelected %>><fmt:message key="browse.order.desc" /></option>
 		</select>
 		
 		<label for="rpp"><fmt:message key="browse.single.rpp"/></label>
-		<select name="rpp">
+                <select name="rpp" class="moreclass bgcytc_lightgray clrcytc_darkgray font_bolder">
 <%
 	for (int i = 5; i <= 100 ; i += 5)
 	{
@@ -239,14 +271,14 @@
 	}
 %>
 		</select>
-		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
+		<input class=" bgcytc_green brdradius font_bolder clrcytc_white btn btn-default" type="submit" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
 	</form>
 	</div>
 
 <div class="row col-md-offset-3 col-md-6">
 	<%-- give us the top report on what we are looking at --%>
 	<div class="panel panel-primary">
-	<div class="panel-heading text-center">
+	<div class="panel-heading text-center bgcytc_blue nobrdradius">
 		<fmt:message key="browse.single.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
@@ -273,7 +305,7 @@
 %>
 	</div>
 
-<ul class="list-group">
+<ul class="list-group ultablelinks">
 <%
     String[][] results = bi.getStringResults();
 
@@ -332,4 +364,6 @@
 <%
 	}
 %>
+</div>
+</div>
 </dspace:layout>

@@ -45,7 +45,13 @@
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 <%@ page import="java.net.URLEncoder" %>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
 <%
+    
+    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+    
     // Retrieve attributes
     Collection collection = (Collection) request.getAttribute("collection");
     Community  community  = (Community) request.getAttribute("community");
@@ -114,9 +120,34 @@ function sortBy(idx, ord)
        jQuery("#sortform").submit();
 }
 </script>
+
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
-    <div class="well">
-    <div class="row"><div class="col-md-8"><h2><%= name %>
+<div class="row nomargintop" >   
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>     
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>       
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div>   
+
+<div class="container">        
+        
+<div class="col-md-9">       
+        <div class="container">
+            <br/>
+    <div class="well bgcytc_lightgray">
+        <div class="row"><div class="col-md-8"><h2 class="clrcytc_blue font_bolder"><%= name %>
 <%
             if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
             {
@@ -125,7 +156,7 @@ function sortBy(idx, ord)
 <%
             }
 %>
-		<small><fmt:message key="jsp.collection-home.heading1"/></small>
+        <br/><small><fmt:message key="jsp.collection-home.heading1"/></small><br/><br/>
       <a class="statisticsLink btn btn-info" href="<%= request.getContextPath() %>/cris/stats/collection.html?handle=<%= collection.getHandle() %>&type=selected"><fmt:message key="jsp.collection-home.display-statistics"/></a>
       </h2></div>
 <%  if (logo != null) { %>
@@ -139,11 +170,15 @@ function sortBy(idx, ord)
 	<%= intro %>
 <% 	} %>
   </div>
+  
   <p class="copyrightText"><%= copyright %></p>
   
   <%-- Browse --%>
-  <div class="panel panel-primary">
-  	<div class="panel-heading">
+  
+      
+  
+  <div class="panel panel-primary bgcytc_lightgray">
+  	<div class="panel-heading bgcytc_blue nobrdradius">
         <fmt:message key="jsp.general.browse"/>
 	</div>
 	<div class="panel-body">
@@ -156,7 +191,7 @@ function sortBy(idx, ord)
 	<form method="get" class="btn-group" action="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/browse">
 		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
 		<%-- <input type="hidden" name="collection" value="<%= collection.getHandle() %>" /> --%>
-		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
+		<input type="submit" class="btnvercontenidos btn btn-default" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
 	</form>
 <%	
 	}
@@ -169,7 +204,7 @@ function sortBy(idx, ord)
 			<input class="btn btn-success col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
           </form>
 <%  } %>
-        <form class="well" method="get" action="">
+        <form class="well bgcytc_lightgray" method="get" action="">
 <%  if (loggedIn && subscribed)
     { %>
                 <small><fmt:message key="jsp.collection-home.subscribed"/> <a href="<%= request.getContextPath() %>/subscribe"><fmt:message key="jsp.collection-home.info"/></a></small>
@@ -214,6 +249,7 @@ function sortBy(idx, ord)
         </form>
 
 <div class="row">
+    
 	<%@ include file="discovery/static-tagcloud-facet.jsp" %>
 </div>
 
@@ -245,7 +281,7 @@ function sortBy(idx, ord)
     <%-- give us the top report on what we are looking at --%>
     <fmt:message var="bi_name" key="<%= bi_name_key %>"/>
     <fmt:message var="so_name" key="<%= so_name_key %>"/>
-    <div class="browse_range">
+    <div class="divbrowse_range browse_range">
         <fmt:message key="jsp.collection-home.content.range">
             <fmt:param value="${bi_name}"/>
             <fmt:param value="${so_name}"/>
@@ -256,7 +292,7 @@ function sortBy(idx, ord)
     </div>
 
     <%--  do the top previous and next page links --%>
-    <div class="prev-next-links">
+    <div class="divbrowse_range prev-next-links">
 <% 
       if (bi.hasPrevPage())
       {
@@ -291,7 +327,7 @@ function sortBy(idx, ord)
 %>
 
     <%-- give us the bottom report on what we are looking at --%>
-    <div class="browse_range">
+    <div class="divbrowse_range browse_range">
         <fmt:message key="jsp.collection-home.content.range">
             <fmt:param value="${bi_name}"/>
             <fmt:param value="${so_name}"/>
@@ -302,7 +338,7 @@ function sortBy(idx, ord)
     </div>
 
     <%--  do the bottom previous and next page links --%>
-    <div class="prev-next-links">
+    <div class="divbrowse_range prev-next-links">
 <% 
       if (bi.hasPrevPage())
       {
@@ -333,11 +369,11 @@ function sortBy(idx, ord)
                 <input type="hidden" id="ssort_by" name="sort_by" value="" />
                 <input type="hidden" id="sorder" name="order" value="<%= direction %>" />
                 <input type="hidden" id="offset" name="offset" value="<%= request.getParameter("offset")==null?0:request.getParameter("offset") %>" />
-		</form>
+   </form>
 <%
    } // end of if (show_title)
 %>
-
+    
   <dspace:sidebar>
 <% if(admin_button || editor_button ) { %>
                  <div class="panel panel-warning">
@@ -416,6 +452,6 @@ function sortBy(idx, ord)
 	<%@ include file="discovery/static-sidebar-facet.jsp" %>
 	<% } %>	
   </dspace:sidebar>
-
+</div>
 </dspace:layout>
 

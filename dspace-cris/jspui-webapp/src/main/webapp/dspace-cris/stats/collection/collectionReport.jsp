@@ -44,8 +44,7 @@
 		}
 	</script>
 </c:set>
-
-
+        
 <dspace:layout titlekey="jsp.statistics.item-title">
 
 <div id="content">

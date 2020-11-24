@@ -20,10 +20,10 @@
 </c:set>
  <div style="margin-top:2.3em;" class="form-group">
 	<div class="col-md-12">
-		<div>
+            <div class="divstatisticctyc">
 		<ul class="nav nav-tabs">
-			<li class="<c:if test="${type ne 'upload' && type ne 'community' && type ne 'collection' && type ne 'bitstream'}">active</c:if>"><a class="ui-tabs-anchor" href="${link}&amp;type=item"><fmt:message key="view.stats-site.top.item.page.title" /></a></li>
-			<li class="<c:if test="${type eq 'bitstream'}">active</c:if>"><a class="ui-tabs-anchor" href="${link}&amp;type=bitstream"><fmt:message key="view.stats-site.top.bitstream.page.title" /></a></li>
+			<li class="<c:if test="${type ne 'upload' && type ne 'community' && type ne 'collection' && type ne 'bitstream'}">active</c:if>"><a class="ui-tabs-anchor brdradius" href="${link}&amp;type=item"><fmt:message key="view.stats-site.top.item.page.title" /></a></li>
+			<li class="<c:if test="${type eq 'bitstream'}">active</c:if>"><a class="ui-tabs-anchor brdradius" href="${link}&amp;type=bitstream"><fmt:message key="view.stats-site.top.bitstream.page.title" /></a></li>
 			<c:if test="${data.seeUpload}">			
 				<li class="<c:if test="${type eq 'upload'}">active</c:if>"><a class="ui-tabs-anchor" href="${link}&amp;type=upload"><fmt:message key="view.stats-site.upload.page.title" /></a></li>
 			</c:if>

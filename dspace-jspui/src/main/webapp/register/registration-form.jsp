@@ -48,7 +48,6 @@
     attr = (Boolean) request.getAttribute("set.password");
     boolean setPassword = (attr != null && attr.booleanValue());
 %>
-
 <dspace:layout style="submission" titlekey="jsp.register.registration-form.title" nocache="true">
 
     <%-- <h1>Registration Information</h1> --%>

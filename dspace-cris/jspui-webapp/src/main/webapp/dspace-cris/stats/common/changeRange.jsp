@@ -7,6 +7,7 @@
     https://github.com/CILEA/dspace-cris/wiki/License
 
 --%>
+
 <div class="modal fade" id="stats-date-change-dialog" tabindex="-1" role="dialog" aria-labelledby="StatsDataChange">
   <div class="modal-dialog" role="document">
     <form class="modal-content" id="formChangeRange">

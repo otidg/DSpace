@@ -19,6 +19,9 @@
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.dspace.eperson.EPerson" %>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
 <%@ taglib uri="jdynatags" prefix="dyna"%>
 <%@ taglib uri="researchertags" prefix="researcher"%>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/cris-render-utils.js"></script>
@@ -41,6 +44,8 @@
 	</c:if>
 </c:forEach>
 <%
+
+    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));     
 
     String subscribe = request.getParameter("subscribe");
 	boolean showSubMsg = false;
@@ -267,13 +272,35 @@
 </c:set>
 
 <dspace:layout title="${metaprofilename}">
+<div class="row nomargintop" >
+    <h1 class="pagehidden">Researcher detail page.jsp</h1>
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>            
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>    
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div> 
+<div class="container">
+    
+
 
 <div id="content">
 <div class="row">
 	<div class="col-lg-12">
 		<div class="form-inline">
 	         <div class="form-group">
-			 	<h1>
+			 	<h1 class="clrcytc_blue">
 				 	<fmt:message key="jsp.layout.detail.title-first" />
 				 	<c:choose>
 						<c:when test="${!empty entity.preferredName.value}">
@@ -304,20 +331,20 @@
 				
 			 </div>
 			 <div class="form-group pull-right" style="margin-top:1.5em;">
-				<div class="btn-group">
+				<div class="btngrp_cytc btn-group">
 					<% if(networkModuleEnabled) { %>
-					  <a class="btn btn-default" href="<%= request.getContextPath() %>/cris/network/${researcher.crisID}"><i class="fa fa-globe"></i> <fmt:message key="jsp.cris.detail.link.network" /> </a>
+					  <a class="btn btn-default bgcytc_green clrcytc_white brdradius" href="<%= request.getContextPath() %>/cris/network/${researcher.crisID}"><fmt:message key="jsp.cris.detail.link.network" />&nbsp;&nbsp;<i class="fa fa-globe"></i>  </a>
 					<% } %>
-					<a class="btn btn-default"  href="<%= request.getContextPath() %>/cris/stats/rp.html?id=${researcher.uuid}"><i class="fa fa-bar-chart-o"></i> <fmt:message key="jsp.cris.detail.link.statistics" /> </a>
+					<a class="btn btn-default bgcytc_blue clrcytc_white brdradius"  href="<%= request.getContextPath() %>/cris/stats/rp.html?id=${researcher.uuid}"> <fmt:message key="jsp.cris.detail.link.statistics" /> &nbsp;&nbsp;<i class="fa fa-bar-chart-o"></i></a>
 	  				<c:choose>
         					<c:when test="${!subscribed}">
-                				<a class="btn btn-default" href="<%= request.getContextPath() %>/cris/tools/subscription/subscribe?uuid=${researcher.uuid}"><i class="fa fa-bell"></i> <fmt:message key="jsp.cris.detail.link.email.alert" /></a>
+                				<a class="btn btn-default bgcytc_lightblue clrcytc_white brdradius" href="<%= request.getContextPath() %>/cris/tools/subscription/subscribe?uuid=${researcher.uuid}"><fmt:message key="jsp.cris.detail.link.email.alert" />&nbsp;&nbsp;<i class="fa fa-bell"></i> </a>
         					</c:when>
         					<c:otherwise>
-                				<a class="btn btn-default" href="<%= request.getContextPath() %>/cris/tools/subscription/unsubscribe?uuid=${researcher.uuid}"><i class="fa fa-stop"></i> <fmt:message key="jsp.cris.detail.link.email.alert.remove" /> </a>
+                				<a class="btn btn-default bgcytc_green clrcytc_white brdradius" href="<%= request.getContextPath() %>/cris/tools/subscription/unsubscribe?uuid=${researcher.uuid}"><fmt:message key="jsp.cris.detail.link.email.alert.remove" /> &nbsp;&nbsp;<i class="fa fa-stop"></i> </a>
         					</c:otherwise>
 					</c:choose>
-	  				<a class="btn btn-default" href="<%= request.getContextPath() %>/open-search?query=${fieldRSS}:${authority}&amp;format=rss"><i class="fa fa-rss"></i> <fmt:message key="jsp.cris.detail.link.rssfeed" /></a>
+	  				<a class="btn btn-default bgcytc_green clrcytc_white brdradius" href="<%= request.getContextPath() %>/open-search?query=${fieldRSS}:${authority}&amp;format=rss"> <fmt:message key="jsp.cris.detail.link.rssfeed" />&nbsp;&nbsp;<i class="fa fa-rss"></i></a>
 				</div>
 				<c:if test="${(researcher_page_menu || canEdit) && !empty researcher}">
 				<div class="btn-group">
@@ -505,5 +532,6 @@
 </div><!-- /.modal -->
 
 </dspace:layout>
+</div> 
 </c:otherwise>
 </c:choose>

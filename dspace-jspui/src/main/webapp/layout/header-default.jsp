@@ -79,7 +79,10 @@
 		<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/static/css/responsive.bootstrap.min.css"/>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/dspace-theme.css" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/bootstrap-datetimepicker.min.css" />
-			<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/static/css/select.dataTables.min.css" />
+			<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/static/css/select.dataTables.min.css" />			<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/static/css/select.dataTables.min.css" />
+			<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/static/css/concytec.css" />
+
+                        
 <%
     if (!"NONE".equals(feedRef))
     {
@@ -200,12 +203,25 @@
     <body class="undernavigation" dir="<%= LocaleUIHelper.ifLtr(request, "ltr","rtl") %>">
 <a class="sr-only" href="#content">Skip navigation</a>
 <header class="navbar navbar-inverse navbar-square">    
+    
+    <div class="bgcytc_banner row bgcytc_white">
+        
+            <div class="col-md-6">
+                <img class="topimgcytc" src="<%= request.getContextPath() %>/image/l.2-.png" width="47%" alt="">
+            </div>
+        
+            <div class="col-md-6">
+                &nbsp;
+            </div>            
+    </div>        
     <%
     if (!navbar.equals("off"))
     {
 %>
             <div class="container-fluid">
-                <dspace:include page="<%= navbar %>" />
+                
+                    <dspace:include page="<%= navbar %>" />
+                                            
             </div>
 <%
     }
@@ -213,7 +229,9 @@
     {
     	%>
         <div class="container-fluid">
+            
             <dspace:include page="/layout/navbar-minimal.jsp" />
+            
         </div>
 <%    	
     }
@@ -293,9 +311,9 @@ window.cookieconsent.initialise({
 %>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
+		<!--<div class="col-sm-12">
                 <dspace:include page="/layout/location-bar.jsp" />
-        </div>        
+                </div>        -->
     </div>
 </div>                
 <%
@@ -305,8 +323,10 @@ window.cookieconsent.initialise({
 
 
         <%-- Page contents --%>
-<div class="container fullheight">
+        
+<div class=" fullheight">        
 <% if (request.getAttribute("dspace.layout.sidebar") != null) { %>
 	<div class="row">
-		<div class="col-md-9 <%= isRtl ? "pull-right":"" %>">
+            
+		<!--<div class="col-md-9 <%= isRtl ? "pull-right":"" %>">-->
 <% } %>		

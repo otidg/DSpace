@@ -7,15 +7,18 @@
     http://www.dspace.org/license/
 
 --%>
+<div class="row">   
 <% if(mostViewedItem != null && mostViewedItem.getItems().size()!=0){ %>
-        <div class="panel panel-primary vertical-carousel" data-itemstoshow="3">        
+        <div class="panel panel-primary vertical-carousel panelmostviewed" data-itemstoshow="3">        
         <div class="panel-heading">
           <h3 class="panel-title">
-          		<fmt:message key="jsp.components.most-viewed"/>
+                <div class="container">
+                    <fmt:message key="jsp.components.most-viewed"/>                  
+                </div>
           </h3>
        </div>   
-	   <div class="panel-body">
-	   		<div class="list-groups">
+	   <div class="container panel-body">
+	   		<div class="list-groups mostviewed_item">                            
 <% for(MostViewedItem mvi : mostViewedItem.getItems()){
 		IGlobalSearchResult item = mvi.getItem();
 		if ( mvi.getVisits()==null ) {
@@ -37,3 +40,4 @@
 <%
 }
 %>
+</div>

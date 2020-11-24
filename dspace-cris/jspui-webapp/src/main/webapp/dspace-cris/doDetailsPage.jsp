@@ -16,6 +16,15 @@
 
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 
+
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
+<%
+        String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+
+%>
+
 <%@ taglib uri="jdynatags" prefix="dyna"%>
 <%@ taglib uri="researchertags" prefix="researcher"%>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/cris-render-utils.js"></script>
@@ -169,13 +178,32 @@
 </c:set>
 
 <dspace:layout title="${entity.typo.label} ${entity.name}">
-
+<div class="row nomargintop" >
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
+    </div>           
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>    
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div>  
+<div class="container">
+    <br/><br/>    
 <div id="content">
 <div class="row">
 	<div class="col-lg-12">
 		<div class="form-inline">
 	         <div class="form-group">
-				 <h1><fmt:message key="jsp.layout.do.detail.name" /> ${entity.name}</h1>
+				 <h1 class="clrcytc_blue"><fmt:message key="jsp.layout.do.detail.name" /> ${entity.name}</h1>
 			      <%
 			      if (isAdmin) {
 				  %>		
@@ -191,17 +219,17 @@
 				  %>	
 			</div>
 		 	<div class="form-group pull-right" style="margin-top:1.5em;">
-				<div class="btn-group">
-					<a class="btn btn-default" href="<%= request.getContextPath() %>/cris/stats/do.html?id=${entity.uuid}"><i class="fa fa-bar-chart-o"></i> <fmt:message key="jsp.cris.detail.link.statistics" /></a>
+				<div class="btngrp_cytc btn-group">
+					<a class="btn btn-default bgcytc_blue clrcytc_white brdradius" href="<%= request.getContextPath() %>/cris/stats/do.html?id=${entity.uuid}"><fmt:message key="jsp.cris.detail.link.statistics" />&nbsp;&nbsp;<i class="fa fa-bar-chart-o"></i> </a>
 					<c:choose>
 	       					<c:when test="${!subscribed}">
-	               				<a class="btn btn-default" href="<%= request.getContextPath() %>/cris/tools/subscription/subscribe?uuid=${entity.uuid}"><i class="fa fa-bell"></i> <fmt:message key="jsp.cris.detail.link.email.alert" /></a>
+	               				<a class="btn btn-default bgcytc_lightblue clrcytc_white brdradius" href="<%= request.getContextPath() %>/cris/tools/subscription/subscribe?uuid=${entity.uuid}"> <fmt:message key="jsp.cris.detail.link.email.alert" />&nbsp;&nbsp;<i class="fa fa-bell"></i></a>
 	       					</c:when>
 	       					<c:otherwise>
-	               				<a class="btn btn-default" href="<%= request.getContextPath() %>/cris/tools/subscription/unsubscribe?uuid=${entity.uuid}"><i class="fa fa-bell-o"></i> <fmt:message key="jsp.cris.detail.link.email.alert.remove" /></a>
+	               				<a class="btn btn-default bgcytc_lightblue clrcytc_white brdradius" href="<%= request.getContextPath() %>/cris/tools/subscription/unsubscribe?uuid=${entity.uuid}"> <fmt:message key="jsp.cris.detail.link.email.alert.remove" />&nbsp;&nbsp;<i class="fa fa-bell-o"></i></a>
 	       					</c:otherwise>      
 					</c:choose>			
-					<a class="btn btn-default" href="<%= request.getContextPath() %>/open-search?query=dc.relation.ispartof_authority:${authority}&amp;format=rss"><i class="fa fa-rss"></i> <fmt:message key="jsp.cris.detail.link.rssfeed" /></a>
+					<a class="btn btn-default bgcytc_green clrcytc_white brdradius" href="<%= request.getContextPath() %>/open-search?query=dc.relation.ispartof_authority:${authority}&amp;format=rss"> <fmt:message key="jsp.cris.detail.link.rssfeed" />&nbsp;&nbsp;<i class="fa fa-rss"></i></a>
 				</div>
 				<c:if test="${(do_page_menu || canEdit) && !empty entity}"> 		
 					<c:if test="${!empty addModeType && addModeType=='display'}">
@@ -244,6 +272,7 @@
 		</div>
 
 </div>
+</div>                            
 </dspace:layout>
 </c:otherwise>
 </c:choose>

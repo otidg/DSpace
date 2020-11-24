@@ -21,7 +21,7 @@
 <div id="statstabs"> 
 <div id="statstab-content">
 	<div id="statstab-content-time" class="statstab-content-item">		
-		<%@include file="time.jsp"%> 
+            <%@include file="time.jsp"%> 
 	</div>
 	<c:choose>	
 	<c:when test="${mode == 'download' && objectName!='bitstream'}">

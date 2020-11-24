@@ -29,6 +29,14 @@
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.dspace.eperson.EPerson" %>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
+<%
+        String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+
+%>
+
 <c:set var="dspace.layout.head" scope="request">
 <script type="text/javascript">
 function sortBy(idx, ord)
@@ -217,6 +225,27 @@ function sortBy(idx, ord)
 </c:set>
 <c:set var="locbarType"><c:choose><c:when test="${location eq null}"><c:set var="fmtkey"></c:set></c:when><c:otherwise>link</c:otherwise></c:choose></c:set>
 <dspace:layout titlekey="browse.page-title" locbar="${locbarType}" parenttitlekey="${fmtkey}" parentlink="/cris/explore/${location}" navbar="<%=layoutNavbar %>">
+<div class="row nomargintop" >
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>            
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>     
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div> 
+        <br/>
+<div class="container ">
+    <div class="">
 <script type="text/javascript">
 <!--
 
@@ -253,7 +282,7 @@ jQuery(document).ready(function() {
 
 </script>
 	<%-- Build the header (careful use of spacing) --%>
-	<h2>
+	<h2 class="clrcytc_blue h2full">
 		<fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> 
 			<% if (StringUtils.isNotBlank(humanValue)) { %><i class="fa fa-chevron-right"></i> <%= humanValue %> <% } %>
 	</h2>
@@ -299,7 +328,7 @@ jQuery(document).ready(function() {
                 <input type="hidden" id="sorder" name="order" value="<%= direction %>" />
 </form>
 
-	<form class="form-inline" method="get" action="<%= formaction %>">
+	<form class="form-browse form-inline" method="get" action="<%= formaction %>">
 			<input type="hidden" name="type" value="<%= bix.getName() %>"/>
 			<input type="hidden" name="sort_by" value="<%= so.getNumber() %>"/>
 			<input type="hidden" name="order" value="<%= direction %>"/>
@@ -351,7 +380,7 @@ jQuery(document).ready(function() {
 		}
 %>
         </select>
-        <input type="submit" class="btn btn-default" value="<fmt:message key="browse.nav.go"/>" />
+        <input type="submit" class="bgcytc_lightblue brdradius font_bolder clrcytc_white  btn btn-default" value="<fmt:message key="browse.nav.go"/>" />
         <br/>
         <label for="starts_with"><fmt:message key="browse.nav.type-year"/></label>
         <input type="text" name="starts_with" size="4" maxlength="4"/>
@@ -367,17 +396,17 @@ jQuery(document).ready(function() {
 		<fmt:message key="<%= startWithKey %>"/>
 	</label>
 	<input class="form-control" type="text" name="vfocus" size="60" 
-		placeholder="<fmt:message key="<%= startWithKey %>"/>" />
-	<input type="submit" class="btn btn-default" value="<fmt:message key="browse.nav.go"/>" />
-	<br/>	    					
+               placeholder="<fmt:message key="<%= startWithKey %>"/>" /><br/><br/>
+	<input type="submit" class="bgcytc_blue brdradius font_bolder clrcytc_white  btn btn-default" value="<fmt:message key="browse.nav.go"/>" />
+	<br/><br/>
 		<span><fmt:message key="<%= jumpKey %>"/></span>
-	<br/>
-	                        <a class="label label-default" href="<%= sharedLink %>&amp;starts_with=0">0-9</a>
+	<br/><br/>
+	                        <a class="labelalpha label bgcytc_lightblue label " href="<%= sharedLink %>&amp;starts_with=0">0-9</a>
 <%
 	    for (char c = 'A'; c <= 'Z'; c++)
 	    {
 %>
-	                        <a class="label label-default" href="<%= sharedLink %>&amp;starts_with=<%= c %>"><%= c %></a>
+	                        <a class="labelalpha label bgcytc_lightblue label " href="<%= sharedLink %>&amp;starts_with=<%= c %>"><%= c %></a>
 <%
 	    }
 	}
@@ -423,7 +452,7 @@ jQuery(document).ready(function() {
 	{
 %>
 		<label for="sort_by"><fmt:message key="browse.full.sort-by"/></label>
-		<select class="form-control" name="sort_by">
+		<select class="form-control bgcytc_green brdradius clrcytc_white font_bolder" name="sort_by">
 <%
 		for (SortOption sortBy : sortOptions)
 		{
@@ -447,13 +476,13 @@ jQuery(document).ready(function() {
 	}
 %>
 		<label for="order"><fmt:message key="browse.full.order"/></label>
-		<select class="form-control" name="order">
+		<select class="form-control bgcytc_blue brdradius clrcytc_white font_bolder" name="order">
 			<option value="ASC" <%= ascSelected %>><fmt:message key="browse.order.asc" /></option>
 			<option value="DESC" <%= descSelected %>><fmt:message key="browse.order.desc" /></option>
 		</select>
 
 		<label for="rpp"><fmt:message key="browse.full.rpp"/></label>
-		<select class="form-control" name="rpp">
+		<select class="form-control bgcytc_lightblue brdradius clrcytc_white font_bolder" name="rpp">
 <%
 	for (int i = 5; i <= 100 ; i += 5)
 	{
@@ -466,7 +495,7 @@ jQuery(document).ready(function() {
 		</select>
 
 		<label for="etal"><fmt:message key="browse.full.etal" /></label>
-		<select name="etal">
+		<select class="bgcytc_lightgray clrcytc_darkgray font_bolder moreclass" name="etal" >
 <%
 	String unlimitedSelect = "";
 	if (bi.getEtAl() == -1)
@@ -517,13 +546,13 @@ jQuery(document).ready(function() {
 	}
 %>
 		</select>
-
-		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
+                <br/><br/>
+		<input type="submit" class="bgcytc_green brdradius font_bolder clrcytc_white btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
 
 <%
     if (admin_button && !withdrawn && !privateitems)
     {
-        %><input type="submit" class="btn btn-default" name="submit_export_metadata" value="<fmt:message key="jsp.general.metadataexport.button"/>" /><%
+        %><input type="submit" class=" btn btn-default" name="submit_export_metadata" value="<fmt:message key="jsp.general.metadataexport.button"/>" /><%
     }
 %>
 
@@ -531,7 +560,7 @@ jQuery(document).ready(function() {
 	</div>
 <div class="panel panel-primary">
 	<%-- give us the top report on what we are looking at --%>
-	<div class="panel-heading text-center">
+	<div class="panel-heading text-center bgcytc_blue nobrdradius">
 		<fmt:message key="browse.full.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
@@ -543,7 +572,7 @@ jQuery(document).ready(function() {
 	if (bi.hasPrevPage())
 	{
 %>
-	<a class="pull-left" href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
+	<a class="pull-left clrcytc_white font_bolder" href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
 <%
 	}
 %>
@@ -552,7 +581,7 @@ jQuery(document).ready(function() {
 	if (bi.hasNextPage())
 	{
 %>
-	&nbsp;<a class="pull-right" href="<%= next %>"><fmt:message key="browse.full.next"/></a>
+	&nbsp;<a class="pull-right clrcytc_white font_bolder" href="<%= next %>"><fmt:message key="browse.full.next"/></a>
 <%
 	}
 %>
@@ -586,7 +615,7 @@ jQuery(document).ready(function() {
 		<label class="checkbox-inline">
 			<input type="checkbox" id="email" name="email" value="true"/><fmt:message key="exportcitation.option.email" />
 		</label>
-			<input id="export-submit-button" class="btn btn-default" type="submit" name="submit_export" value="<fmt:message key="exportcitation.option.submitexport" />" disabled/>
+			<input id="export-submit-button" class="bgcytc_green brdradius font_bolder clrcytc_white   btn btn-default" type="submit" name="submit_export" value="<fmt:message key="exportcitation.option.submitexport" />" disabled/>
 		</div>
 	<%
 	 	}
@@ -630,7 +659,7 @@ jQuery(document).ready(function() {
 	if (bi.hasPrevPage())
 	{
 %>
-	<a class="pull-left" href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
+	<a class="pull-left clrcytc_lightblue font_bolder" href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
 <%
 	}
 %>
@@ -639,7 +668,7 @@ jQuery(document).ready(function() {
 	if (bi.hasNextPage())
 	{
 %>
-	&nbsp;<a class="pull-right" href="<%= next %>"><fmt:message key="browse.full.next"/></a>
+	&nbsp;<a class="pull-right clrcytc_lightblue font_bolder" href="<%= next %>"><fmt:message key="browse.full.next"/></a>
 <%
 	}
 %>
@@ -651,3 +680,5 @@ jQuery(document).ready(function() {
 	--%>
 
 </dspace:layout>
+</div>    
+</div>
