@@ -19,7 +19,7 @@
 
  <div style="margin-top:2.3em;" class="form-group">
 	<div class="col-md-12">
-		<div>
+            <div class="divstatisticctyc">
 		<ul class="nav nav-tabs">
 <c:forEach items="${data.rightMenu}" var="menu">
 	<c:set var="active">
@@ -33,8 +33,8 @@
 	</ul>
 	</div>
 	<div class="titlestats tab-content with-padding">
-		<div class="btn-group pull-right">
-			<a href="#" class="btn btn-default" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.statistics.label" /> <span class="fa fa-caret-down"></span></a>
+		<div class="btn-group pull-right btngrp_cytc">
+			<a href="#" class="btn btn-default bgcytc_lightblue clrcytc_white brdradius" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.statistics.label" /> <span class="fa fa-caret-down"></span></a>
 			<!-- <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
    				<i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
  				</button> -->
@@ -79,8 +79,8 @@
 				</li>
 			</ul>
 		</div>
-		<div class="btn-group  pull-right">
-		<a href="#" class="btn btn-default" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.rss.label" /> <span class="fa fa-caret-down"></span></a>
+		<div class="btn-group btngrp_cytc  pull-right">
+		<a href="#" class="btn btn-default bgcytc_green clrcytc_white brdradius" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.rss.label" /> <span class="fa fa-caret-down"></span></a>
 		<!-- <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
   			<i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
 		</button> -->

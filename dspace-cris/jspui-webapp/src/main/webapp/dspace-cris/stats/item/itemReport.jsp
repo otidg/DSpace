@@ -45,7 +45,18 @@
 </c:set>
 
 <dspace:layout titlekey="jsp.statistics.item-title">
-
+<div class="row nomargintop" >
+    <div class="rowimage">
+            <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>    
+</div>        
+    
+<div class=" rowtitlecytc bgcytc_blue ">    
+        <h5 class=" panel-heading ">            
+            Repositorio CONCYTEC              
+        </h5>                        
+</div>
+    <h1>itemReport.jsp</h1>
 <div id="content">
 	<div class="col-lg-12">
 		<div class="form-inline">

@@ -169,7 +169,7 @@
 </c:set>
 
 <dspace:layout title="${entity.name}">
-
+    <h1 class="pagehidden">ProjectDetail.jsp</h1>
 <div id="content">
   <div class="row">
 	 <div class="col-lg-12">

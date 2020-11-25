@@ -92,7 +92,7 @@
 					<repeatable>true</repeatable>
 					<label>Tipo de Documento de Identidad del Autor (renati.author.[dni, cext, pasaporte, cedula])</label>
 					<input-type value-pairs-name="renati_author_identifier">qualdrop_value</input-type>
-					<hint>Seleccione el tipo de documento e ingrese los dígitos [por ejemplo: 40590542] para cada autor que se incluya.</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Seleccione el tipo de documento e ingrese los dígitos [por ejemplo: 40590542] para cada autor que se incluya.</hint>
 					<required></required>
 				</field>
 								<field>
@@ -102,8 +102,8 @@
 					<repeatable>true</repeatable>
 					<label>Asesor (dc.contributor.advisor)</label>
 					<input-type>onebox</input-type>
-					<hint>Ingrese al(los) asesore(s) en el orden Apellido(s), Nombre(es) [por ejemplo, Smith, Josh o Smith, J] según indique la fuente.</hint>
-					<required>Debe ingresar el nombre del asesor de esta publicación</required>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese al(los) asesore(s) en el orden Apellido(s), Nombre(es) [por ejemplo, Smith, Josh o Smith, J] según indique la fuente.</hint>
+					<required></required>
 				</field>
 								<field>
 					<dc-schema>renati</dc-schema>
@@ -112,7 +112,7 @@
 					<repeatable>true</repeatable>
 					<label>Tipo de Documento de Identidad del Asesor (renati.advisor.[dni, cext, pasaporte, cedula])</label>
 					<input-type value-pairs-name="renati_advisor_identifier">qualdrop_value</input-type>
-					<hint>Seleccione el tipo de documento e ingrese los dígitos [por ejemplo: 40590542] para cada asesor que se incluya.</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Seleccione el tipo de documento e ingrese los dígitos [por ejemplo: 40590542] para cada asesor que se incluya.</hint>
 					<required></required>
 				</field>
 								<field>
@@ -122,7 +122,7 @@
 					<repeatable>true</repeatable>
 					<label>ORCID del asesor (renati.advisor.orcid)</label>
 					<input-type>onebox</input-type>
-					<hint>Ingrese el identificador ORCID del Asesor de esta publicación</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el identificador ORCID del Asesor de esta publicación</hint>
 					<required></required>
 				</field>
 				<field>
@@ -172,8 +172,8 @@
 					<repeatable>true</repeatable>
 					<label>País de publicación (dc.publisher.country)</label>
 					<input-type value-pairs-name="common_publisher">dropdown</input-type>
-					<hint>Ingrese según la normalización ISO 3166-1 alfa-2 [Por ejemplo, PE para referir a Perú]</hint>
-					<required>Debe ingresar el país de publicación del recurso</required>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese según la normalización ISO 3166-1 alfa-2 [Por ejemplo, PE para referir a Perú]</hint>
+					<required></required>
 				</field>
 				<field>
 					<dc-schema>dc</dc-schema>
@@ -322,7 +322,7 @@
 					<repeatable>false</repeatable>
 					<label>Tipo de trabajo de investigación (renati.type)</label>
 					<input-type value-pairs-name="renati_type_identifier">dropdown</input-type>
-					<hint>Seleccione el tipo de trabajo de investigación</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Seleccione el tipo de trabajo de investigación</hint>
 					<required></required>
 				</field>
 				<field>
@@ -332,8 +332,8 @@
 					<repeatable>false</repeatable>
 					<label>Nombre del grado (thesis.degree.name)</label>
 					<input-type>onebox</input-type>
-					<hint>Ingrese el nombre del grado del estudiante asociado con el trabajo de investigacion.</hint>
-					<required>Debe ingresar el nombre del grado del estudiante asociado con el trabajo de investigacion.</required>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el nombre del grado del estudiante asociado con el trabajo de investigacion.</hint>
+					<required></required>
 				</field>
 				<field>
 					<dc-schema>renati</dc-schema>
@@ -342,7 +342,7 @@
 					<repeatable>false</repeatable>
 					<label>Grado académico o título profesional (renati.level)</label>
 					<input-type value-pairs-name="renati_level_identifier">dropdown</input-type>
-					<hint>Seleccione el tipo de grado académico o del título profesional otorgado en el Perú, según el reglamento RENATI</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Seleccione el tipo de grado académico o del título profesional otorgado en el Perú, según el reglamento RENATI</hint>
 					<required></required>
 				</field>
 				<field>
@@ -352,8 +352,8 @@
 					<repeatable>false</repeatable>
 					<label>Nombre del programa (thesis.degree.discipline)</label>
 					<input-type>onebox</input-type>
-					<hint>Ingrese el nombre del programa de educación superior conducente al grado académico y/o título profesional</hint>
-					<required>Debe ingresar el nombre del programa de educación superior conducente al grado académico y/o título profesional</required>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el nombre del programa de educación superior conducente al grado académico y/o título profesional</hint>
+					<required></required>
 				</field>
 				<field>
 					<dc-schema>renati</dc-schema>
@@ -362,7 +362,7 @@
 					<repeatable>false</repeatable>
 					<label>Código del programa (renati.discipline)</label>
 					<input-type>onebox</input-type>
-					<hint>Ingrese la clasificación del programa de educación superior conducente al grado académico y/o título profesional.</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese la clasificación del programa de educación superior conducente al grado académico y/o título profesional.</hint>
 					<required></required>
 				</field>
 				<field>
@@ -372,7 +372,7 @@
 					<repeatable>false</repeatable>
 					<label>Institución otorgante del grado (thesis.degree.grantor)</label>
 					<input-type>onebox</input-type>
-					<hint>Ingrese el nombre completo de la institucion y el departamento o area responsable</hint>
+					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el nombre completo de la institucion y el departamento o area responsable</hint>
 					<required></required>
 				</field>
 				<field>
@@ -380,7 +380,7 @@
 					<dc-element>juror</dc-element>
 					<dc-qualifier></dc-qualifier>
 					<repeatable>true</repeatable>
-					<label>Jurado (renati.juror)</label>
+					<label>Obligatorio para trabajos de investigación conducentes a grados y títulos. Jurado (renati.juror)</label>
 					<input-type>onebox</input-type>
 					<hint></hint>
 					<required></required>
