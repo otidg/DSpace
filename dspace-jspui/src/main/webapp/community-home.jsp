@@ -40,16 +40,7 @@
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 <%@ page import="java.util.List"%>
 
-<%@ page import="java.util.Map" %>
-
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
-<%@page import="org.dspace.core.NewsManager" %>
-
-
 <%
-    
-    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));       
-    
     Boolean isAdminB = (Boolean) request.getAttribute("is.admin");
     Boolean isAdmin = (isAdminB != null?isAdminB.booleanValue():false);
 
@@ -96,34 +87,12 @@
     ItemCounter ic = new ItemCounter(UIUtil.obtainContext(request));
 %>
 
-    
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
-<div class="row nomargintop" >
-    
-    <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
-    </div>            
-    <div class="topNews_msg">
-        <%= topNews %>            
-    </div>
-</div>
-<br/><br/>
-<div class=" rowtitlecytc bgcytc_blue nobrdradius">
-    
-    <h5 class=" panel-heading ">        
-        <div class="container">
-            <dspace:include page="/layout/location-bar.jsp" />            
-        </div>        
-    </h5>
-</div>  
-    
-    <div class="container">
-        <br/>
-<div class="well bgcytc_lightgray">
-<div class="row ">
-	<div class="col-md-8  brdradius">
-            <h2 class="clrcytc_blue"><%= name %>
+<div class="well">
+<div class="row">
+	<div class="col-md-8">
+        <h2><%= name %>
         <%
             if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
             {
@@ -132,8 +101,8 @@
 <%
             }
 %>
-		<br/><small><fmt:message key="jsp.community-home.heading1"/></small><br/><br/>
-        <a class="statisticsLink btn btn-info" href="<%= request.getContextPath() %>/cris/stats/community.html?handle=<%= community.getHandle() %>&type=selected"><fmt:message key="jsp.community-home.display-statistics"/></a><br/><br/>
+		<small><fmt:message key="jsp.community-home.heading1"/></small>
+        <a class="statisticsLink btn btn-info" href="<%= request.getContextPath() %>/cris/stats/community.html?handle=<%= community.getHandle() %>&type=selected"><fmt:message key="jsp.community-home.display-statistics"/></a>
 		</h2>
 	</div>
 <%  if (logo != null) { %>
@@ -148,7 +117,7 @@
 <% } %>
 </div>
 <p class="copyrightText"><%= copyright %></p>
- <form class="bgcytc_lightgray well" method="get" action="">
+ <form class="well" method="get" action="">
 <%  if (loggedIn && subscribed)
     { %>
                 <small><fmt:message key="jsp.collection-home.subscribed"/> <a href="<%= request.getContextPath() %>/subscribe"><fmt:message key="jsp.collection-home.info"/></a></small>
@@ -161,8 +130,8 @@
 <%  } %>
 </form>
 
-	<div class="container " style="padding-left: 0px;">
-	<div class="col-md-4 border_color">
+	<div class="row">
+	<div class="col-md-4">
 	<%@ include file="components/recent-submissions.jsp" %>
 		    </div>
 	<div class="col-md-4">
@@ -173,29 +142,28 @@
     	<%= sidebar %>
 	</div>
 </div>	
-        <br/>
+
 <%-- Browse --%>
-
-    <div class=" panel panel-primary bgcytc_lightgray">
-            <div class="panel-heading bgcytc_blue nobrdradius"><fmt:message key="jsp.general.browse"/></div>
-            <div class="panel-body">
-                                    <%-- Insert the dynamic list of browse options --%>
-    <%
-            for (int i = 0; i < bis.length; i++)
-            {
-                    String key = "browse.menu." + bis[i].getName();
-    %>
-            <form method="get" action="<%= request.getContextPath() %>/handle/<%= community.getHandle() %>/browse">
-                    <input class="" type="hidden" name="type" value="<%= bis[i].getName() %>"/>
-                    <%-- <input type="hidden" name="community" value="<%= community.getHandle() %>" /> --%>
-                    <input class="btnvercontenidos btn btn-default col-md-3" type="submit" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
-            </form>
-    <%	
-            }
-    %>
-
-            </div>
-    </div>
+<div class="panel panel-primary">
+	<div class="panel-heading"><fmt:message key="jsp.general.browse"/></div>
+	<div class="panel-body">
+   				<%-- Insert the dynamic list of browse options --%>
+<%
+	for (int i = 0; i < bis.length; i++)
+	{
+		String key = "browse.menu." + bis[i].getName();
+%>
+	<form method="get" action="<%= request.getContextPath() %>/handle/<%= community.getHandle() %>/browse">
+		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
+		<%-- <input type="hidden" name="community" value="<%= community.getHandle() %>" /> --%>
+		<input class="btn btn-default col-md-3" type="submit" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
+	</form>
+<%	
+	}
+%>
+			
+	</div>
+</div>
 
 <div class="row">
 
@@ -414,4 +382,3 @@
   </dspace:sidebar>
     <% } %>
 </dspace:layout>
-</div>                

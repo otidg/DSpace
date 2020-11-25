@@ -11,19 +11,13 @@
 if (submissions != null && submissions.count() > 0)
 {
 %>
-          
-<div class="row ">    
-        <div class="panel panel-info vertical-carousel panelsubmission" data-itemstoshow="3">        
+        <div class="panel panel-info vertical-carousel" data-itemstoshow="3">        
         <div class="panel-heading">
-            <h3 class="panel-title">      
-                <div class="container titlesubmision">
-                    <fmt:message key="jsp.collection-home.recentsub"/>
-                </div>
-                
-            </h3>                        
+          <h3 class="panel-title">
+          		<fmt:message key="jsp.collection-home.recentsub"/>
+          </h3>
        </div>   
-	   <div class="container panel-body">               
-<%-- Comment               
+	   <div class="panel-body">
 	<%
     if(feedEnabled)
     {
@@ -51,11 +45,10 @@ if (submissions != null && submissions.count() > 0)
 	<%
 	    }
 %>
- --%> 
-	<div class="list-groups recentsub_item">
+	<div class="list-groups">
 	<%	
 		for (IGlobalSearchResult obj : submissions.getRecentSubmissions()) {
-		%>               
+		%>
 		
 				<dspace:discovery-artifact style="global" artifact="<%= obj %>" view="<%= submissions.getConfiguration() %>"/>
 		
@@ -68,4 +61,3 @@ if (submissions != null && submissions.count() > 0)
 <%
 }
 %>
-</div>          

@@ -49,9 +49,6 @@
 <%@ page import="org.dspace.sort.SortOption" %>
 <%@ page import="java.util.Enumeration" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="java.util.Locale"%>
-<%@ page import="javax.servlet.jsp.jstl.core.*" %>
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 <%@page import="org.dspace.discovery.IGlobalSearchResult"%>
 <%@page import="java.util.StringTokenizer"%>
 <%@page import="org.dspace.browse.BrowseInfo"%>
@@ -71,14 +68,8 @@
 <%@page import="org.dspace.discovery.DiscoverResult"%>
 <%@page import="org.dspace.content.DSpaceObject"%>
 <%@page import="java.util.List"%>
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
-<%@page import="org.dspace.core.NewsManager" %>
 <%
     // Get the attributes
-    Locale sessionLocale = UIUtil.getSessionLocale(request);
-    Config.set(request.getSession(), Config.FMT_LOCALE, sessionLocale);
-    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));
-    
     String query = (String) request.getAttribute("query");
 	if (query == null)
 	{
@@ -139,8 +130,8 @@
 
 %>
 
-<c:set var="dspace.layout.head.last" scope="request">    
-<script type="text/javascript">    
+<c:set var="dspace.layout.head.last" scope="request">
+<script type="text/javascript">
 	var jQ = jQuery.noConflict();
 	jQ(document).ready(function() {
 		jQ( "#spellCheckQuery").click(function(){
@@ -184,34 +175,11 @@
 </script>		
 </c:set>
 
+<dspace:layout titlekey="jsp.search.title">
 
-<dspace:layout titlekey="jsp.search.title">    
-<div class="row nomargintop" >
-    <div class="rowimage">
-            <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
-    </div>    
-    <h1 class="pagehidden">Global.jsp</h1>
-</div>
-<div class="topNews_msg">
-            <%= topNews %>            
-</div>    
-<div class="row rowtitlecytc bgcytc_blue nobrdradius">
-    <div class="container">
-        <div class="col-md-9 bgcytc_blue"> 
-            <h5 class="panel-heading ">        
-                
-                <dspace:include page="/layout/location-bar.jsp" />                            
-                              
-            </h5>                
-        </div>                
-    </div>
-</div> 
-<div class="container">
-<div class="col-md-9 ">
-    <div class="container">
     <%-- <h1>Search Results</h1> --%>
 
-    <h2 class="clrcytc_blue h2SearchTitle"><fmt:message key="jsp.search.title"/></h2>
+<h2><fmt:message key="jsp.search.title"/></h2>
 
 <div class="discovery-search-formt">
     <%-- Controls for a repeat search --%>
@@ -221,7 +189,6 @@
                                 <label for="query"><fmt:message key="jsp.search.results.searchfor"/></label>
                                 <input type="text" size="50" id="query" name="query" value="<%= (query==null ? "" : Utils.addEntities(query)) %>"/>
                                 <input type="submit" id="main-query-submit" class="btn btn-primary" value="<fmt:message key="jsp.general.go"/>" />
-                                
 <% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
 	<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= Utils.addEntities(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
 <% } %>                  
@@ -264,7 +231,7 @@
 				%>
 				</select>
 				<input type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= Utils.addEntities(filter[2]) %>" size="45"/>
-				<input class=" btn btn-default " type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" />
+				<input class="btn btn-default" type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" />
 				<br/>
 				<%
 				idx++;
@@ -272,7 +239,7 @@
 		%>
 		</div>
 <% } %>
-<a class="btnsearchcytc btn btn-default bgcytc_green clrcytc_white" href="<%= request.getContextPath()+"/global-search" %>"><fmt:message key="jsp.search.general.new-search" /></a>	
+<a class="btn btn-default" href="<%= request.getContextPath()+"/global-search" %>"><fmt:message key="jsp.search.general.new-search" /></a>	
 		</form>
 		</div>
 <% if (availableFilters.size() > 0) { %>
@@ -344,7 +311,7 @@ else if( qResults != null && collapsedResults != null)
 	
 	
 %>
-<br/><br/>
+
 <div class="discovery-result-results">
 		<%
 			Set<String> otherTypes = collapsedResults.keySet();
@@ -355,10 +322,9 @@ else if( qResults != null && collapsedResults != null)
 		%>
 		
 		<div class="panel panel-info">
-			<div class="panel-heading bgcytc_lightgray clrcytc_blue nobrdradius">
+			<div class="panel-heading">
 				<fmt:message key="<%=okey%>" />
 			</div>
-                        
 			<div class="list-item">
 				<%
 					for (IGlobalSearchResult obj : collapsedResults.get(otypeSensitive)) {
@@ -372,9 +338,8 @@ else if( qResults != null && collapsedResults != null)
 				%>					
 			</div>
 		<% if (collapsedResults.get(otypeSensitive).size() < numResultsByType.get(otypeSensitive)) { %>
-                        <br/>
-			<div class="panel-footer text-right brdradius bgcytc_lightblue ">	
-				<a class="btn btn-link  clrcytc_white" role="button" href="<%= request.getContextPath()
+			<div class="panel-footer text-right">	
+				<a class="btn btn-link text-primary" role="button" href="<%= request.getContextPath()
                 + "/simple-search?query="
                 + URLEncoder.encode(query,"UTF-8")
                 + httpFilters                
@@ -385,15 +350,12 @@ else if( qResults != null && collapsedResults != null)
 			</div>
 		<% } %>
 		</div>
-                <br/><br/><br/><br/>
 		<%
 			}
 		}
 		%>
 	
 </div>
-</div>
-
 <%
 		}
 	%>
@@ -434,23 +396,15 @@ for (DiscoverySearchFilterFacet facetConf : facetsConf)
 }
 
 	    if (facetGlobal != null && facetGlobal.size() > 0) { %>
-	    <h3 class="btnfacets facets bgcytc_lightblue clrcytc_white">                
-                <fmt:message key="jsp.search.facet.refine" />
-            </h3>
-            <br/>
+	    <h3 class="facets"><fmt:message key="jsp.search.facet.refine" /></h3>
 
 		<div id="globalFacet" class="facetsBox">
-	    <div id="facet_<%= fkeyGlobal %>" class="facet_panel panel panel-primary">
-                <div class="panel-heading bgcytc_lightgray clrcytc_blue">
-                    <fmt:message key="<%= fkeyGlobal %>" />
-                    <div class="caretfilter bgcytc_green brdradius">
-                        <b class="caret "></b>                        
-                    </div>
-                </div>
-	    <ul class="list-group listfilter"><%
+	    <div id="facet_<%= fkeyGlobal %>" class="panel panel-primary">
+	    <div class="panel-heading"><fmt:message key="<%= fkeyGlobal %>" /></div>
+	    <ul class="list-group"><%
 	    for (FacetResult fvalue : facetGlobal)
 	    { 
-	        %><li class="list-group-item"><span class="bgcytc_lightgray clrcytc_blue badge"><%= fvalue.getCount() %></span> <a href="<%= request.getContextPath()
+	        %><li class="list-group-item"><span class="badge"><%= fvalue.getCount() %></span> <a href="<%= request.getContextPath()
                 + "/simple-search?query="
                 + URLEncoder.encode(query,"UTF-8")
                 + httpFilters                
@@ -536,8 +490,8 @@ for (DiscoverySearchFilterFacet facetConf : facetsConf)
 	}
 
 %>
+
 </div>
-</div></div>
 <% } %>
 </dspace:sidebar>
 </dspace:layout>

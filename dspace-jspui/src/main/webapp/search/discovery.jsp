@@ -70,13 +70,7 @@
 <%@page import="java.util.List"%>
 <%@page import="org.dspace.handle.HandleManager"%>
 
-<%@ page import="org.dspace.core.NewsManager" %>
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
-
-
 <%
-    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));
-
 	String hdlPrefix = ConfigurationManager.getProperty("handle.prefix");
     // Get the attributes
     DSpaceObject scope = (DSpaceObject) request.getAttribute("scope" );
@@ -291,45 +285,21 @@ if(StringUtils.contains(searchScope, hdlPrefix) ){
 }
 %>
 <dspace:layout titlekey="${searchinKey}">
-<div class="row nomargintop" >
-    
-    <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
-    </div>          
-    <div class="topNews_msg">
-        <%= topNews %>            
-    </div>    
-    
-</div>
-<br/><br/>
-<div class="row rowtitlecytc bgcytc_blue nobrdradius">
-    <div class="container">
-        <div class="col-md-9 bgcytc_blue"> 
-            <h5 class="panel-heading ">        
-                
-                <dspace:include page="/layout/location-bar.jsp" />                            
-                              
-            </h5>                
-        </div>                
-    </div>
-</div>                    
-<div class="container">
-<div class="col-md-9 ">  
-    
-        
-   
-<h2 class="container clrcytc_blue font_bolder"><fmt:message key="${searchinKey}"/> <%= dsoName %></h2>
-<br/>
+
+    <%-- <h1>Search Results</h1> --%>
+
+
+<h2><fmt:message key="${searchinKey}"/> <%= dsoName %></h2>
 
 <div class="discovery-search-form">
     <%-- Controls for a repeat search --%>
-	<div class="discovery-query container">
+	<div class="discovery-query">
      <form id="update-form" action="simple-search" method="get">
      							<input name="location" type="hidden" value="<%=searchScope %>" />
                                 <label for="query"><fmt:message key="jsp.search.results.searchfor"/></label>
                                 <input type="text" size="50" id="query" name="query" value="<%= (query==null ? "" : Utils.addEntities(query)) %>"/>
                                 <input type="submit" id="main-query-submit" class="btn btn-primary" value="<fmt:message key="jsp.general.go"/>" />
-                                <a class="btn btn-default bgcytc_green clrcytc_white brdradius" href="<%= request.getContextPath()+"/global-search" %>"><fmt:message key="jsp.search.general.new-search" /></a>
+                                <a class="btn btn-default" href="<%= request.getContextPath()+"/global-search" %>"><fmt:message key="jsp.search.general.new-search" /></a>
                                
 <% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
 	<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= Utils.addEntities(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
@@ -389,7 +359,7 @@ if(StringUtils.contains(searchScope, hdlPrefix) ){
 				</select>
 				</div>
 				<div class="form-group">
-				<select id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" class="form-control ">
+				<select id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" class="form-control">
 				<%
 					for (String opt : options)
 					{
@@ -525,15 +495,13 @@ else if( qResults != null)
 
 %>
 <hr/>
-<div class="container discovery-result-pagination">
+<div class="discovery-result-pagination">
 <%
 	long lastHint = qResults.getStart()+qResults.getMaxResults() <= qResults.getTotalSearchResults()?
 	        qResults.getStart()+qResults.getMaxResults():qResults.getTotalSearchResults();
 %>
     <%-- <p align="center">Results <//%=qResults.getStart()+1%>-<//%=qResults.getStart()+qResults.getHitHandles().size()%> of --%>
-	<div class="alert alert-info ">
-            
-            <fmt:message key="jsp.search.results.results">
+	<div class="alert alert-info"><fmt:message key="jsp.search.results.results">
         <fmt:param><%=qResults.getStart()+1%></fmt:param>
         <fmt:param><%=lastHint%></fmt:param>
         <fmt:param><%=qResults.getTotalSearchResults()%></fmt:param>
@@ -604,7 +572,7 @@ else if( qResults != null)
 	<%
 	if (pageFirst != pageCurrent)
 	{
-	    %><li ><a href="<%= prevURL %>"><fmt:message key="jsp.search.general.previous" /></a></li><%
+	    %><li><a href="<%= prevURL %>"><fmt:message key="jsp.search.general.previous" /></a></li><%
 	}
 	else
 	{
@@ -658,11 +626,7 @@ else if( qResults != null)
 	</div>
 <!-- give a content to the div -->
 </div>
-        <br/><br/>
-<!--<div class="row bgcytc_lightblue brdradiusright">
-    <h3 class="container clrcytc_white"><fmt:message key="jsp.search.results.cris.${typeName}"/></h3>        
-</div>        -->
-<div class="container discovery-result-results discoveryfile">
+<div class="discovery-result-results">
 <%
        Set<Integer> otherTypes = mapOthers.keySet();
        if (otherTypes != null && otherTypes.size() > 0)
@@ -671,12 +635,8 @@ else if( qResults != null)
            {
                %>
                <c:set var="typeName"><%= ((ACrisObject) mapOthers.get(otype)[0].getBrowsableDSpaceObject()).getPublicPath() %></c:set>
-               <div class="panel panel-info">               
-               <div class="nobrdradius panel-heading">
-                   <h6 class="bgcytc_lightblue">
-                   <fmt:message key="jsp.search.results.cris.${typeName}"/>
-                   </h6>
-               </div>
+               <div class="panel panel-info">
+               <div class="panel-heading"><h6><fmt:message key="jsp.search.results.cris.${typeName}"/></h6></div>
                <dspace:browselist config="cris${typeName}" items="<%= mapOthers.get(otype) %>"  order="<%= order %>" sortBy="<%= sortIdx %>" />
                </div>
            <%
@@ -684,7 +644,6 @@ else if( qResults != null)
        }
 %>
 <% if (communities.length > 0 ) { %>
-<h1>Communities</h1>
     <div class="panel panel-info">
     <div class="panel-heading"><fmt:message key="jsp.search.results.comhits"/></div>
     <dspace:communitylist  communities="<%= communities %>" />
@@ -692,7 +651,6 @@ else if( qResults != null)
 <% } %>
 
 <% if (collections.length > 0 ) { %>
-<h1>Collections</h1>
     <div class="panel panel-info">
     <div class="panel-heading"><fmt:message key="jsp.search.results.colhits"/></div>
     <dspace:collectionlist collections="<%= collections %>" />
@@ -700,11 +658,9 @@ else if( qResults != null)
 <% } %>
 
 <% if (items.length > 0) { %>
-
     <div class="panel panel-info">
-        <!--<div class="panel-heading">
-            <h6><b><fmt:message key="jsp.search.results.itemhits"/></b></h6>
-        </div>-->
+    <div class="panel-heading"><h6><fmt:message key="jsp.search.results.itemhits"/></h6></div>
+    
     <%  
 	if (exportBiblioEnabled && ( exportBiblioAll || user!=null ) ) {
 %>
@@ -811,12 +767,11 @@ else
 </ul>
 </div>
 <!-- give a content to the div -->
-</div></div><div>
+</div>
 <% } %>
 <% } %>
-
 <dspace:sidebar>
-    <div class="container">
+
 <%
 		DiscoverySearchFilterFacet facetGlobalConf = (DiscoverySearchFilterFacet) request.getAttribute("facetGlobalConfig");
 		String fGlobal = null; 
@@ -836,7 +791,7 @@ else
 <%
 if((showGlobalFacet) || (brefine)) {
 %>
-<h3 class="btnfacets facets bgcytc_lightblue clrcytc_white"><fmt:message key="jsp.search.facet.refine" /></h3>
+<h3 class="facets"><fmt:message key="jsp.search.facet.refine" /></h3>
 
 <%
 }
@@ -844,14 +799,9 @@ if((showGlobalFacet) || (brefine)) {
 		    String fkeyGlobal = "jsp.search.facet.refine."+fGlobal;
 		    %>
 		    <div id="globalFacet" class="facetsBox">
-		    <div id="facet_<%= fkeyGlobal %>" class="facet_panel panel panel-primary">
-		    <div class="panel-heading bgcytc_lightgray clrcytc_blue">
-                        <fmt:message key="<%= fkeyGlobal %>" />
-                        <div class="caretfilter bgcytc_green brdradius">
-                        <b class="caret "></b>                        
-                    </div>
-                    </div>
-		    <ul class="list-group listfilter"><%
+		    <div id="facet_<%= fkeyGlobal %>" class="panel panel-primary">
+		    <div class="panel-heading"><h4><fmt:message key="<%= fkeyGlobal %>" /></h4></div>
+		    <ul class="list-group"><%
 		    boolean activeGlobalFacet = false;
 		    for (FacetResult fvalue : facetGlobal)
 		    { 
@@ -893,9 +843,9 @@ if((showGlobalFacet) || (brefine)) {
 	    int limit = facetConf.getFacetLimit()+1;
 	    
 	    String fkey = "jsp.search.facet.refine."+f;
-	    %><div id="facet_<%= f %>" class="panel">
-	    <div class="panel-heading"><h6 class="btnfacets clrcytc_white"><fmt:message key="<%= fkey %>" /></h6></div>
-	    <ul class="list-group listfilter"><%
+	    %><div id="facet_<%= f %>" class="panel panel-success">
+	    <div class="panel-heading"><h6><fmt:message key="<%= fkey %>" /></h6></div>
+	    <ul class="list-group"><%
 	    int idx = 1;
 	    int currFp = UIUtil.getIntParameter(request, f+"_page");
 	    if (currFp < 0)
@@ -952,7 +902,7 @@ if((showGlobalFacet) || (brefine)) {
                 + "&amp;rpp=" + rpp
                 + httpFilters
                 + "&amp;etal=" + etAl  
-                + "&amp;"+f+"_page="+(currFp+1) %>"><span class="spanfilternext pull-right"><fmt:message key="jsp.search.facet.refine.next" /></span></a>
+                + "&amp;"+f+"_page="+(currFp+1) %>"><span class="pull-right"><fmt:message key="jsp.search.facet.refine.next" /></span></a>
             <%
             }
             %></li><%
@@ -963,6 +913,5 @@ if((showGlobalFacet) || (brefine)) {
 %>
 </div>
 <% } %>
-</div>
 </dspace:sidebar>
 </dspace:layout>

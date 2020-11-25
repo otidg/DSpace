@@ -61,15 +61,8 @@
 	}
 	if (brefine) {
 %>
-
-<div class="col-md-<%= discovery_panel_cols %>">  
-    
-    <!--
-<h3 class="facets htitlesearch bgcytc_lightblue clrcytc_white" style="width:25%;padding-left:6%">
-    
-        <fmt:message key="jsp.search.facet.refine" />   
-    
-</h3>-->
+<div class="col-md-<%= discovery_panel_cols %>">
+<h3 class="facets"><fmt:message key="jsp.search.facet.refine" /></h3>
 <div id="facets" class="facetsBox row panel">
 <%
 	for (DiscoverySearchFilterFacet facetConf : facetsConf)
@@ -86,14 +79,9 @@
  	    }
 	    String fkey = "jsp.search.facet.refine."+f;
 	    int limit = facetConf.getFacetLimit()+1;
-	    %><div id="facet_<%= f %>" class="facet_panel facet col-md-<%= discovery_facet_cols %> ">
-	    <div class="facetName panel-heading bgcytc_lightgray clrcytc_blue">
-                <fmt:message key="<%= fkey %>" />
-                <div class="caretfilter bgcytc_green brdradius">
-                        <b class="caret "></b>                        
-                </div>
-            </div>
-	    <ul class="list-group listfilter"><%
+	    %><div id="facet_<%= f %>" class="facet col-md-<%= discovery_facet_cols %>">
+	    <span class="facetName"><fmt:message key="<%= fkey %>" /></span>
+	    <ul class="list-group"><%
 	    int idx = 1;
 	    int currFp = UIUtil.getIntParameter(request, f+"_page");
 	    if (currFp < 0)

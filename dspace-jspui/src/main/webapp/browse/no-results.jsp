@@ -69,16 +69,12 @@
         linkBack = "/handle/" + community.getHandle();
     }
 %>
-<h1 class="pagehidden">no-results.jsp</h1>
-<dspace:layout titlekey="browse.no-results.title" navbar="<%= layoutNavbar %>">
-    <div class="container ">
-        <div class="row bgcytc_lightgray" class="text-center">
-            
-        
-    
-            <h1 class="text-center"><fmt:message key="browse.no-results.title"/></h1>
 
-<p class="text-center">
+<dspace:layout titlekey="browse.no-results.title" navbar="<%= layoutNavbar %>">
+
+    <h1><fmt:message key="browse.no-results.title"/></h1>
+
+<p>
     <%
 	    if (collection != null)
 	    {
@@ -105,12 +101,11 @@
    %>
  </p>
    
-    <p class="text-center"><a href="<%= request.getContextPath() %><%= linkBack %>"><%= linkText %></a></p>
+    <p><a href="<%= request.getContextPath() %><%= linkBack %>"><%= linkText %></a></p>
 
     <%-- dump the results for debug (uncomment to enable) --%>
     <%--
 	<!-- <%= bi.toString() %> -->
 	--%>
-        </div>
-</div>
+
 </dspace:layout>

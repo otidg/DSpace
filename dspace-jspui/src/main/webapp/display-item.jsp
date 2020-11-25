@@ -35,11 +35,6 @@
 <%@ page import="org.dspace.core.ConfigurationManager" %>
 <%@ page import="org.dspace.handle.HandleManager" %>
 <%@ page import="org.dspace.license.CreativeCommons" %>
-<%@ page import="java.util.Enumeration" %>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.Locale"%>
-<%@ page import="javax.servlet.jsp.jstl.core.*" %>
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 <%@page import="javax.servlet.jsp.jstl.fmt.LocaleSupport"%>
 <%@page import="org.dspace.versioning.Version"%>
 <%@page import="org.dspace.core.Context"%>
@@ -52,15 +47,8 @@
 <%@page import="org.dspace.versioning.VersionHistory"%>
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <%@page import="org.apache.commons.lang.StringUtils"%>
-<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
-<%@page import="org.dspace.core.NewsManager" %>
+
 <%
-    
-    Locale sessionLocale = UIUtil.getSessionLocale(request);
-    Config.set(request.getSession(), Config.FMT_LOCALE, sessionLocale);
-    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));    
-    
-    
     // Attributes
     Boolean displayAllBoolean = (Boolean) request.getAttribute("display.all");
     boolean displayAll = (displayAllBoolean != null && displayAllBoolean.booleanValue());
@@ -251,15 +239,6 @@ j(document).ready(function() {
     if (handle != null)
     {
 %>
-<div class="row nomargintop" >
-    <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
-    </div>  
-</div>
-<div class="topNews_msg">
-    <%= topNews %>            
-</div>    
-        
 	<div class="row">
 		<div class="col-sm-<%= admin_button?"7":"12" %> col-md-<%= admin_button?"8":"12" %> col-lg-<%= admin_button?"9":"12" %>">
 		<%		
@@ -287,14 +266,9 @@ j(document).ready(function() {
 
                 <%-- <strong>Please use this identifier to cite or link to this item:
                 <code><%= HandleManager.getCanonicalForm(handle) %></code></strong>--%>
-                
-                              
-                
-                
-                
+                <div class="well"><fmt:message key="jsp.display-item.identifier"/>
+                <code><%= HandleManager.getCanonicalForm(handle) %></code></div>
        </div>         
-                <h1 class="pagehidden">Display.item.jsp</h1>
-                <br>
 <%
         if (admin_button)  // admin edit button
         { %>
@@ -352,35 +326,10 @@ j(document).ready(function() {
     String displayStyle = (displayAll ? "full" : "");
 %>
 
-<div class="row">    
+<div class="row">
 <div id="wrapperDisplayItem" class="col-lg-9">
-<div class=" rowtitlecytc bgcytc_blue ">
-    <h5 class=" panel-heading ">
-        <div class="container">
-            <dspace:include page="/layout/location-bar.jsp" />            
-        </div>
-    </h5>
-</div>      
-    
-    <div class="container">
-
-<div class="well">
-    <div class="col-md-3">
-        <fmt:message key="jsp.display-item.identifier"/>        
-    </div>
-    <div class="col-md-6 text-left">
-        <code style="color:#fa9595;"><%= HandleManager.getCanonicalForm(handle) %></code>        
-    </div>    
-</div>
-<br/>
-
-<br/>
-
-
-
-
-<dspace:item-preview item="<%= item %>" />
-    <dspace:item item="<%= item %>" collections="<%= collections %>" style="<%= displayStyle %>" />    
+    <dspace:item-preview item="<%= item %>" />
+    <dspace:item item="<%= item %>" collections="<%= collections %>" style="<%= displayStyle %>" />
     <%-- SFX Link --%>
 <%
     if (ConfigurationManager.getProperty("sfx.server.url") != null)
@@ -415,7 +364,7 @@ j(document).ready(function() {
         else
         {
 %>
-    <a class="btn btn-default bgcytc_green brdradius clrcytc_white font_bolder" href="<%=locationLink %>?mode=simple">
+    <a class="btn btn-default" href="<%=locationLink %>?mode=simple">
         <fmt:message key="jsp.display-item.text1"/>
     </a>
 <%
@@ -435,7 +384,7 @@ j(document).ready(function() {
         else
         {
 %>
-    <a style="margin:2%; padding:5px 55px" class="btn btn-default bgcytc_lightblue brdradius clrcytc_white" href="<%=locationLink %>?mode=full">
+    <a class="btn btn-default" href="<%=locationLink %>?mode=full">
         <fmt:message key="jsp.display-item.text2"/>
     </a>
 <%
@@ -493,9 +442,7 @@ j(document).ready(function() {
 	<br/>
 	<br/>
 	<div id="recommender" class="panel panel-default">
-	<div class="panel-heading">            
-            <fmt:message key="jsp.display-item.recommender" />
-        </div>            
+	<div class="panel-heading"><fmt:message key="jsp.display-item.recommender" /></div>
 	
 	<div class="panel-body">
 	<div id="coreRecommenderOutput"></div>
@@ -503,13 +450,11 @@ j(document).ready(function() {
 	</div>
 	<% } %>
 </div>
-</div>
 <div class="col-lg-3">
 <div class="row">
 <%
 if (dedupEnabled && admin_button) { %>	
 <div class="col-lg-12 col-md-4 col-sm-6">
-            
 <div class="media dedup">
 	<div class="media-left">
 		<fmt:message key="jsp.display-item.dedup.title"/>
@@ -543,10 +488,8 @@ if (dedupEnabled && admin_button) { %>
 		});
 		</script>
 	</c:if>
-<br/><br/><br/>
 <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12 box-${metricType}">
-    
-<div class="media ${metricType} brdmetrics ">
+<div class="media ${metricType}">
 	<div class="media-left">
 		<fmt:message key="${metricIconKey}"/>
 	</div>
@@ -661,8 +604,7 @@ if (dedupEnabled && admin_button) { %>
     <%
 	   if(scholarEnabled) { %>
 <div class="col-lg-12 col-md-4 col-sm-6">
-    
-<div class="media google bgcytc_blue brdmetrics">
+<div class="media google">
 	<div class="media-left">
 		<fmt:message key="jsp.display-item.citation.google.icon">
 			<fmt:param value="<%=request.getContextPath()%>" />
@@ -672,18 +614,16 @@ if (dedupEnabled && admin_button) { %>
 		<h4 class="media-heading"><fmt:message key="jsp.display-item.citation.google"/></h4>
 		
 		
-   		    <span class="metric-counter">
-                        <a data-toggle="tooltip" target="_blank" title="<fmt:message key="jsp.display-item.citation.google.tooltip"/>" href="https://scholar.google.com/scholar?as_q=&as_epq=<%= title %>&as_occt=any"><fmt:message key="jsp.display-item.citation.google.check"/></a>
-                    </span>
+   		    <span class="metric-counter"><a data-toggle="tooltip" target="_blank" title="<fmt:message key="jsp.display-item.citation.google.tooltip"/>" href="https://scholar.google.com/scholar?as_q=&as_epq=<%= title %>&as_occt=any"><fmt:message key="jsp.display-item.citation.google.check"/></a></span>
 	</div>
 </div>	
-</div>        
+</div>
 <br class="visible-lg" />
     <% }
 	   if(altMetricEnabled) { %>
-<div class="col-lg-12 col-md-4 col-sm-6">    
-<div class="media altmetric brdmetrics">
-	<div class="media-left">            
+<div class="col-lg-12 col-md-4 col-sm-6">
+<div class="media altmetric">
+	<div class="media-left">
       		<div class='altmetric-embed' data-hide-no-mentions="true" data-badge-popover="right" data-badge-type="donut" data-link-target='_blank'
       		<% if (doi != null) { %> data-doi="<%= doi %>"<% } else if (isbn != null) { %> data-isbn="<%= isbn %>"<% } %>></div>
 	</div>
@@ -695,7 +635,7 @@ if (dedupEnabled && admin_button) { %>
 <% } 
   if(altMetricDimensionsEnabled) { %>
 <div class="col-lg-12 col-md-4 col-sm-6">
-<div class="altmetric brdmetrics">
+<div class="altmetric">
 	<div class="media-left">
 	
       	<div class="__dimensions_badge_embed__" data-legend="hover-right" data-style="small_circle" <% if (doi != null) { %> data-doi="<%= doi %>"<% } else if (pmid != null) { %> data-pmid="<%= pmid %>"<% } %>" ></div>
@@ -705,29 +645,9 @@ if (dedupEnabled && admin_button) { %>
 		<h4 class="media-heading"><fmt:message key="jsp.display-item.citation.altmetric"/></h4>
 	</div>
 </div>
-        
 </div>
-                
-                
 <% } %>
-
     </div>
-    <!-- SOCIAL NETWORKS -->
-    <div class="container">
-        <h5 class="text-center clrcytc_gray">Compartir este item</h5>
-        <!--<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5fb5ed4eadd7330012eeae23&product=inline-share-buttons" async="async"></script>-->
-        
-        <!--<div class=" sharethis-inline-share-buttons"></div>   -->   
-        <!-- Go to www.addthis.com/dashboard to customize your tools --> <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fbc94eef065b737"></script>         
-        <ul class=" rowsocial">
-            <li><img alt="QR Code" src="http://www.mobile-barcodes.com/qr-code-generator/generator.php?str=https://http://localhost/handle/20.500.12390/407&amp;barcode=url"></li>
-            <li>
-                <div class="addthis_inline_share_toolbox"></div>                 
-            </li>
-            
-        </ul>                      
-    </div>
-    
 </div>
 <% if(pmcEnabled) { %>
 <div class="modal fade" id="dialogPMC" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -757,7 +677,6 @@ if (dedupEnabled && admin_button) { %>
     
 </div>
 </div>
-
 <div class="container">
     <%-- Versioning table --%>
 <%

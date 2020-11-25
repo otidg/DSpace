@@ -53,35 +53,48 @@
 </div>
 <br/>
 </main>
-    <%-- Page footer --%>
-    <footer class="footercytc navbar navbar-bottom navbar-square">
-        <!--
-        <div class="rowfooter row bgcytc_blue">
-            <fmt:message key="jsp.layout.footer-default.feedback"/>
-            <fmt:message key="jsp.layout.footer-default.version-by"/>
-            <fmt:message key="jsp.layout.footer-default.explore"/>
-        </div>
-        -->       
-    <%= footerNews %>
-        <div>
-            <h1 class="clrcytc_white bgcytc_blue text-center htitlefooter bgcytc_white" > 
-                <img src="<%= request.getContextPath() %>/image/i.5-.png" width="40px" />repositorio@concytec.gob.pe 
-                <img src="<%= request.getContextPath() %>/image/i.6-.png"  width="40px"/>(511) 204-9900 Anexo 712
-            </h1>
-        </div>
-        <br/>
-        <h5 class="text-center"><b>Redes de Repositorios</b></h5>
-        <br/>
-        <div class="col-md-3"> </div>
-        <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/lareferencia-logo.png"  width="70%" style="padding-right: 21px;"/>
-        </div>
-        <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/alicia-logo.png"  width="70%" style="padding-top:5px;padding-left: 21px;" />
-        </div>
-        
-        <div class="col-md-3"> </div>
-        <!--<img src="<%= request.getContextPath() %>/image/logo-4science-small.png"/>-->
-    </footer>
+            <%-- Page footer --%>
+            <footer class="navbar navbar-inverse navbar-bottom navbar-square">
+             <div class="container">
+	             <div class="row">
+					<div class="col-md-3 col-sm-6">
+	             		<div class="panel panel-default">
+	             			<div class="panel-heading">
+	             				<h6 class="panel-title"><fmt:message key="jsp.layout.footer-default.explore"/></h6>
+	             			</div>
+	             			<div class="panel-body">
+	             			<ul>
+	    <% 	if(showCommList){ %>
+           <li><a href="<%= request.getContextPath() %>/community-list"><fmt:message key="jsp.layout.navbar-default.communities-collections"/></a></li>
+        <%	} 
+            for (String mlink : mlinks) { 
+         %>
+           <c:set var="fmtkey">
+           jsp.layout.navbar-default.cris.<%= mlink.trim() %>
+           </c:set>
+           <li><a href="<%= request.getContextPath() %>/cris/explore/<%= mlink.trim() %>"><fmt:message key="${fmtkey}"/></a></li>
+           <% } %>
+							</ul>
+	             			</div>
+	             		</div>
+	             	</div>
+	             	<div class="col-md-9 col-sm-6">
+	             		<%= footerNews %>
+	             	</div>
+	            </div> 
+            </div>
+			<div class="container-fluid extra-footer row">
+      			<div id="footer_feedback" class="col-sm-4 pull-<%= isRtl ? "right":"left" %>">                                    
+                     <a href="<%= request.getContextPath() %>/feedback"><fmt:message key="jsp.layout.footer-default.feedback"/></a>
+                </div>
+	           	<div id="designedby" class="col-sm-8 text-<%= isRtl ? "left": "right" %>">
+            	 	<fmt:message key="jsp.layout.footer-default.text"/> - 
+            	 	<fmt:message key="jsp.layout.footer-default.version-by"/> 
+            	 	<a href="http://www.4science.it/en/dspace-and-dspace-cris-services/">
+            	 		<img src="<%= request.getContextPath() %>/image/logo-4science-small.png"
+                                    alt="Logo 4SCIENCE" height="32px"/></a>
+				</div>
+			</div>
+	    </footer>
     </body>
 </html>
