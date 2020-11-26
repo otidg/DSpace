@@ -47,7 +47,12 @@
 <%@page import="org.dspace.content.Bitstream"%>
 <%@page import="org.dspace.discovery.configuration.DiscoverySearchFilter" %>
 
+<%@page import="org.dspace.core.NewsManager" %>
+
+
 <%
+        String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+
 	int discovery_panel_cols = 12;
 	int discovery_facet_cols = 4;
 	List<DiscoverySearchFilter> filters = (List<DiscoverySearchFilter>) request.getAttribute("filters");
@@ -98,23 +103,45 @@ function submitForm() {
  jsp.layout.navbar-default.cris.${location}
 </c:set>
 <dspace:layout locbar="link" parenttitlekey="${fmtkey}" parentlink="/cris/explore/${location}" titlekey="${fmtkey}">
+
+<div class="row nomargintop" >
+    <h1 class="pagehidden">Explore.jsp</h1>
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
+    </div>        
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div> 
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div> 
+    <br/>
 <div class="row">
 	<div class="col-sm-4 col-md-3">
-		<h2><fmt:message key="jsp.general.browse" /></h2>
+            <h2 class="htitlesearch bgcytc_lightblue brdradiusright clrcytc_white text-center"><fmt:message key="jsp.general.browse" />&nbsp;&nbsp;</h2>
 		<ul class="nav nav-pills nav-stacked cris-tabs-menu">
 		<c:forEach var="browse"  items="${browseNames}">
-			<li><a href="<%= request.getContextPath() %>/browse?type=${browse}"><fmt:message key="browse.menu.${browse}" /></a></li>
+                    <li><a class="text-center clrcytc_blue font_bolder" href="<%= request.getContextPath() %>/browse?type=${browse}"><fmt:message key="browse.menu.${browse}" /></a></li>
 		</c:forEach>
 		</ul>
 	</div>
 	<div class="col-sm-8 col-md-9">
-		<h2><fmt:message key="jsp.explore.${location}.search" /></h2>
+            <div class="container">
+		<h2 class="htitlesearch clrcytc_blue"><fmt:message key="jsp.explore.${location}.search" /></h2>
 		<form id="searchform" class="form-group" action="<%= request.getContextPath() %>/simple-search">
 			<input type="hidden" id="location" name="location" value="${location}" />
 			<input type="hidden" id="query" name="query" value="" />
 		<div class="row datainput">
 		<div class="col-xs-4 col-sm-3">
-		<select class="index form-control">
+		<select class="index form-control bgcytc_green brdradius clrcytc_white font_bolder">
 			<option value=""><fmt:message key="jsp.explore.index.all" /></option>
 		<c:forEach var="filter" items="${filters}">
 			<c:set var="i18nkey" value="jsp.search.filter.${filter.indexFieldName}" />
@@ -126,7 +153,7 @@ function submitForm() {
 		<input class="query form-control" type="text" size="60" />
 		</div>
 		<div class="col-xs-2">
-		<select class="conjuction form-control">
+		<select class="conjuction form-control bgcytc_lightgray clrcytc_darkgray font_bolder">
 			<option>AND</option>
 			<option>OR</option>
 			<option>NOT</option>
@@ -135,7 +162,7 @@ function submitForm() {
 		</div>
 		<div class="row datainput">
 		<div class="col-xs-4 col-sm-3">
-		<select class="index form-control">
+		<select class="index form-control bgcytc_blue brdradius clrcytc_white font_bolder">
 			<option value=""><fmt:message key="jsp.explore.index.all" /></option>
 		<c:forEach var="filter" items="${filters}">
 			<c:set var="i18nkey" value="jsp.search.filter.${filter.indexFieldName}" />
@@ -147,7 +174,7 @@ function submitForm() {
 		<input class="query form-control" type="text" size="60" />
 		</div>
 		<div class="col-xs-2">
-		<select class="conjuction form-control">
+		<select class="conjuction form-control bgcytc_lightgray clrcytc_darkgray font_bolder">
 			<option>AND</option>
 			<option>OR</option>
 			<option>NOT</option>
@@ -156,7 +183,7 @@ function submitForm() {
 		</div>
 		<div class="row datainput" id="lastRow">
 		<div class="col-xs-4 col-sm-3">
-		<select class="index form-control">
+		<select class="index form-control bgcytc_lightblue brdradius clrcytc_white font_bolder">
 			<option value=""><fmt:message key="jsp.explore.index.all" /></option>
 		<c:forEach var="filter" items="${filters}">
 			<c:set var="i18nkey" value="jsp.search.filter.${filter.indexFieldName}" />
@@ -169,7 +196,7 @@ function submitForm() {
 		</div>
 		<div class="col-xs-2">
 			<button onclick="javascript:newRow()" type="button"
-				class="btn btn-info col-xs-12"><fmt:message key="jsp.explore.index.add" /></button>
+				class="btn btn-info col-xs-12 brdradius"><fmt:message key="jsp.explore.index.add" /></button>
 		</div>
 		</div>
 		<div class="row datainput template hidden ">
@@ -197,25 +224,28 @@ function submitForm() {
 		<br/>
 		<div class="col-md-offset-6 col-md-3 col-sm-offset-4 col-sm-4 col-xs-6">
 			<input type="reset" onclick="javascript:resetForm()"
-				class="btn btn-default col-xs-12" value="<fmt:message key="jsp.explore.index.reset" />" />
+				class="btn btn-default col-xs-12 bgcytc_gray brdradius clrcytc_white font_bolder" value="<fmt:message key="jsp.explore.index.reset" />" />
 		</div>
 		<div class="col-md-3 col-sm-4 col-xs-6">
 			<input type="submit" onclick="javascript:submitForm()"
-				class="btn btn-primary col-xs-12" value="<fmt:message key="jsp.explore.index.search" />" />
+				class="btn btn-primary col-xs-12 bgcytc_green brdradius font_bolder" value="<fmt:message key="jsp.explore.index.search" />" />
 		</div>
 		</div>
 		</form>
+            </div>                
 	</div>
 </div>
 <div class="clearfix"></div>
-	<div class="row">
-		<div class="col-sm-6">
+        <br/><br/>
+    
+	<div class="container ">
+		<div class="col-sm-6 ctycenvios ">                    
 		<%
 			RecentSubmissions submissions = (RecentSubmissions) request.getAttribute("top_recentsubmission");
 		%>
 		<%@ include file="/dspace-cris/explore/topObjectsRecent.jsp" %>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-6 ctycenvios">
 		<%
 			RecentSubmissions viewed = (RecentSubmissions) request.getAttribute("top_view");
 		%>
@@ -223,22 +253,34 @@ function submitForm() {
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-6 ctycenvios">
 		<%
 			RecentSubmissions cited = (RecentSubmissions) request.getAttribute("top_cited");
 		%>
 		<%@ include file="/dspace-cris/explore/topObjectsCited.jsp" %>
 		</div>	
-		<div class="col-sm-6">
+		<div class="col-sm-6 ctycenvios">
 		<%
 			RecentSubmissions download = (RecentSubmissions) request.getAttribute("top_download");
 		%>
 		<%@ include file="/dspace-cris/explore/topObjectsDownload.jsp" %>
 		</div>
 	</div>
+            <br/><br/>
 
-	<div class="row">
+	<div class="row">         
+            -->
+        <br/>        <br/>
+
 	<c:set var="discovery.searchScope" value="${location}" scope="request"/>
-	<%@ include file="/discovery/static-sidebar-facet.jsp" %>
+            <div class="container">
+                <h3 class="htitlesearch  text-center bgcytc_lightblue clrcytc_white brdradius" style="margin:12px">
+
+                        <fmt:message key="jsp.search.facet.refine" />   
+
+                </h3>                 
+                <%@ include file="/discovery/static-sidebar-facet.jsp" %>
+            
+            </div>
 	</div>
 </dspace:layout>

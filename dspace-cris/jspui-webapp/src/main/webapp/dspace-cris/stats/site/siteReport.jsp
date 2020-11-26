@@ -18,6 +18,15 @@
 <%@ taglib uri="researchertags" prefix="researcher"%>
 <%@ page import="org.dspace.core.ConfigurationManager"%>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
+
+<%
+        String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+
+%>
+
 <c:set var="contextPath" scope="application">${pageContext.request.contextPath}</c:set>
 <c:set var="handlePrefix" scope="page"><%= ConfigurationManager.getProperty("handle.prefix") %></c:set>
 <c:set var="dspace.layout.head" scope="request">
@@ -46,16 +55,36 @@
 	</script>	
 </c:set>
 <dspace:layout titlekey="jsp.statistics.item-title">
+<div class="row nomargintop" >
+    <h1 class="pagehidden">SiteReport.jsp</h1>
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div> 
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>     
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div> 
+<div class="container">
+    <br/><br/>    
 
 <div id="content">
-
 
 	<div class="col-lg-12">
 		<div class="form-inline">
 	         <div class="form-group">
 	         	<c:choose>
 	         	<c:when test="${fn:startsWith(data.object.handle, handlePrefix)}">
-					<h3><fmt:message key="view.stats-global.page.title"></fmt:message></h3>
+                            <h2 class="clrcytc_blue font_bolder"><fmt:message key="view.stats-global.page.title"></fmt:message></h2>
 				</c:when>
 				<c:otherwise>
 					<h1><fmt:message key="view.${data.jspKey}.page.title"><fmt:param><a href="${contextPath}/handle/${data.object.handle}">${data.title}</a></fmt:param></fmt:message></h1>
@@ -66,13 +95,15 @@
 	</div>
 
 	<div class="pull-right">
+            
 		<span class="label label-info"><fmt:message key="view.statistics.range.from" /></span> &nbsp; 
 			<c:if test="${empty data.stats_from_date}"><fmt:message key="view.statistics.range.no-start-date" /></c:if>
 			${fn:escapeXml(data.stats_from_date)} &nbsp;&nbsp;&nbsp; 
 		<span class="label label-info"><fmt:message key="view.statistics.range.to" /></span> &nbsp; 
 			<c:if test="${empty data.stats_to_date}"><fmt:message key="view.statistics.range.no-end-date" /></c:if>
 			${fn:escapeXml(data.stats_to_date)} &nbsp;&nbsp;&nbsp;
-		<a class="btn btn-default" data-toggle="modal" data-target="#stats-date-change-dialog"><fmt:message key="view.statistics.change-range" /></a>
+                                   
+		<a class="btn btn-default bgcytc_green clrcytc_white brdradius font_bolder" data-toggle="modal" data-target="#stats-date-change-dialog"><fmt:message key="view.statistics.change-range" /></a>
 	</div>	
 
 	<c:set var="type"><%=request.getParameter("type") %></c:set>
@@ -84,6 +115,7 @@
 		</div>
 	</div>	
 </div>
+
 <div class="clear"></div>
 
 </dspace:layout>

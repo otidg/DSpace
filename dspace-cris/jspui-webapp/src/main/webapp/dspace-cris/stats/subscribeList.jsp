@@ -17,6 +17,18 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
+<div class="row nomargintop" >
+    <div class="rowimage">
+            <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+    </div>    
+</div>        
+    
+<div class=" rowtitlecytc bgcytc_blue ">    
+        <h5 class=" panel-heading ">            
+            Repositorio CONCYTEC              
+        </h5>                        
+</div>
+
 <dspace:layout style="submission" locbar="link"
                parentlink="/mydspace"
                parenttitlekey="jsp.mydspace"

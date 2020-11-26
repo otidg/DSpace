@@ -287,12 +287,12 @@ public class ItemListTag extends TagSupport {
 				// If the table width has been specified, we can make this a
 				// fixed layout
 				if (!StringUtils.isEmpty(tablewidth)) {
-					out.println("<table border=\"0\" style=\"width: "
+					out.println("<table class=\"cytctable\" border=\"0\" style=\"width: "
 							+ tablewidth
 							+ "; table-layout: fixed;\" align=\"center\" class=\"table table-hover\" summary=\"This table browses all dspace content\">");
 				} else {
                     // Otherwise, don't constrain the width
-					out.println("<table border=\"0\" align=\"center\" class=\"table table-hover\" summary=\"This table browses all dspace content\">");
+					out.println("<table class=\"cytctable\" border=\"0\" align=\"center\" class=\"table table-hover\" summary=\"This table browses all dspace content\">");
                 }
 
                 // Output the known column widths

@@ -18,6 +18,14 @@
 <%@ taglib uri="researchertags" prefix="researcher"%>
 <%@ page import="org.dspace.core.ConfigurationManager"%>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@page import="org.dspace.core.NewsManager" %>
+
+<%
+        String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+
+%>
+
 <c:set var="contextPath" scope="application">${pageContext.request.contextPath}</c:set>
 <c:set var="dspace.layout.head" scope="request">    
 	<script type="text/javascript" src="${contextPath}/js/rgbcolor.js"></script>
@@ -50,10 +58,37 @@
 <c:set var="mode"><%=request.getParameter("mode") %></c:set>
 
 <dspace:layout titlekey="jsp.statistics.${data.jspKey}.${mode}title">
-
+<div class="row nomargintop" >
+    <h1 class="pagehidden">crisStatisticReport.jsp</h1>
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
+    </div>      
+    <div class="topNews_msg">
+        <%= topNews %>            
+    </div>    
+</div>
+<br/><br/>
+<div class=" rowtitlecytc bgcytc_blue nobrdradius">
+    
+    <h5 class=" panel-heading ">        
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>        
+    </h5>
+</div> 
+<div class="container">
+    <br/><br/>
 <div id="content">
 
- 	<h1><fmt:message key="view.${data.jspKey}.page.title"><fmt:param><h1><fmt:message key="statistics.type.${data.target.simpleName}" /></fmt:param><fmt:param><a href="${contextPath}/cris/${data.object.publicPath}/${data.object.crisID}">${data.title}</a></fmt:param></fmt:message></h1>
+ 	<h1 class="clrcytc_blue">
+            <fmt:message key="view.${data.jspKey}.page.title">
+                <fmt:param>
+                    <h1 class="clrcytc_blue"><fmt:message key="statistics.type.${data.target.simpleName}" /></fmt:param>
+                <fmt:param><br/><br/>
+                    <a href="${contextPath}/cris/${data.object.publicPath}/${data.object.crisID}">${data.title}</a>
+                </fmt:param>
+            </fmt:message></h1>
 	
 	<div class="pull-right">
 		<span class="label label-info"><fmt:message key="view.statistics.range.from" /></span> &nbsp; 
@@ -62,7 +97,7 @@
 		<span class="label label-info"><fmt:message key="view.statistics.range.to" /></span> &nbsp; 
 			<c:if test="${empty data.stats_to_date}"><fmt:message key="view.statistics.range.no-end-date" /></c:if>
 			${fn:escapeXml(data.stats_to_date)} &nbsp;&nbsp;&nbsp;
-		<a class="btn btn-default" data-toggle="modal" data-target="#stats-date-change-dialog"><fmt:message key="view.statistics.change-range" /></a>
+		<a class="btn btn-default bgcytc_green clrcytc_white brdradius font_bolder" data-toggle="modal" data-target="#stats-date-change-dialog"><fmt:message key="view.statistics.change-range" /></a>
 	</div>	
 	
 	<div class="row">			 
@@ -78,5 +113,7 @@
   </div><%--close tab contents --%>
 </div>
 </div>
+
+
 	<div class="clear"></div>
 </dspace:layout>
