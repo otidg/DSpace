@@ -65,8 +65,8 @@
     <%= footerNews %>
         <div>
             <h1 class="clrcytc_white bgcytc_blue text-center htitlefooter bgcytc_white" > 
-                <img src="<%= request.getContextPath() %>/image/i.5-.png" width="40px" />repositorio@concytec.gob.pe 
-                <img src="<%= request.getContextPath() %>/image/i.6-.png"  width="40px"/>(511) 204-9900 Anexo 712
+                <img src="<%= request.getContextPath() %>/image/email.png" width="40px" />repositorio@concytec.gob.pe 
+                <img src="<%= request.getContextPath() %>/image/phone.png"  width="40px"/>(511) 204-9900 Anexo 712
             </h1>
         </div>
         <br/>
@@ -74,10 +74,10 @@
         <br/>
         <div class="col-md-3"> </div>
         <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/lareferencia-logo.png"  width="70%" style="padding-right: 21px;"/>
+            <img src="<%= request.getContextPath() %>/image/lareferencia-logo.png"  width="70%" style="padding-right: 21px;padding-top: 10px;"/>
         </div>
         <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/alicia-logo.png"  width="70%" style="padding-top:5px;padding-left: 21px;" />
+            <img src="<%= request.getContextPath() %>/image/alicialogo.png"  width="70%" style="padding-top:5px;padding-left: 21px;" />
         </div>
         
         <div class="col-md-3"> </div>
