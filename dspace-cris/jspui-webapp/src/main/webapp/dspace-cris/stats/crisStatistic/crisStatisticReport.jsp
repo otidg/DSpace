@@ -58,14 +58,16 @@
 <c:set var="mode"><%=request.getParameter("mode") %></c:set>
 
 <dspace:layout titlekey="jsp.statistics.${data.jspKey}.${mode}title">
+
 <div class="row nomargintop" >
     <h1 class="pagehidden">crisStatisticReport.jsp</h1>
     
     <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/estadisticas.png" width="100%" alt=""/>  
     </div>      
     <div class="topNews_msg">
-        <%= topNews %>            
+        <%= topNews %>     
+		<img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">		
     </div>    
 </div>
 <br/><br/>

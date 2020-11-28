@@ -125,10 +125,11 @@ function sortBy(idx, ord)
 <div class="row nomargintop" >   
     
     <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/comunidad1.png" width="100%" alt=""/>  
     </div>     
     <div class="topNews_msg">
         <%= topNews %>            
+        <img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">         
     </div>       
 </div>
 <br/><br/>

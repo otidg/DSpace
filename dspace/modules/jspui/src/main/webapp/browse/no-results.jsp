@@ -27,7 +27,13 @@
 <%@ page import="org.dspace.content.Community" %>
 <%@ page import="org.dspace.content.Collection" %>
 
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@ page import="org.dspace.core.NewsManager" %>
+
 <%
+
+    String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));        
+
     request.setAttribute("LanguageSwitch", "hide");
 
 	String layoutNavbar = "default";
@@ -71,6 +77,18 @@
 %>
 <h1 class="pagehidden">no-results.jsp</h1>
 <dspace:layout titlekey="browse.no-results.title" navbar="<%= layoutNavbar %>">
+<div class="row nomargintop" >
+    <h1 class="pagehidden">no-results.jsp</h1>
+    
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/buscador.png" width="100%" alt=""/>  
+    </div>        
+    <div class="topNews_msg">
+        <%= topNews %>        
+		<img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">
+    </div> 
+</div>
+<br/><br/>
     <div class="container ">
         <div class="row bgcytc_lightgray" class="text-center">
             

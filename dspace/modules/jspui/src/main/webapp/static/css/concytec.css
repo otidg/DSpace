@@ -747,7 +747,9 @@ code {
 
 .brdmetrics{
     border-radius: 70px !important;
-    min-height: 145px;    
+    min-height: 145px;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;   
 }
 
 .download  .media-left, .view  .media-left{
@@ -764,8 +766,8 @@ code {
 
 .brdmetrics > div.media-left {
     position: relative !important;
-    left: 24% !important;
-    /*top: 21px;    */
+    left: 11% !important;
+    top: -5px;
 }
 .brdmetrics h4.media-heading{
     font-size: 15px !important;
@@ -779,6 +781,9 @@ code {
     background-color: unset !important;     
 }
 
+.media.google.bgcytc_blue.brdmetrics img {
+    padding-top: 29px !important;
+}
 
 .media.download_count a ,  .media.download a, .media.view a{    
     background: unset !important;
@@ -1286,6 +1291,12 @@ select.moreclass{
     margin-bottom: 5px !important;
 }
 
+#wrapperDisplayItem table img {
+    position: absolute;
+    bottom: 14%;
+    left: 106%;
+    width: 180px;
+}
 
 @media (min-width: 768px)
 {
