@@ -74,10 +74,11 @@
 <div class="row nomargintop" >
     
     <div class="rowimage">
-        <img  class="topimgcytc img-responsive" src="<%= request.getContextPath() %>/image/s.1 .2-.png" width="100%" alt=""/>  
+        <img  class="topimgcytc img-responsive" src="<%= request.getContextPath() %>/image/home1.png" width="100%" alt=""/>  
     </div>    
     <div class="topNews_msg">
-        <%= topNews %>            
+        <%= topNews %>      
+        <img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">              
     </div>
     
 	<div class="col-md-12 sm-12 pull-<%= isRtl? "right":"left" %>">                                  

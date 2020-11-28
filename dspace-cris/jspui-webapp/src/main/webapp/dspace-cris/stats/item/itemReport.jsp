@@ -46,17 +46,17 @@
 
 <dspace:layout titlekey="jsp.statistics.item-title">
 <div class="row nomargintop" >
-    <div class="rowimage">
-            <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
-    </div>    
-</div>        
+    <h1 class="pagehidden">crisStatisticReport.jsp</h1>
     
-<div class=" rowtitlecytc bgcytc_blue ">    
-        <h5 class=" panel-heading ">            
-            Repositorio CONCYTEC              
-        </h5>                        
+    <div class="rowimage">
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/estadisticas.png" width="100%" alt=""/>  
+    </div>      
+    <div class="topNews_msg">
+        <%= topNews %>     
+		<img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">		
+    </div>    
 </div>
-    <h1>itemReport.jsp</h1>
+<h1 class="pagehidden">itemReport.jsp</h1>
 <div id="content">
 	<div class="col-lg-12">
 		<div class="form-inline">

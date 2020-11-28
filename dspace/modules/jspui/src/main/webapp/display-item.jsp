@@ -253,13 +253,23 @@ j(document).ready(function() {
 %>
 <div class="row nomargintop" >
     <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.3.2-.png" width="100%" alt=""/>  
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/publicacion.png" width="100%" alt=""/>  
     </div>  
 </div>
 <div class="topNews_msg">
     <%= topNews %>            
+	<img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">
 </div>    
-        
+<br/>
+<br/>
+<div class=" rowtitlecytc bgcytc_blue ">
+    <h5 class=" panel-heading ">
+        <div class="container">
+            <dspace:include page="/layout/location-bar.jsp" />            
+        </div>
+    </h5>
+</div> 
+<div class="container">        
 	<div class="row">
 		<div class="col-sm-<%= admin_button?"7":"12" %> col-md-<%= admin_button?"8":"12" %> col-lg-<%= admin_button?"9":"12" %>">
 		<%		
@@ -354,13 +364,7 @@ j(document).ready(function() {
 
 <div class="row">    
 <div id="wrapperDisplayItem" class="col-lg-9">
-<div class=" rowtitlecytc bgcytc_blue ">
-    <h5 class=" panel-heading ">
-        <div class="container">
-            <dspace:include page="/layout/location-bar.jsp" />            
-        </div>
-    </h5>
-</div>      
+     
     
     <div class="container">
 
@@ -714,16 +718,18 @@ if (dedupEnabled && admin_button) { %>
     </div>
     <!-- SOCIAL NETWORKS -->
     <div class="container">
-        <h5 class="text-center clrcytc_gray">Compartir este item</h5>
         <!--<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5fb5ed4eadd7330012eeae23&product=inline-share-buttons" async="async"></script>-->
         
         <!--<div class=" sharethis-inline-share-buttons"></div>   -->   
         <!-- Go to www.addthis.com/dashboard to customize your tools --> <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fbc94eef065b737"></script>         
         <ul class=" rowsocial">
-            <li><img alt="QR Code" src="http://www.mobile-barcodes.com/qr-code-generator/generator.php?str=https://http://localhost/handle/20.500.12390/407&amp;barcode=url"></li>
+        
+			<li class="imageItem"></li>
+			<li><h5 class="text-center clrcytc_gray">Compartir este item</h5></li>
             <li>
                 <div class="addthis_inline_share_toolbox"></div>                 
             </li>
+            <li><img alt="QR Code" src="http://www.mobile-barcodes.com/qr-code-generator/generator.php?str=https://http://localhost/handle/20.500.12390/407&amp;barcode=url"></li>
             
         </ul>                      
     </div>
@@ -825,5 +831,5 @@ if (dedupEnabled && admin_button) { %>
     } 
 %>
 	</div>
-    
+</div>    
 </dspace:layout>

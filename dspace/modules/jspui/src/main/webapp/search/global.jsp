@@ -188,13 +188,15 @@
 <dspace:layout titlekey="jsp.search.title">    
 <div class="row nomargintop" >
     <div class="rowimage">
-            <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+            <img class="img-responsive" src="<%= request.getContextPath() %>/image/buscador.png" width="100%" alt=""/>  
     </div>    
     <h1 class="pagehidden">Global.jsp</h1>
 </div>
 <div class="topNews_msg">
-            <%= topNews %>            
+	<%= topNews %>     
+	<img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">       
 </div>    
+<br><br>
 <div class="row rowtitlecytc bgcytc_blue nobrdradius">
     <div class="container">
         <div class="col-md-9 bgcytc_blue"> 

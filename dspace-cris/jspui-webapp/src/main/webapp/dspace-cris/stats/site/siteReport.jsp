@@ -59,10 +59,11 @@
     <h1 class="pagehidden">SiteReport.jsp</h1>
     
     <div class="rowimage">
-        <img class="img-responsive" src="<%= request.getContextPath() %>/image/s.2.2-.png" width="100%" alt=""/>  
+        <img class="img-responsive" src="<%= request.getContextPath() %>/image/estadisticas.png" width="100%" alt=""/>  
     </div> 
     <div class="topNews_msg">
-        <%= topNews %>            
+        <%= topNews %>       
+		<img class="imgCtycBanner" src="<%= request.getContextPath() %>/image/l.2-.png">		     
     </div>     
 </div>
 <br/><br/>
