@@ -74,7 +74,7 @@
         <br/>
         <div class="col-md-3"> </div>
         <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/lareferencia-logo.png"  width="70%" style="padding-right: 21px;"/>
+            <img src="<%= request.getContextPath() %>/image/lareferencia-logo.png"  width="70%" style="padding-right: 21px;padding-top: 10px;"/>
         </div>
         <div class="col-md-3 text-center">
             <img src="<%= request.getContextPath() %>/image/alicialogo.png"  width="70%" style="padding-top:5px;padding-left: 21px;" />

@@ -729,7 +729,7 @@ if (dedupEnabled && admin_button) { %>
             <li>
                 <div class="addthis_inline_share_toolbox"></div>                 
             </li>
-            <li><img alt="QR Code" src="http://www.mobile-barcodes.com/qr-code-generator/generator.php?str=https://http://localhost/handle/20.500.12390/407&amp;barcode=url"></li>
+            <li><img alt="QR Code" src="http://www.mobile-barcodes.com/qr-code-generator/generator.php?str=<%= HandleManager.getCanonicalForm(handle) %>&amp;barcode=url"></li>
             
         </ul>                      
     </div>
