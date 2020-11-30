@@ -442,6 +442,29 @@ j(document).ready(function() {
     <a style="margin:2%; padding:5px 55px" class="btn btn-default bgcytc_lightblue brdradius clrcytc_white" href="<%=locationLink %>?mode=full">
         <fmt:message key="jsp.display-item.text2"/>
     </a>
+
+
+	<!-- script move images -->
+	<script type="text/javascript">
+
+		$(document).ready(function(){ 			
+			//.imageItem
+			//itemDisplayTable
+			//var tableImages = []; 
+			
+			var limage = document.querySelector('#imageItems');
+
+			var table = document.getElementById("wrapperDisplayItem").querySelectorAll("img");
+						
+			for (i = 0; i < table.length; i++) {
+				var parent = table[i].parentNode;
+				limage.appendChild(parent);
+			}
+			
+		});			
+	</script>
+
+
 <%
         }
     }
@@ -724,7 +747,7 @@ if (dedupEnabled && admin_button) { %>
         <!-- Go to www.addthis.com/dashboard to customize your tools --> <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fbc94eef065b737"></script>         
         <ul class=" rowsocial">
         
-			<li class="imageItem"></li>
+			<li id="imageItems" class="text-center"></li>
 			<li><h5 class="text-center clrcytc_gray">Compartir este item</h5></li>
             <li>
                 <div class="addthis_inline_share_toolbox"></div>                 
