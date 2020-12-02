@@ -72,16 +72,22 @@
         <br/>
         <h5 class="text-center"><b>Redes de Repositorios</b></h5>
         <br/>
-        <div class="col-md-3"> </div>
-        <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/lareferencia-logo.png"  width="70%" style="padding-right: 21px;padding-top: 10px;"/>
+        <div class="col-md-3"> 
+            <img class="imgcolorfooter" src="<%= request.getContextPath() %>/image/v.1-.png" />        
         </div>
         <div class="col-md-3 text-center">
-            <img src="<%= request.getContextPath() %>/image/alicialogo.png"  width="70%" style="padding-top:5px;padding-left: 21px;" />
+            <img  src="<%= request.getContextPath() %>/image/lareferencia-logo.png"/>
+        </div>
+        <div class="col-md-3 text-center">
+            <img class="imgalicia" src="<%= request.getContextPath() %>/image/alicialogo.png" style="padding-top:5px;padding-left: 21px;" />
         </div>
         
-        <div class="col-md-3"> </div>
-        <!--<img src="<%= request.getContextPath() %>/image/logo-4science-small.png"/>-->
+        <div class="col-md-3 text-center">   
+            <div class="acontent">
+                <a href="<%= request.getContextPath() %>/feedback" class="comentariosfooter">Comentarios</a>
+            </div>      
+        </div>
+        
     </footer>
     </body>
 </html>
