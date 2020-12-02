@@ -31,7 +31,7 @@ and open the template in the editor.
     font-family: "font_ctyc";
   }
   
-  h1,h2,h3,h4,h5,p,span, ::placeholder, label, button, span{
+  h1,h2,h3,h4,h5,p ::placeholder, button{
     font-family: "font_ctyc";
   }
   
@@ -208,6 +208,7 @@ and open the template in the editor.
   
   
   .topNews_msg img{
+      display: none;
       position: absolute;    
       padding-right: 20px;
       position: absolute;
@@ -216,6 +217,8 @@ and open the template in the editor.
   }
   
   .topNews_msg h3{
+  
+      display: none;
       color: var(--BGCYTC_WHITE) !important;
       
       position: absolute;
@@ -225,6 +228,8 @@ and open the template in the editor.
       text-align: left;
   } 
   .topNews_msg p{
+  
+      display: none;
       color: var(--BGCYTC_WHITE) !important;
    
       position: absolute;
@@ -637,6 +642,11 @@ and open the template in the editor.
   
   .list-group-item-heading a{
       color: var(--BGCYTC_PANTONE_BLUE) !important;
+      line-height: 1.8;
+  }
+  
+  .list-group-item-heading a:hover{
+      text-decoration: unset !important;
   }
   
   .list-group-item-heading {
@@ -1039,6 +1049,19 @@ and open the template in the editor.
   #content h1{
       font-size: 28px;
   }
+  
+  .imgalicia{
+      width: 70% ;
+  }
+  
+  
+  @media screen and (min-width: 601px) and (max-width: 992px)
+  {
+      .imgcolorfooter{
+          display: none;
+      }
+  }
+  
   /********** MOBILE *************/
   @media screen and (max-width: 600px) {
       #user-top-menu{
@@ -1053,6 +1076,7 @@ and open the template in the editor.
       }   
       
       .topNews_msg h3{
+          display: none;
           position: absolute !important;
           font-size: 20px !important;
           left: 0% !important;
@@ -1065,7 +1089,7 @@ and open the template in the editor.
       }    
       
       .topimgcytc{
-          display: block !important;*/
+          display: block !important;
       }
       .topNews_msg > img {
           display: none !important;        
@@ -1132,7 +1156,16 @@ and open the template in the editor.
           padding: 0px !important;  
           margin-top: 28px;        
       }    
-      
+  
+      .imgcolorfooter{
+          display: none;
+      }    
+  
+      .imgalicia{
+          padding: 15px;
+          width: 60% !important;
+      }
+  
   }
   
   /******* SEARCH ************/
@@ -1359,3 +1392,41 @@ and open the template in the editor.
   .media label {
   
   }
+  
+  /****** ESTADISTICAS ********/
+  
+  #statspng_div_stats-site_top_item_continent_item{
+      background-color: #00597c !important;
+      color: white !important;
+      border: 1px solid #00597c !important;
+      border-radius: 20px;    
+  }
+  
+  #statsjpg_div_stats-site_top_item_continent_item{
+      background-color: var(--BGCYTC_GRAY);
+      border-radius: 20px;
+      color: white;    
+      font-weight: bolder;    
+  }
+  
+  .imgcolorfooter{
+      object-fit: cover;
+      object-position: 47% 57px;
+      width: 45%;
+      margin-left: 19%;
+      margin-top: -62px;
+  }
+  
+  .comentariosfooter{
+      color: #ababab;
+      text-decoration: unset !important;
+      font-size: 18px;
+      font-weight: bold;    
+     
+  }
+  
+  .acontent{    
+      margin-top: 21%;
+  }
+  
+  

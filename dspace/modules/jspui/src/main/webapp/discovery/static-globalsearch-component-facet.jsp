@@ -174,9 +174,9 @@
 %>
 <div class="container">   
 	<br/><br/> 
-	<a href="#group-right-info-popover-content"><div class="col-md-4 text-center" >
+	<a href="#group-center-info-popover-content"><div class="col-md-4 text-center" >
 		<p>                    
-                    <img src="<%= request.getContextPath() %>/image/publicaciones.png"  alt="" id="group-left-info"  data-placement="right">
+                    <img src="<%= request.getContextPath() %>/image/publicaciones.png"  alt="" id="group-right-info"  data-placement="right">
                     <!--<span class="fa fa-file-text-o fa-5x" id="group-right-info"  data-placement="left"></span> -->
                     <span class="badge numberbadge"><%= totGroupRight %></span>
                 </p>
@@ -185,9 +185,9 @@
                     <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-right-info" /></small>                    
                 </h4>
 	</div></a>
-	<a href="#group-left-info-popover-content"><div class="col-md-4 text-center">
+	<a href="#group-right-info-popover-content"><div class="col-md-4 text-center">
 		<p>
-                    <img src="<%= request.getContextPath() %>/image/personaok.png"  alt="" id="group-center-info" data-placement="bottom">
+                    <img src="<%= request.getContextPath() %>/image/personaok.png"  alt="" id="group-left-info" data-placement="bottom">
                     <!--<span class="fa fa-users fa-5x" id="group-left-info" data-placement="right"></span> -->
                     <span class="badge numberbadge"><%= totGroupLeft %></span>
                 </p>
@@ -197,9 +197,9 @@
                 </h4>
 	</div></a>
 	
-	<a href="#group-center-info-popover-content"><div class="col-md-4 text-center">
+	<a href="#group-left-info-popover-content"><div class="col-md-4 text-center">
 		<p>
-                    <img src="<%= request.getContextPath() %>/image/otrasentidades.png"  alt="" id="group-right-info"  data-placement="left">                    
+                    <img src="<%= request.getContextPath() %>/image/otrasentidades.png"  alt="" id="group-center-info"  data-placement="left">                    
                     <!--<span class="fa fa-cogs fa-5x" id="group-center-info"  data-placement="bottom"></span> -->
                     <span class="badge numberbadge"><%= totGroupCenter%></span>
                 </p>
