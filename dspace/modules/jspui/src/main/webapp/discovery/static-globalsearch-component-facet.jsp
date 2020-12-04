@@ -174,38 +174,38 @@
 %>
 <div class="container">   
 	<br/><br/> 
-	<a href="#group-center-info-popover-content"><div class="col-md-4 text-center" >
-		<p>                    
-                    <img src="<%= request.getContextPath() %>/image/publicaciones.png"  alt="" id="group-right-info"  data-placement="right">
-                    <!--<span class="fa fa-file-text-o fa-5x" id="group-right-info"  data-placement="left"></span> -->
-                    <span class="badge numberbadge"><%= totGroupRight %></span>
-                </p>
-		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-right-info" /></h4>
-                <h4 class="smallh4">
-                    <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-right-info" /></small>                    
-                </h4>
-	</div></a>
-	<a href="#group-right-info-popover-content"><div class="col-md-4 text-center">
+	
+	<a href="#group-left-info-popover-content"><div class="col-md-4 text-center">
 		<p>
-                    <img src="<%= request.getContextPath() %>/image/personaok.png"  alt="" id="group-left-info" data-placement="bottom">
-                    <!--<span class="fa fa-users fa-5x" id="group-left-info" data-placement="right"></span> -->
-                    <span class="badge numberbadge"><%= totGroupLeft %></span>
+                    <img src="<%= request.getContextPath() %>/image/publicaciones.png"  alt="" id="group-left-info"  data-placement="right">                    
+                    <!--<span class="fa fa-cogs fa-5x" id="group-center-info"  data-placement="bottom"></span> -->
+                    <span class="badge numberbadge"><%= totGroupLeft%></span>
                 </p>
 		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-left-info" /></h4>
                 <h4 class="smallh4">
                     <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-left-info" /></small>                    
                 </h4>
 	</div></a>
-	
-	<a href="#group-left-info-popover-content"><div class="col-md-4 text-center">
-		<p>
-                    <img src="<%= request.getContextPath() %>/image/otrasentidades.png"  alt="" id="group-center-info"  data-placement="left">                    
-                    <!--<span class="fa fa-cogs fa-5x" id="group-center-info"  data-placement="bottom"></span> -->
-                    <span class="badge numberbadge"><%= totGroupCenter%></span>
+	<a href="#group-center-info-popover-content"><div class="col-md-4 text-center" >
+		<p>                    
+                    <img src="<%= request.getContextPath() %>/image/financiameinto.png"  alt="" id="group-center-info"  data-placement="bottom">
+                    <!--<span class="fa fa-file-text-o fa-5x" id="group-right-info"  data-placement="left"></span> -->
+                    <span class="badge numberbadge"><%= totGroupCenter %></span>
                 </p>
 		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-center-info" /></h4>
                 <h4 class="smallh4">
                     <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-center-info" /></small>                    
+                </h4>
+	</div></a>
+	<a href="#group-right-info-popover-content"><div class="col-md-4 text-center">
+		<p>
+                    <img src="<%= request.getContextPath() %>/image/otrasentidades.png"  alt="" id="group-right-info" data-placement="left">
+                    <!--<span class="fa fa-users fa-5x" id="group-left-info" data-placement="right"></span> -->
+                    <span class="badge numberbadge"><%= totGroupRight %></span>
+                </p>
+		<h4 class="text-success h4ctyc_global"><fmt:message key="jsp.home.explore.group-right-info" /></h4>
+                <h4 class="smallh4">
+                    <small class="smallctyc label label-success"><fmt:message key="jsp.home.explore.title.group-right-info" /></small>                    
                 </h4>
 	</div></a>
 	
