@@ -1430,3 +1430,26 @@ and open the template in the editor.
   }
   
   
+  .input-group-addon {    
+      background-color: unset !important; 
+      border: unset !important; 
+  }
+  
+  .marginboxcytc{
+      padding: 24px 0px 24px 0px;
+  }
+  
+  .labelpadding{
+      padding: 10px;
+      display: inline-block;
+      width: 90%;
+      margin-bottom: 12px;    
+  }
+  
+  .form-control{
+      border: 1px solid #e6e6e6 !important;    
+  }
+  
+  .pcontact{
+      padding: 10px;
+  }
