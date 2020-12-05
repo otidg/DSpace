@@ -84,7 +84,7 @@
         
         <div class="col-md-3 text-center">   
             <div class="acontent">
-                <a href="<%= request.getContextPath() %>/feedback" class="comentariosfooter">Comentarios</a>
+                <a href="feedback"><fmt:message key="jsp.layout.footer-default.feedback"/></a>
             </div>      
         </div>
         
