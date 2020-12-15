@@ -1371,8 +1371,8 @@ and open the template in the editor.
       object-fit: contain;
       object-position: 33% 0px;
     
-      width: 120px;
-      height: 180px;
+      /* width: 120px;
+      height: 180px; */
   }
   
   .standard img, #imageItems img{
