@@ -1368,7 +1368,7 @@ and open the template in the editor.
   
   .oddRowEvenCol img, .oddRowEvenCol img
   {
-      object-fit: cover;
+      object-fit: contain;
       object-position: 33% 0px;
     
       width: 120px;
@@ -1376,7 +1376,7 @@ and open the template in the editor.
   }
   
   .standard img, #imageItems img{
-      object-fit: cover;
+      object-fit: contain;
       object-position: 33% 0px;
     
       width: 200px;
