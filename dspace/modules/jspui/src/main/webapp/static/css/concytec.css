@@ -1358,7 +1358,7 @@ and open the template in the editor.
   /*********** THUMBNAIL ******/
   
   .media-object{    
-      object-fit: cover;
+      object-fit: contain;
       object-position: 33% 0px;
     
       width: 120px;
