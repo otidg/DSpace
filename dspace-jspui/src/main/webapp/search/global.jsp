@@ -101,9 +101,9 @@
 	    int idx = 1;
 	    for (String[] filter : appliedFilters)
 	    {
-	        httpFilters += "&amp;filter_field_"+idx+"="+URLEncoder.encode(filter[0],"UTF-8");
-	        httpFilters += "&amp;filter_type_"+idx+"="+URLEncoder.encode(filter[1],"UTF-8");
-	        httpFilters += "&amp;filter_value_"+idx+"="+URLEncoder.encode(filter[2],"UTF-8");
+	        httpFilters += "&amp;filter_field_"+idx+"="+((filter[0]!=null)?URLEncoder.encode(filter[0],"UTF-8"):"");
+	        httpFilters += "&amp;filter_type_"+idx+"="+((filter[1]!=null)?URLEncoder.encode(filter[1],"UTF-8"):"");
+	        httpFilters += "&amp;filter_value_"+idx+"="+((filter[2]!=null)?URLEncoder.encode(filter[2],"UTF-8"):"");
 	        idx++;
 	    }
 	}
@@ -116,16 +116,18 @@
     
     DiscoverResult qResults = (DiscoverResult)request.getAttribute("queryresults");
 	DiscoverySearchFilterFacet facetGlobalConf = (DiscoverySearchFilterFacet) request.getAttribute("facetGlobalConfig");
-	String fGlobal = facetGlobalConf.getIndexFieldName();
-	List<FacetResult> facetGlobal = null;
     Map<String, Long> numResultsByType = new HashMap<String, Long>();
+	List<FacetResult> facetGlobal = null;    
 	String fkeyGlobal = null;
-	if(qResults!=null) {
-	    facetGlobal = qResults.getFacetResult(fGlobal);
-	    fkeyGlobal = "jsp.search.facet.refine."+fGlobal;
-	    for (FacetResult fg : facetGlobal) {
-	    	numResultsByType.put(fg.getAuthorityKey(), fg.getCount());
-	    }
+	if(facetGlobalConf != null){
+		String fGlobal = facetGlobalConf.getIndexFieldName();
+		if(qResults!=null) {
+	    	facetGlobal = qResults.getFacetResult(fGlobal);
+		    fkeyGlobal = "jsp.search.facet.refine."+fGlobal;
+		    for (FacetResult fg : facetGlobal) {
+	    		numResultsByType.put(fg.getAuthorityKey(), fg.getCount());
+		    }
+		}
 	}
 
 %>
@@ -150,7 +152,7 @@
 							auto_query: request.term,
 							auto_sort: 'count',
 							auto_type: jQ("#filtertype").val(),
-							location: '<%= searchScope%>'	
+							location: '<%= Utils.addEntities(searchScope)%>'	
 						},
 						success: function( data ) {
 							response( jQ.map( data.autocomplete, function( item ) {
@@ -337,7 +339,9 @@ else if( qResults != null && collapsedResults != null)
 				String messageAllGlobalType = "jsp.search.global.all." + otypeSensitive;
 				%>					
 			</div>
-		<% if (collapsedResults.get(otypeSensitive).size() < numResultsByType.get(otypeSensitive)) { %>
+		<% 
+		if(!numResultsByType.isEmpty()){
+			if (collapsedResults.get(otypeSensitive).size() < numResultsByType.get(otypeSensitive)) { %>
 			<div class="panel-footer text-right">	
 				<a class="btn btn-link text-primary" role="button" href="<%= request.getContextPath()
                 + "/simple-search?query="
@@ -348,7 +352,8 @@ else if( qResults != null && collapsedResults != null)
                 	<fmt:param><%= numResultsByType.get(otypeSensitive) %></fmt:param>
                 </fmt:message></a>                
 			</div>
-		<% } %>
+		<% }
+		} %>
 		</div>
 		<%
 			}
@@ -450,7 +455,7 @@ for (DiscoverySearchFilterFacet facetConf : facetsConf)
 	        %><li class="list-group-item"><span class="badge"><%= fvalue.getCount() %></span> <a href="<%= request.getContextPath()
                 + "/global-search?query="
                 + URLEncoder.encode(query,"UTF-8")
-				+ "&amp;location="+searchScope
+				+ "&amp;location="+Utils.addEntities(searchScope)
                 + httpFilters
                 + "&amp;filtername="+URLEncoder.encode(f,"UTF-8")
                 + "&amp;filterquery="+URLEncoder.encode(fvalue.getAsFilterQuery(),"UTF-8")
@@ -471,7 +476,7 @@ for (DiscoverySearchFilterFacet facetConf : facetsConf)
 	        <a class="pull-left" href="<%= request.getContextPath()
                 + "/global-search?query="
                 + URLEncoder.encode(query,"UTF-8")
-				+ "&amp;location="+searchScope
+				+ "&amp;location="+Utils.addEntities(searchScope)
                 + httpFilters
                 + "&amp;"+f+"_page="+(currFp-1) %>"><fmt:message key="jsp.search.facet.refine.previous" /></a>
             <% } %>
@@ -479,7 +484,7 @@ for (DiscoverySearchFilterFacet facetConf : facetsConf)
             <a href="<%= request.getContextPath()
                 + "/global-search?query="
                 + URLEncoder.encode(query,"UTF-8")
-				+ "&amp;location="+searchScope
+				+ "&amp;location="+Utils.addEntities(searchScope)
                 + httpFilters
                 + "&amp;"+f+"_page="+(currFp+1) %>"><span class="pull-right"><fmt:message key="jsp.search.facet.refine.next" /></span></a>
             <%

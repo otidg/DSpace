@@ -11,6 +11,7 @@ import java.awt.ComponentOrientation;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -124,9 +125,9 @@ public class UIUtil extends Util
         Context c = (Context) request.getAttribute("dspace.context");
 
 
-        if (c == null)
+        if (c == null || !c.isValid())
         {
-            // No context for this request yet
+            // No valid context for this request yet
             c = new Context();
             HttpSession session = request.getSession();
 
@@ -242,9 +243,36 @@ public class UIUtil extends Util
             {
                 fullURL = fullURL + "?" + request.getQueryString();
             }
-
-            request.setAttribute("dspace.original.url", fullURL);
+            orig =fullURL;
+            
+        }else {
+        	orig = checkRedirectURL(orig);
         }
+        
+        
+        request.setAttribute("dspace.original.url", orig);
+    }
+    
+    /**
+     * Controls if the url provided owns by the dspace.hostname 
+     * 
+     * @param url
+     * 			the string url to check
+     * 
+     * @return the url to redirect
+     */
+    public static String checkRedirectURL(String url) {
+    	String dspaceHost = ConfigurationManager.getProperty("dspace.hostname");
+    	if(StringUtils.isNotBlank(url)) {
+	    	URI uri = URI.create(url);
+	    	String requestHost = uri.getHost();
+			if(!StringUtils.equals(requestHost, dspaceHost) && !StringUtils.equals(requestHost, "127.0.0.1") && !StringUtils.equals(requestHost, "[::1]")) {
+				log.warn("Attempting redirect to: "+ url +" redirecting to DSpace URL instead");
+				String dspaceUrl = ConfigurationManager.getProperty("dspace.url");
+				return dspaceUrl;
+			}
+    	}
+		return url;
     }
 
     /**
@@ -500,7 +528,7 @@ public class UIUtil extends Util
 		}
 		finally
 		{
-			response.setHeader("Content-Disposition", "attachment;filename=" + name);
+			response.setHeader("Content-Disposition", "attachment;filename=" + '"' + name + '"');
 		}
 	}
 	

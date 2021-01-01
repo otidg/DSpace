@@ -1,7 +1,0 @@
-language: java
-
-env: 
-  # Give Maven 2GB of memory to work with
-- MAVEN_OPTS=-Xmx2048M
-
-script: "mvn clean package license:check -Dmaven.test.skip=true -B -V"

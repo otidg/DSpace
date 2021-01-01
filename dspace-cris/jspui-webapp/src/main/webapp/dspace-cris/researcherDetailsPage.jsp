@@ -65,7 +65,7 @@
     // Can the logged in user edit
     Boolean bEdit = (Boolean)request.getAttribute("canEdit");
     boolean canEdit = (bEdit == null ? false : bEdit.booleanValue());
-    
+    boolean canDisconnectOrcid = ConfigurationManager.getBooleanProperty("cris","rp.orcid.candisconnect");
     // Get the current page, minus query string
     String currentPage = UIUtil.getOriginalURL(request);
     int c = currentPage.indexOf( '?' );
@@ -86,6 +86,7 @@
 <c:set var="baseURL" value="${fn:replace(req.requestURL, fn:substring(req.requestURI, 0, fn:length(req.requestURI)), req.contextPath)}" />
 <c:set var="metaprofilename"><c:choose><c:when test="${!empty entity.preferredName.value}">${entity.preferredName.value}</c:when><c:otherwise>${entity.fullName}</c:otherwise></c:choose></c:set>
 <c:set var="fieldRSS" scope="request"><%= fieldFeed %></c:set>
+<c:set var="canDisconnectOrcid" scope="page"><%= canDisconnectOrcid %></c:set>
 
 <c:set var="dspace.cris.navbar" scope="request">
 
@@ -145,6 +146,14 @@
 									postfunction();
 								},
 								error : function(data) {
+								},
+								complete: function(data) {
+									j('#' + id).dataTable({
+												searching: false, 
+												info: false, 
+												paging: false,
+												ordering : true
+									});
 								}
 							});		
 						};
@@ -152,7 +161,6 @@
 							j('#nested_'+id+'_next').click(
 									function() {
 								    	ajaxFunction(parseInt(j('#nested_'+id+"_pageCurrent").html())+1);
-										
 							});
 							j('#nested_'+id+'_prev').click(
 									function() {
@@ -168,7 +176,6 @@
 					error : function(data) {
 					},
 					complete: function(data) {
-						
 						j('#' + id).dataTable({
 									searching: false, 
 									info: false, 
@@ -234,6 +241,31 @@
 						else{
 							j('#selfclaimrp-result').append('<span id="label-success" class="label label-success"><fmt:message key="jsp.cris.detail.selfclaimrp.success"><fmt:param value="${baseURL}/cris/rp/${entity.crisID}"/></fmt:message></span>');
 							
+						}
+					}
+				});
+				
+			});
+			
+			j('#disconnect-orcid-rp').on('click', function(){
+				j('#label-success').remove();
+				j('#label-error').remove();				
+				j.ajax({
+					url: "<%= request.getContextPath() %>/json/orcid/disconnect",
+					data: {
+						"crisid": '${entity.crisID}'
+					},
+					success : function(data) {
+						send = data.result;
+						if(send==-1){
+							j('#selfclaimrp-result').append('<span id="label-error" class="label label-warning"><fmt:message key="jsp.cris.detail.disconnectorcidrp.error-1"><fmt:param value="${baseURL}/cris/rp/${entity.crisID}"/></fmt:message></span>');	
+						}
+						else{
+							j('#selfclaimrp-result').append('<span id="label-success" class="label label-warning"><fmt:message key="jsp.cris.detail.disconnectorcidrp.success"><fmt:param value="${baseURL}/cris/rp/${entity.crisID}"/></fmt:message></span>');
+							j('#orciddisconnect-modal').modal('show');
+							setTimeout(function () { // wait 3 seconds and reload
+								    window.location.reload(true);
+								  }, 3000);
 						}
 					}
 				});
@@ -348,13 +380,15 @@
 	  				<a class="btn btn-default bgcytc_green clrcytc_white brdradius" href="<%= request.getContextPath() %>/open-search?query=${fieldRSS}:${authority}&amp;format=rss"> <fmt:message key="jsp.cris.detail.link.rssfeed" />&nbsp;&nbsp;<i class="fa fa-rss"></i></a>
 				</div>
 				<c:if test="${(researcher_page_menu || canEdit) && !empty researcher}">
-				<div class="btn-group">
 						<c:if test="${!empty addModeType && addModeType=='display'}">
+							<div class="btn-group">
 							<a class="btn btn-default" href="<%= request.getContextPath() %>/cris/tools/rp/editDynamicData.htm?id=${researcher.id}&anagraficaId=${researcher.dynamicField.id}<c:if test='${!empty tabIdForRedirect}'>&tabId=${tabIdForRedirect}</c:if>"><i class="fa fa-edit"></i> <fmt:message key="jsp.layout.navbar-hku.staff-mode.edit.primary-data"/></a>
+							</div>
 						 </c:if>
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span class="btn-group" onmouseover="hover(this);" onmouseout="out(this);" >
+						<a href="#" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 		    				<i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-		  				</button>
+		  				</a>
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${!empty addModeType && addModeType=='display'}">
 						    <li>
@@ -369,16 +403,25 @@
 							</li>							
 							</c:if>
 							</c:if>
-							<c:if test="${admin}">				
-								<li>
-									<a href="${root}/cris/tools/rp/rebindItemsToRP.htm?id=${researcher.id}"><i class="fa fa-search"></i> <fmt:message key="jsp.layout.navbar-hku.staff-mode.bind.items"/></a>
-								</li>
-							</c:if>
+                                                       <c:choose>
+                                                               <c:when test="${admin}">                                
+                                                                       <li>
+                                                                               <a href="${root}/cris/tools/rp/rebindItemsToRP.htm?id=${researcher.id}"><i class="fa fa-search"></i> <fmt:message key="jsp.layout.navbar-hku.staff-mode.bind.items"/></a>
+                                                                       </li>
+                                                               </c:when>
+                                                               <c:otherwise>
+                                                                       <li>
+                                                                               <a href="${root}/cris/tools/rp/rebindItemsToRP.htm?id=${researcher.id}&operation=list"><i class="fa fa-search"></i> <fmt:message key="jsp.authority-claim.choice.list.items"/></a>
+                                                                       </li>
+                                                               </c:otherwise>
+                                                       </c:choose>
+							<c:if test="${!empty anagraficaObject.anagrafica4view['orcid'] && canDisconnectOrcid}">
 							<li>
-								<a href="${root}/cris/tools/rp/rebindItemsToRP.htm?id=${researcher.id}&operation=list"><i class="fa fa-search"></i> <fmt:message key="jsp.authority-claim.choice.list.items"/></a>
-							</li>							
+								<a href="#" id="disconnect-orcid-rp"><i class="fa fa-search"></i> <fmt:message key="jsp.authority-orcid.disconnect"/></a>
+							</li>
+							</c:if>							
 						</ul>
-					</div> 
+		  				</span>
 					
 <%-- 					<div class="btn-group">
 						<a class="btn btn-default" href="${root}/cris/uuid/${researcher.uuid}/relMgmt/publications"><i class="fa fa-book"></i> <fmt:message key="jsp.layout.navbar-hku.staff-mode.manage-publication"/></a>
@@ -501,7 +544,7 @@
 	      		<input type="text" class="form-control" id="claimrp-validation" />
       			<input type="hidden" value="${requestScope.authority}" id="claimrp-rpkey"/>
       			<span class="input-group-btn">
-	        		<span href="" class="btn btn-success" id="claimrp-button"><fmt:message key="jsp.cris.detail.claimrp.button.text" /></span>
+	        		<span href="#" class="btn btn-success" id="claimrp-button"><fmt:message key="jsp.cris.detail.claimrp.button.text" /></span>
       			</span>
     		</div>
      		<h4 id="claimrp-result"></h4>
@@ -532,6 +575,9 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div id="orciddisconnect-modal" style="display:none">
+	<!-- empty -->
+</div>
 </dspace:layout>
 </div> 
 </c:otherwise>

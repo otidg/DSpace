@@ -7,6 +7,8 @@
  */
 package org.dspace.app.webui.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ import org.dspace.content.authority.Choices;
 import org.dspace.core.Context;
 import org.dspace.core.I18nUtil;
 import org.dspace.core.PluginManager;
+import org.dspace.core.Utils;
 
 public class ValuePairsDisplayStrategy extends ASimpleDisplayStrategy
 {
@@ -119,9 +122,9 @@ public class ValuePairsDisplayStrategy extends ASimpleDisplayStrategy
                         {
                             result += " ";
                         }
-                        Choices choices = choice.getBestMatch(field, r.value,
-                                colIdx,
-                                obtainContext.getCurrentLocale().toString());
+                        Choices choices = choice.getBestMatch(obtainContext, field,
+                                r.value,
+                                colIdx, obtainContext.getCurrentLocale().toString());
                         if (choices != null)
                         {
                             for (Choice ch : choices.values)
@@ -137,6 +140,34 @@ public class ValuePairsDisplayStrategy extends ASimpleDisplayStrategy
         catch (SQLException | DCInputsReaderException e)
         {
             throw new JspException(e);
+        }
+        
+        StringBuffer sb = new StringBuffer();
+        if (!disableCrossLinks && StringUtils.isNotEmpty(browseType))
+        {
+            String[] splittedResult = StringUtils.split(result);
+            int indexSplit = 0;
+            for (Metadatum mm : metadataArray)
+            {
+                try
+                {
+                    sb.append("<a href=\"" + hrq.getContextPath()
+                            + "/browse?type=" + browseType + "&amp;"
+                            + (viewFull ? "vfocus" : "value") + "="
+                            + URLEncoder.encode(mm.value, "UTF-8"));
+                    sb.append("\"\">");
+                    if(indexSplit < splittedResult.length) {
+                        sb.append(splittedResult[indexSplit]);
+                    }
+                    sb.append("</a>");
+                }
+                catch (UnsupportedEncodingException e)
+                {
+                    log.warn(e.getMessage());
+                }
+                indexSplit++;
+            }
+            return sb.toString();
         }
         return result;
     }
@@ -156,12 +187,8 @@ public class ValuePairsDisplayStrategy extends ASimpleDisplayStrategy
                 String key = myInput.getPairsType();
                 if (StringUtils.isNotBlank(key))
                 {
-                    String inputField = myInput.getSchema() + "."
-                            + myInput.getElement();
-                    if (StringUtils.isNotBlank(myInput.getQualifier()))
-                    {
-                        inputField += "." + myInput.getQualifier();
-                    }
+                    
+                    String inputField = Utils.standardize(myInput.getSchema(), myInput.getElement(), myInput.getQualifier(), ".");
 
                     if (inputField.equals(field))
                     {
@@ -175,8 +202,8 @@ public class ValuePairsDisplayStrategy extends ASimpleDisplayStrategy
                             {
                                 result += " ";
                             }
-                            Choices choices = choice.getBestMatch(field,
-                                    r.value, colIdx, obtainContext
+                            Choices choices = choice.getBestMatch(obtainContext,
+                                    field, r.value, colIdx, obtainContext
                                             .getCurrentLocale().toString());
                             if (choices != null)
                             {

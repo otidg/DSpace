@@ -34,14 +34,14 @@
             <dependencies>
                 <dependency>
                     <groupId>com.oracle</groupId>
-                    <artifactId>ojdbc6</artifactId>
+                    <artifactId>ojdbc7</artifactId>
                 </dependency>
             </dependencies>
         </profile>
         <profile>
             <id>addon-ckan</id>
 			<activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <dependencies>
 			        <dependency>
@@ -315,6 +315,13 @@
 		<dependency>
 			<groupId>org.dspace.modules</groupId>
 			<artifactId>additions</artifactId>
+		</dependency>
+
+		<!-- OpenAire Piwik Tracker  -->
+		<dependency>
+			<groupId>com.openaire</groupId>
+			<artifactId>openaire-piwik-api</artifactId>
+			<type>jar</type>
 		</dependency>
 
 		<dependency>

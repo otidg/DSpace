@@ -7,6 +7,9 @@
  */
 package org.dspace.app.webui.cris.dto;
 
+import java.util.HashMap;
+
+import org.apache.commons.lang.StringUtils;
 import org.dspace.content.DSpaceObject;
 import org.dspace.sort.SortOption;
 
@@ -42,6 +45,12 @@ public class ComponentInfoDTO<T extends DSpaceObject>
 	
 	private String browseType;
 
+	private String crisID;
+
+	private boolean addRelations;
+
+	private boolean removeRelations;
+
     private String buildCommonURL()
     {
 
@@ -52,14 +61,49 @@ public class ComponentInfoDTO<T extends DSpaceObject>
 
     }
 
+    private String buildCommonURL(String query,String page){
+    	StringBuffer sb = new StringBuffer();
+    	sb.append("?");
+    	HashMap<String,String> pairs = new HashMap<String,String>();
+
+    	if(StringUtils.isNotBlank(query)){
+	    	String[] param = StringUtils.split(query, "&");
+	    	for(String p: param){
+	    		String[] pair = StringUtils.split(p, "=");
+	    		pairs.put(pair[0],pair[1]);
+	    	}
+    	}
+    	pairs.put("start"+type, page);
+    	pairs.remove("onlytab");
+    	for(String key: pairs.keySet()){
+    		sb.append(key+"="+pairs.get(key)+"&");
+    	}
+    	
+    	String url = sb.toString();
+    	url = StringUtils.left(url, StringUtils.length(url)-1);
+    	return url;
+    }
+    
     public String buildPrevURL()
     {
         return buildCommonURL() + ((pagecurrent - 2) * rpp);
     }
 
+    public String buildPrevURL(String query)
+    {
+    	Integer prevPage = (pagecurrent - 2) * rpp;
+    	
+        return buildCommonURL(query, prevPage.toString());
+    }    
+    
     public String buildNextURL()
     {
         return buildCommonURL() + (pagecurrent * rpp);
+    }
+
+    public String buildNextURL(String query){
+    	Integer nextPage = (pagecurrent ) * rpp;
+    	return buildCommonURL(query, nextPage.toString());
     }
 
     public String getType()
@@ -199,6 +243,24 @@ public class ComponentInfoDTO<T extends DSpaceObject>
         return myLink;
     }
 
+    public String buildMyLink(String query,int q)
+    {
+
+        String myLink = "<a href=\"";
+              
+        if (q == pagecurrent)
+        {
+            myLink =  "<a href=\"#\">" + q + "</a>";
+        }
+        else
+        {
+        	Integer page = (q-1)*rpp;
+            myLink = myLink + buildCommonURL(query, page.toString()) + "\">" + q + "</a>";
+        }
+        return myLink;
+    }
+    
+    
     public int getPagetotal()
     {
         return pagetotal;
@@ -233,5 +295,35 @@ public class ComponentInfoDTO<T extends DSpaceObject>
     public void setBrowseType(String browseType)
     {
         this.browseType = browseType;
+    }
+
+    public String getCrisID()
+    {
+        return crisID;
+    }
+
+    public void setCrisID(String crisID)
+    {
+        this.crisID = crisID;
+    }
+
+    public boolean isAddRelations()
+    {
+        return addRelations;
+    }
+
+    public void setAddRelations(boolean addRelations)
+    {
+        this.addRelations = addRelations;
+    }
+
+    public boolean isRemoveRelations()
+    {
+        return removeRelations;
+    }
+
+    public void setRemoveRelations(boolean removeRelations)
+    {
+        this.removeRelations = removeRelations;
     }
 }

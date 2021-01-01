@@ -10,6 +10,8 @@ package org.dspace.app.cris.integration;
 import org.dspace.app.cris.model.ACrisObject;
 import org.dspace.app.cris.model.CrisConstants;
 import org.dspace.app.cris.model.OrganizationUnit;
+import org.dspace.content.authority.Choices;
+import org.dspace.core.Context;
 
 public class OUAuthorityForCRIS extends CRISAuthorityForCRIS<OrganizationUnit>
 {
@@ -35,6 +37,13 @@ public class OUAuthorityForCRIS extends CRISAuthorityForCRIS<OrganizationUnit>
 	@Override
 	public OrganizationUnit getNewCrisObject() {
 		return new OrganizationUnit();
+	}
+
+	@Override
+	public Choices getMatches(Context context, String field, String text, int collection, int start, int limit,
+			String locale, boolean extra) {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 

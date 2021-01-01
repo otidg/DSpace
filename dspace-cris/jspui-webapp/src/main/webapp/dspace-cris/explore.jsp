@@ -266,6 +266,13 @@ function submitForm() {
 		%>
 		<%@ include file="/dspace-cris/explore/topObjectsDownload.jsp" %>
 		</div>
+		<div class="col-sm-12">
+		<%
+			RecentSubmissions locations = (RecentSubmissions) request.getAttribute("top_map");
+		%>
+		<%@ include file="/dspace-cris/explore/topObjectsMap.jsp" %>
+		</div>
+		
 	</div>
             <br/><br/>
 

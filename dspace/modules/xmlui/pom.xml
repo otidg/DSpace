@@ -41,7 +41,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.oracle</groupId>
-                    <artifactId>ojdbc6</artifactId>
+                    <artifactId>ojdbc7</artifactId>
                 </dependency>
             </dependencies>
         </profile>
@@ -192,7 +192,12 @@
             <groupId>org.dspace.modules</groupId>
             <artifactId>additions</artifactId>
         </dependency>
-
+        <!-- OpenAire Piwik Tracker  -->
+        <dependency>
+            <groupId>com.openaire</groupId>
+            <artifactId>openaire-piwik-api</artifactId>
+            <type>jar</type>
+        </dependency>
         <!-- DSpace XMLUI Languages -->
         <dependency>
             <groupId>org.dspace</groupId>

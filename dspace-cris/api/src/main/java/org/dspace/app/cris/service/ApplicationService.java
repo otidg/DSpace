@@ -13,7 +13,11 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
@@ -31,6 +35,7 @@ import org.dspace.app.cris.dao.ResearcherPageDao;
 import org.dspace.app.cris.dao.StatSubscriptionDao;
 import org.dspace.app.cris.dao.UserWSDao;
 import org.dspace.app.cris.model.ACrisObject;
+import org.dspace.app.cris.model.CrisConstants;
 import org.dspace.app.cris.model.CrisSubscription;
 import org.dspace.app.cris.model.OrganizationUnit;
 import org.dspace.app.cris.model.Project;
@@ -52,7 +57,7 @@ import org.dspace.storage.rdbms.DatabaseUtils;
 import org.hibernate.Session;
 
 import it.cilea.osd.common.model.Identifiable;
-import jxl.read.biff.BiffException;
+import it.cilea.osd.jdyna.model.Property;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -95,6 +100,9 @@ public class ApplicationService extends ExtendedTabService
 	private Cache cacheBySource;
 	private Cache cacheByUUID;
 	
+    // the key is the UUID of the CRIS object, the set contains the UUIDs of all the CRIS objects that hold a reference to such object
+    private Map<String, Set<String>> cacheDependencies = new HashMap<String, Set<String>>();
+
     private static Logger log = Logger.getLogger(ApplicationService.class);
 
     /**
@@ -248,6 +256,11 @@ public class ApplicationService extends ExtendedTabService
     public void deleteSubscriptionByEPersonID(int id)
     {
         crisSubscriptionDao.deleteByEpersonID(id);
+    }
+
+    public void deleteSubscriptionByUUID(String uuid)
+    {
+        crisSubscriptionDao.deleteByUUID(uuid);
     }
 
     public long countByEpersonIDandUUID(int epersonID, String uuid,
@@ -585,6 +598,33 @@ public class ApplicationService extends ExtendedTabService
         return applicationDao.getList(model, ids);
     }
 
+    public <T extends ACrisObject> List<T> getCrisObjectPaginate(Class<T> crisEntityClazz, Integer crisEntityTypeId) {
+        List<T> crisObjs = new ArrayList<>();
+
+        final int MAX_RESULT = 50;
+        if (crisEntityTypeId > 1000)
+        {
+            DynamicObjectType dynamicType = get(DynamicObjectType.class, crisEntityTypeId);
+            long tot = countResearchObjectByType(dynamicType);
+            long numpages = (tot / MAX_RESULT) + 1;
+            for (int page = 1; page <= numpages; page++)
+            {
+                crisObjs.addAll((List<T>)getResearchObjectPaginateListByType(dynamicType, "id", false, page, MAX_RESULT));
+            }
+        }
+        else
+        {
+            long tot = count(crisEntityClazz);
+            long numpages = (tot / MAX_RESULT) + 1;
+            for (int page = 1; page <= numpages; page++)
+            {
+                crisObjs.addAll(getPaginateList(crisEntityClazz, "id", false, page, MAX_RESULT));
+            }
+        }
+
+        return crisObjs;
+    }
+
     public ResearcherPage getResearcherPageByEPersonId(Integer id)
     {
 		if (cacheRpByEPerson != null) {
@@ -667,6 +707,27 @@ public class ApplicationService extends ExtendedTabService
             }
         }
         return dso;
+    }
+
+    public <T extends ACrisObject> T getEntityById(int id, int type)
+    {
+        T crisObject = null;
+        switch (type)
+        {
+        case CrisConstants.RP_TYPE_ID:
+            crisObject = (T)get(ResearcherPage.class, id);
+            break;
+        case CrisConstants.PROJECT_TYPE_ID:
+            crisObject = (T)get(Project.class, id);
+            break;
+        case CrisConstants.OU_TYPE_ID:
+            crisObject = (T)get(OrganizationUnit.class, id);
+            break;
+        default:
+            crisObject = (T)get(ResearchObject.class, id);
+            break;
+        }
+        return crisObject;
     }
     
     public <T extends ACrisObject> T getEntityBySourceId(String sourceRef, String sourceID,
@@ -883,6 +944,54 @@ public class ApplicationService extends ExtendedTabService
         return null;
     }
 
+    public void clearCacheByUUID(String uuid)
+    {
+        ACrisObject object = getEntityByUUID(uuid);
+        if (object == null) {
+            log.warn("Try to decache unfounded object with UUID: " + uuid);
+            return;
+        }
+        if (cache != null)
+        {
+            try
+            {
+                cache.remove(object.getClass().getName() + "#" + object.getId());
+            }
+            catch (Exception ex)
+            {
+                log.error("clearCacheByUUID", ex);
+            }
+        }
+        if (cacheRpByEPerson != null && object instanceof ResearcherPage) {
+            Integer eid = ((ResearcherPage) object).getEpersonID();
+            if (eid != null) {
+                cacheRpByEPerson.remove(eid);
+            }
+        }
+        if (object instanceof ACrisObject) {
+            if (cacheByCrisID != null) {
+                String key = ((ACrisObject) object).getCrisID();
+                if (key != null) {
+                    cacheByCrisID.remove(key);
+                }
+            }
+            if (cacheBySource != null) {
+                String sourceRef = ((ACrisObject) object).getSourceRef();
+                String sourceID = ((ACrisObject) object).getSourceID();
+                if (sourceID != null) {
+                    String key = sourceRef + "-" + sourceID;
+                    cacheBySource.remove(object.getClass().getName() + "#" + key);
+                }
+            }
+            if (cacheByUUID != null) {
+                String key = ((ACrisObject) object).getUuid();
+                if (key != null) {
+                    cacheByUUID.remove(key);
+                }
+            }
+        }
+    }
+
 	public void clearCache()
     {
         try
@@ -923,6 +1032,41 @@ public class ApplicationService extends ExtendedTabService
 			}
 		}
 		if (object instanceof ACrisObject) {
+			// get set of the depending objects
+			String myUuid = ((ACrisObject) object).getUuid();
+			Set<String> dependencies = cacheDependencies.get(myUuid);
+
+			// remove from the cache all the depending objects
+			if (dependencies != null) {
+				for (String uuidDep : dependencies) {
+					// prevent a stack overflow if the item depends on itself
+					if (!uuidDep.equals(myUuid)) {
+						clearCacheByUUID(uuidDep);
+					}
+				}
+			}
+			cacheDependencies.remove(myUuid);
+
+			// add the object for all the CRIS objects mentioned in its direct properties to the dependencies map
+			List<Property> props = ((ACrisObject) object).getAnagrafica();
+			Set<String> myDeps = new HashSet<String>();
+			for (Property prop : props) {
+				Object val = prop.getValue().getReal();
+				if (val instanceof ACrisObject) {
+					myDeps.add(((ACrisObject) val).getUuid());
+				}
+			}
+			if (myDeps.size() > 0) {
+				for (String myDep : myDeps) {
+					Set<String> relatedUuids = cacheDependencies.get(myDep);
+					if (relatedUuids == null) {
+						relatedUuids = new HashSet<String>();
+					}
+					relatedUuids.add(myUuid);
+					cacheDependencies.put(myDep, relatedUuids);
+				}
+			}
+
 			if (cacheByCrisID != null) {
 				String key = ((ACrisObject) object).getCrisID();
 				if (key != null) {
@@ -934,7 +1078,7 @@ public class ApplicationService extends ExtendedTabService
 				String sourceID = ((ACrisObject) object).getSourceID();
 				if (sourceID != null) {
 					String key = sourceRef + "-" + sourceID;
-					cacheBySource.put(new Element(key, object));
+					cacheBySource.put(new Element(model.getName() + "#" + key, object));
 				}
 			}
 			if (cacheByUUID != null) {
@@ -1068,7 +1212,7 @@ public class ApplicationService extends ExtendedTabService
 					String[] args = new String[] { "-f", file };
 					ImportCRISDataModelConfiguration.main(args);
 					log.info("Rebuild CRIS Configuration is complete");
-				} catch (SQLException | IOException | BiffException | InstantiationException | IllegalAccessException
+				} catch (SQLException | IOException | InstantiationException | IllegalAccessException
 						| ParseException e) {
 					log.error("Error attempting to Rebuild CRIS Configuration", e);
 				} finally {

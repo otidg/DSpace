@@ -139,6 +139,8 @@
 	String crisID = (String)request.getAttribute("crisID");
 %>
 
+<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/abbreviatetext.js'></script>
+
 <% if(pmcEnabled || scopusEnabled || wosEnabled || scholarEnabled || altMetricEnabled) { %>
 <c:set var="dspace.layout.head.last" scope="request">
 <% if(altMetricEnabled) { %> 
@@ -461,7 +463,7 @@ if (dedupEnabled && admin_button) { %>
 	</div>
 	<div id="dedupResult" class="media-body text-center">
 		<h4 class="media-heading"><fmt:message key="jsp.display-item.dedup.heading"/></h4>
-	    <span class="metric-counter"><a id="dedupCounter" data-toggle="tooltip" target="_blank" title="<fmt:message key="jsp.display-item.dedup.tooltip"/>" href=""><fmt:message key="jsp.display-item.dedup.check"/></a></span>
+	    <span class="metric-counter"><a id="dedupCounter" data-toggle="tooltip" target="_blank" title="<fmt:message key="jsp.display-item.dedup.tooltip"/>" href="#"><fmt:message key="jsp.display-item.dedup.check"/></a></span>
 	</div>
 </div>	
 </div>
@@ -635,7 +637,7 @@ if (dedupEnabled && admin_button) { %>
 <% } 
   if(altMetricDimensionsEnabled) { %>
 <div class="col-lg-12 col-md-4 col-sm-6">
-<div class="altmetric">
+<div class="dimensions">
 	<div class="media-left">
 	
       	<div class="__dimensions_badge_embed__" data-legend="hover-right" data-style="small_circle" <% if (doi != null) { %> data-doi="<%= doi %>"<% } else if (pmid != null) { %> data-pmid="<%= pmid %>"<% } %>" ></div>

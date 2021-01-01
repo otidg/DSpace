@@ -9,6 +9,7 @@ package org.dspace.app.webui.cris.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -56,7 +57,15 @@ public class ItemCrisRefDisplayStrategy extends ASimpleDisplayStrategy implement
     	String publicPath = null;
     	int minConfidence = -1;
 		if (metadataArray.length > 0) {
-			ChoiceAuthorityManager cam = ChoiceAuthorityManager.getManager();
+			ChoiceAuthorityManager cam;
+            try
+            {
+                cam = ChoiceAuthorityManager.getManager(UIUtil.obtainContext(hrq));
+            }
+            catch (SQLException e)
+            {
+                throw new JspException(e);
+            }
 			ChoiceAuthority ca = cam.getChoiceAuthority(metadataArray[0].schema, metadataArray[0].element, metadataArray[0].qualifier);
 			minConfidence = MetadataAuthorityManager.getManager().getMinConfidence(metadataArray[0].schema, metadataArray[0].element, metadataArray[0].qualifier);
 			if (ca != null && ca instanceof CRISAuthority) {
@@ -220,11 +229,13 @@ public class ItemCrisRefDisplayStrategy extends ASimpleDisplayStrategy implement
 					type = split[1];
 					info = split[2];
 					String externalContextPath = ConfigurationManager.getProperty("cris","external.domainname.authority.service."+type);
-					startLink = "<a target=\"_blank\" href=\"" + externalContextPath + info;
-					startLink += "\" class=\"authority\">&nbsp;<img style=\"width: 16px; height: 16px;\" src=\""+ hrq.getContextPath() +"/images/mini-icon-orcid.png\" alt=\"\">";
-					endLink = "</a>";
-					sb.append(startLink);
-					sb.append(endLink);
+					if(StringUtils.isNotBlank(externalContextPath)) {
+						startLink = "<a target=\"_blank\" href=\"" + externalContextPath + info;
+						startLink += "\" class=\"authority\">"+I18nUtil.getMessage("ItemCrisRefDisplayStrategy.willbegenerated."+type,UIUtil.getSessionLocale(hrq));
+						endLink = "</a>";
+						sb.append(startLink);
+						sb.append(endLink);
+					}
 				}
 			}
 			else {
@@ -292,7 +303,15 @@ public class ItemCrisRefDisplayStrategy extends ASimpleDisplayStrategy implement
         String publicPath = null;
         int minConfidence = -1;
         if (StringUtils.isNotBlank(value)) {
-            ChoiceAuthorityManager cam = ChoiceAuthorityManager.getManager();
+            ChoiceAuthorityManager cam;
+            try
+            {
+                cam = ChoiceAuthorityManager.getManager(UIUtil.obtainContext(hrq));
+            }
+            catch (SQLException e)
+            {
+                return "";
+            }            
             String[] tokenized = Utils.tokenize(field);
             ChoiceAuthority ca = cam.getChoiceAuthority(tokenized[0], tokenized[1], tokenized[2]);
             minConfidence = MetadataAuthorityManager.getManager().getMinConfidence(tokenized[0], tokenized[1], tokenized[2]);

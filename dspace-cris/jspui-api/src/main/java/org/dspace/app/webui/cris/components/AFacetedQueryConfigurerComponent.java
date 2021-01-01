@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.dspace.app.cris.configuration.RelationService;
 import org.dspace.app.cris.model.ACrisObject;
 import org.dspace.app.webui.discovery.DiscoverUtility;
 import org.dspace.app.webui.util.UIUtil;
@@ -27,6 +28,7 @@ import org.dspace.content.DSpaceObject;
 import org.dspace.core.Context;
 import org.dspace.core.I18nUtil;
 import org.dspace.core.LogManager;
+import org.dspace.discovery.BadRequestSearchServiceException;
 import org.dspace.discovery.DiscoverFacetField;
 import org.dspace.discovery.DiscoverQuery;
 import org.dspace.discovery.DiscoverQuery.SORT_ORDER;
@@ -36,6 +38,7 @@ import org.dspace.discovery.SearchServiceException;
 import org.dspace.discovery.SearchUtils;
 import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
 import org.dspace.discovery.configuration.DiscoverySearchFilterFacet;
+import org.dspace.discovery.configuration.DiscoverySearchMultilanguageFilterFacet;
 import org.dspace.services.RequestService;
 import org.dspace.utils.DSpace;
 
@@ -98,7 +101,7 @@ public abstract class AFacetedQueryConfigurerComponent<T extends DSpaceObject>
 
     protected DiscoverResult search(Context context, HttpServletRequest request, String type, ACrisObject cris, int start,
             int rpp, String orderfield, boolean ascending)
-            throws SearchServiceException
+            throws SearchServiceException, BadRequestSearchServiceException
     {
         // can't start earlier than 0 in the results!
         if (start < 0)
@@ -144,9 +147,14 @@ public abstract class AFacetedQueryConfigurerComponent<T extends DSpaceObject>
         }
 
         for (DiscoverySearchFilterFacet facet : getFacets()) {
-
-            discoveryQuery.addFacetField(new DiscoverFacetField(facet.getIndexFieldName(),
+            if (DiscoverySearchMultilanguageFilterFacet.class.isAssignableFrom(facet.getClass())) {
+            	discoveryQuery.addFacetField(new DiscoverFacetField(facet.getIndexFieldName(),
+                        DiscoveryConfigurationParameters.TYPE_TEXT, facet.getFacetLimit(), facet
+                        .getSortOrder(), I18nUtil.getSupportedLocale(context.getCurrentLocale()).getLanguage() + "_",false));       
+			} else {
+				discoveryQuery.addFacetField(new DiscoverFacetField(facet.getIndexFieldName(),
                     facet.getType(), facet.getFacetLimit(), facet.getSortOrder(), false));
+			}
         }
         
         
@@ -171,12 +179,20 @@ public abstract class AFacetedQueryConfigurerComponent<T extends DSpaceObject>
                 {
                     log.error(
                             LogManager.getHeader(context,
+                                    "Error retrieving object from database using facet query",
+                                    "filter_field: " + f[0] + ",filter_type:"
+                                            + f[1] + ",filer_value:" + f[2]));
+                    throw new SearchServiceException(e);
+                }
+                catch (NullPointerException e)
+                {
+                    log.error(
+                            LogManager.getHeader(context,
                                     "Error in discovery while setting up user facet query",
                                     "filter_field: " + f[0] + ",filter_type:"
-                                            + f[1] + ",filer_value:" + f[2]),
-                            e);
+                                            + f[1] + ",filer_value:" + f[2]));
+                    throw new BadRequestSearchServiceException(e);
                 }
-
             }
 
         }
@@ -266,5 +282,26 @@ public abstract class AFacetedQueryConfigurerComponent<T extends DSpaceObject>
         this.facets = facets;
     }
 
+    public boolean forceDisplay(HttpServletRequest request, DSpaceObject object)
+    {
+        try {
+            if (request != null) {
+                Context context = UIUtil.obtainContext(request);
+                RelationService relationService = getRelationServiceConfiguration()
+                        .getRelationService(
+                                getRelationConfiguration()
+                                .getRelationName());
+                if (relationService != null) {
+                    return relationService
+                            .isAuthorized(
+                                    context,
+                                    object);
+                }
+            }
+        } catch (SQLException ex) {
+            log.error(ex.getMessage(), ex);
+        }
 
+        return false;
+    }
 }

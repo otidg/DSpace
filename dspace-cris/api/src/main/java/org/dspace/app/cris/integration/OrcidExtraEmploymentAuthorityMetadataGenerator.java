@@ -8,11 +8,13 @@ import java.util.Map;
 
 import org.dspace.authority.AuthorityValue;
 import org.dspace.authority.orcid.OrcidAccessToken;
+import org.dspace.authority.orcid.OrcidAuthorityValue;
 import org.dspace.authority.orcid.OrcidService;
 import org.dspace.content.authority.Choice;
-import org.orcid.jaxb.model.record_v2.Employment;
-import org.orcid.jaxb.model.record_v2.EmploymentSummary;
-import org.orcid.jaxb.model.record_v2.Employments;
+import org.orcid.jaxb.model.common_v3.AffiliationSummary;
+import org.orcid.jaxb.model.record_v3.AffiliationGroup;
+import org.orcid.jaxb.model.record_v3.EmploymentSummary;
+import org.orcid.jaxb.model.record_v3.Employments;
 
 /**
  * 
@@ -37,14 +39,17 @@ public class OrcidExtraEmploymentAuthorityMetadataGenerator
         
         String access_token = getAccessToken(source);
         
-        Employment employment = source.getEmployment(value, access_token, null);
-        if(employment != null) {
-            extras.put("data-" + getRelatedInputformMetadata(), employment.getOrganization().getName());    
+        Employments employments = source.getEmployments(value, access_token);
+        if(employments != null) {
+            for (AffiliationGroup group : employments.getAffiliationGroup()) {
+                List<EmploymentSummary> empSummary = group.getEmploymentSummary();
+                if (empSummary != null && !empSummary.isEmpty()) {                
+                    extras.put("data-" + getRelatedInputformMetadata(), empSummary.get(0).getValue().getOrganization().getName());    
+                    return extras;
+                }
+            }
         }
-        else {
-            //manage value to empty html element
-            extras.put("data-" + getRelatedInputformMetadata(), "");
-        }
+        extras.put("data-" + getRelatedInputformMetadata(), "");
         return extras;
     }
 
@@ -81,33 +86,37 @@ public class OrcidExtraEmploymentAuthorityMetadataGenerator
     public List<Choice> buildAggregate(OrcidService source, AuthorityValue val)
     {
         List<Choice> choiceList = new LinkedList<Choice>();
+        String serviceId = ((OrcidAuthorityValue)val).getServiceId();
         if (isSingleResultOnAggregate())
         {            
-            choiceList.add(new Choice(val.generateString(), val.getValue(), val.getValue(), build(source, val.getValue())));
+            choiceList.add(new Choice(val.generateString(), val.getValue(), val.getValue(), build(source, serviceId)));
         }
         else
         {
             String access_token = getAccessToken(source);
             
-            Employments employments = source.getEmployments(val.getValue(), access_token);
-            for (EmploymentSummary employment : employments.getEmploymentSummary())
+            Employments employments = source.getEmployments(serviceId, access_token);
+            for (AffiliationGroup group : employments.getAffiliationGroup())
             {
-                Map<String, String> extras = new HashMap<String, String>();
-                if(employment != null) {
-                    extras.put("data-" + getRelatedInputformMetadata(), employment.getOrganization().getName());    
-                }
-                else {
-                    //manage value to empty html element
-                    extras.put("data-" + getRelatedInputformMetadata(), "");
-                }
-                choiceList.add(new Choice(val.generateString(), val.getValue(), val.getValue(), extras));
-            }
-            // manage value to empty html element
-            if (choiceList.isEmpty())
-            {
-                Map<String, String> extras = new HashMap<String, String>();
-                extras.put("data-" + getRelatedInputformMetadata(), "");
-                choiceList.add(new Choice(val.generateString(), val.getValue(), val.getValue(), extras));
+	            for (EmploymentSummary employment : group.getEmploymentSummary())
+	            {
+	                Map<String, String> extras = new HashMap<String, String>();
+	                if(employment != null) {
+	                    extras.put("data-" + getRelatedInputformMetadata(), employment.getValue().getOrganization().getName());    
+	                }
+	                else {
+	                    //manage value to empty html element
+	                    extras.put("data-" + getRelatedInputformMetadata(), "");
+	                }
+	                choiceList.add(new Choice(val.generateString(), val.getValue(), val.getValue(), extras));
+	            }
+	            // manage value to empty html element
+	            if (choiceList.isEmpty())
+	            {
+	                Map<String, String> extras = new HashMap<String, String>();
+	                extras.put("data-" + getRelatedInputformMetadata(), "");
+	                choiceList.add(new Choice(val.generateString(), val.getValue(), val.getValue(), extras));
+	            }
             }
         }
         return choiceList;        

@@ -110,8 +110,8 @@ public abstract class DSpaceObject implements IGlobalSearchResult
             // Work out the place number for ordering
             int current = 0;
 
-            // Key into map is "element" or "element.qualifier"
-            String key = dcv.element + ((dcv.qualifier == null) ? "" : ("." + dcv.qualifier));
+            // Key into map is "schema.element" or "schema.element.qualifier"
+            String key = dcv.schema +"."+ dcv.element + ((dcv.qualifier == null) ? "" : ("." + dcv.qualifier));
 
             Integer currentInteger = elementCount.get(key);
             if (currentInteger != null)
@@ -124,6 +124,8 @@ public abstract class DSpaceObject implements IGlobalSearchResult
 
             // Store the calculated place number, reset the stored flag, and cache the metadatafield
             placeNum[dcIdx] = current;
+            // manage the place also in the memory list
+            dcv.setPlace(current);
             storedDC[dcIdx] = false;
             dcFields[dcIdx] = getMetadataField(dcv);
             if (dcFields[dcIdx] == null)
@@ -598,14 +600,7 @@ public abstract class DSpaceObject implements IGlobalSearchResult
             if (ItemUtils.match(schema, element, qualifier, lang, dcv))
             {
                 // We will return a copy of the object in case it is altered
-                Metadatum copy = new Metadatum();
-                copy.element = dcv.element;
-                copy.qualifier = dcv.qualifier;
-                copy.value = dcv.value;
-                copy.language = dcv.language;
-                copy.schema = dcv.schema;
-                copy.authority = dcv.authority;
-                copy.confidence = dcv.confidence;
+                Metadatum copy = dcv.copy();
                 values.add(copy);
             }
         }
@@ -667,16 +662,9 @@ public abstract class DSpaceObject implements IGlobalSearchResult
 			if (!StringUtils.equals(dcv.value, MetadataValue.PARENT_PLACEHOLDER_VALUE) && ItemUtils.match(schema, element, qualifier, lang, dcv))
 			{
 				// We will return a copy of the object in case it is altered
-				Metadatum copy = new Metadatum();
-				copy.element = dcv.element;
-				copy.qualifier = dcv.qualifier;
-				copy.value = dcv.value;
-				copy.language = dcv.language;
-				copy.schema = dcv.schema;
-				copy.authority = dcv.authority;
-				copy.confidence = dcv.confidence;
+				Metadatum copy = dcv.copy();
 				values.add(copy);
-				}
+			}
 		}
 		
 		// Create an array of matching values
@@ -892,6 +880,8 @@ public abstract class DSpaceObject implements IGlobalSearchResult
      *            value has no language (for example, a date).
      * @param values
      *            the values to add.
+     * @throws AuthorizeException 
+     * @throws SQLException 
      */
     public void addMetadata(String schema, String element, String qualifier, String lang,
                             String[] values)
@@ -915,7 +905,7 @@ public abstract class DSpaceObject implements IGlobalSearchResult
     }
 
     protected void getAuthoritiesAndConfidences(String fieldKey, String[] values, String[] authorities, int[] confidences, int i) {
-        Choices c = ChoiceAuthorityManager.getManager().getBestMatch(fieldKey, values[i], -1, null);
+        Choices c = ChoiceAuthorityManager.getManager(ourContext).getBestMatch(fieldKey, values[i], -1, null);
         authorities[i] = c.values.length > 0 ? c.values[0].authority : null;
         confidences[i] = c.confidence;
     }
@@ -1260,7 +1250,7 @@ public abstract class DSpaceObject implements IGlobalSearchResult
                                     dcv.schema = schema.getName();
                                     dcv.authority = resultRow.getStringColumn("authority");
                                     dcv.confidence = resultRow.getIntColumn("confidence");
-
+                                    dcv.setPlace(resultRow.getIntColumn("place"));
                                     // Add it to the list
                                     metadata.add(dcv);
                                 }

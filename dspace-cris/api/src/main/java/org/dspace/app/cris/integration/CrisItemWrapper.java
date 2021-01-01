@@ -73,14 +73,7 @@ public final class CrisItemWrapper
                     {
                         // We will return a copy of the object in case it is
                         // altered
-                        Metadatum copy = new Metadatum();
-                        copy.element = dcv.element;
-                        copy.qualifier = dcv.qualifier;
-                        copy.value = dcv.value;
-                        copy.language = dcv.language;
-                        copy.schema = dcv.schema;
-                        copy.authority = dcv.authority;
-                        copy.confidence = dcv.confidence;
+                        Metadatum copy = dcv.copy();
                         values.add(copy);
                     }
                 }
@@ -94,6 +87,7 @@ public final class CrisItemWrapper
         }
         if (invocation.getMethod().getName().equals("getMetadata"))
         {
+            boolean returnFirstValueAsString = false;
             String schema = "";
             String element = "";
             String qualifier = "";
@@ -107,6 +101,7 @@ public final class CrisItemWrapper
             }
             else if (invocation.getArguments().length == 1)
             {
+                returnFirstValueAsString = true;
                 StringTokenizer dcf = new StringTokenizer(
                         (String) invocation.getArguments()[0], ".");
 
@@ -138,6 +133,9 @@ public final class CrisItemWrapper
                 Metadatum[] Metadatums = addEnhancedMetadata(
                         (Item) invocation.getThis(), basic, schema, element,
                         qualifier, lang);
+                if(returnFirstValueAsString) {
+                    return Metadatums[0].value;
+                }
                 return Metadatums;
             }
             else if ("crisitem".equals(schema))
@@ -146,6 +144,9 @@ public final class CrisItemWrapper
                 Metadatum[] Metadatums = addCrisEnhancedMetadata(
                         (Item) invocation.getThis(), basic, schema, element,
                         qualifier, lang);
+                if(returnFirstValueAsString) {
+                    return Metadatums[0].value;
+                }
                 return Metadatums;
             }
             else if (schema == Item.ANY)
@@ -157,6 +158,9 @@ public final class CrisItemWrapper
                 Metadatum[] MetadatumsCris = addCrisEnhancedMetadata(
                         (Item) invocation.getThis(), MetadatumsItem, schema,
                         element, qualifier, lang);
+                if(returnFirstValueAsString) {
+                    return MetadatumsCris[0].value;
+                }
                 return MetadatumsCris;
             }
         }
@@ -249,10 +253,16 @@ public final class CrisItemWrapper
         }
         else
         {
-            Metadatum[] result = new Metadatum[basic.length
+            int basicLength = 0;
+            if(basic != null) {
+                basicLength = basic.length;
+            }
+            Metadatum[] result = new Metadatum[basicLength
                     + extraMetadata.size()];
             List<Metadatum> resultList = new ArrayList<Metadatum>();
-            resultList.addAll(Arrays.asList(basic));
+            if(basic != null) {
+                resultList.addAll(Arrays.asList(basic));
+            }
             resultList.addAll(extraMetadata);
             result = resultList.toArray(result);
             return result;

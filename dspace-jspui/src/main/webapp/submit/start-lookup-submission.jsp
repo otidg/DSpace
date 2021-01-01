@@ -95,10 +95,10 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 	#link-ricerca-identificatore {cursor: pointer; font-weight: bold; color: #FF6600;}
 	.sl-result {padding: 10px;}
 	.sl-result:HOVER {background-color: #5C9CCC;}
-	.sl-result-title, .sl-result-authors, .sl-result-date {display: block;}
+	.sl-result-title, .sl-result-authors, .sl-result-date, .sl-result-url {display: block;}
 	.sl-result-title {font-weight: bold;}
 	.sl-result-authors {font-style: italic;}
-	.sl-result-date {margin-bottom: 10px;}
+	.sl-result-date, .sl-result-url {margin-bottom: 10px;}
 	.invalid-value {border: 1px solid #FF6600;}
 	.img-thumbnail {height: 35px !important;}
 	</style>	
@@ -273,10 +273,11 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 		<span class="col-md-9">		
 <%	
 			for (String provider : identifiers2providers.get(identifier))
-			{			
+			{
+			    if (!"localduplicate".equalsIgnoreCase(provider)) {
 %>
 			<img class="img-thumbnail" src="<%= request.getContextPath() %>/image/submission-lookup-small-<%= provider %>.jpg" />
-<% 
+<% 				}
 			}
 %>
 		</span>	 
@@ -374,7 +375,7 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 		<div id="result-form">
 			<form class="form-horizontal" id="form-submission-identifiers" action="" method="post">
 				<div class="form-group">
-					<label for="select-collection-manual" class="col-sm-2 control-label"><fmt:message key="jsp.submit.start-lookup-submission.select.collection.label"/></label>
+					<label for="select-collection-identifier" class="col-sm-2 control-label"><fmt:message key="jsp.submit.start-lookup-submission.select.collection.label"/></label>
 					<div class="col-sm-7">
 							<dspace:selectcollection klass="form-control" id="select-collection-identifier" collection="<%= collection_id %>"/>
 					</div>
@@ -387,7 +388,14 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
 				<input type="hidden" id="iuuid_batch" name="iuuid_batch" value=""/>
 				<input type="hidden" id="filePath" name="filePath" value=""/>
 			</form>
-			<input type="checkbox" id="checkallresults" name="checkallresults"><fmt:message key="jsp.submit.start-lookup-submission.js.checkallresults"/>
+		
+			<div id="checkboxAll" class="col-md-2">
+			<input type="checkbox" id="checkallresults" name="checkallresults" onclick="checkAllResults(true)"><fmt:message key="jsp.submit.start-lookup-submission.js.checkallresults"/>
+			</div>
+			<div id="checkboxNotDup" class="col-md-10">
+			<input type="checkbox" id="checknotdupresults" name="checknotdupresults" onclick="checkNotDupResults(false)"><fmt:message key="jsp.submit.start-lookup-submission.js.checknotdupresults"/>
+			</div>
+			<br>
 			<h4 id="no-record" style="display:none"><span class="label label-warning"></span><fmt:message key="jsp.submit.start-lookup-submission.norecordselected" /></span></h4>
 			<h4 id="no-collection" style="display:none"><span class="label label-warning"><fmt:message key="jsp.submit.start-lookup-submission.nocollectionselected" /></span></h4>
 		</div>
@@ -418,6 +426,24 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
       </div>
       <div class="modal-footer">
       		<button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="jsp.submit.start-lookup-submission.no-collection.dialog.return" /></button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="check-results-warn" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><fmt:message key="jsp.submit.start-lookup-submission.check-results-warn.title" /></h4>
+      </div>
+      <div class="modal-body with-padding">
+       		<p class="alert alert-warning"><fmt:message key="jsp.submit.start-lookup-submission.check-results-warn.hint" /></p>
+      </div>
+      <div class="modal-footer">
+      		<button id="checkall" type="button" class="btn btn-default" onclick="checkAllResults(false)" data-dismiss="modal"><fmt:message key="jsp.submit.start-lookup-submission.check-results.dialog.check-all" /></button>
+      		<button id="checknotdup" type="button" class="btn btn-primary" onclick="checkNotDupResults(true)" data-dismiss="modal"><fmt:message key="jsp.submit.start-lookup-submission.check-results.dialog.check-nondup" /></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -521,23 +547,20 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
             j("li.ui-state-default").toggleClass("ui-state-default ui-corner-top");
             j("div.ui-tabs-panel").toggleClass("ui-tabs-panel ui-widget-content ui-corner-bottom tab-content with-padding");
             },
-        activate: function( event, ui ) {
+	        activate: function( event, ui ) {
             j("li.ui-tabs-active").toggleClass("ui-tabs-active ui-state-active active");
-            if ('tabs-result' == ui.newPanel.attr('id'))
-   				{
-				j('#manual-submission>form').appendTo("#no_result_manual_submission");	
-    		}
-            else{
-            	j('#no_result_manual_submission>form').appendTo("#manual-submission");	
-   					}
-    			}
+	            if ('tabs-result' != ui.newPanel.attr('id'))
+	            {
+	            	j('#no_result_manual_submission>form').appendTo("#manual-submission");	
+	   			}
+        	}
     	});
    	
-    	j('#link-ricerca-identificatore').click(function(){
+    	j('#link-ricerca-identificatore').on("click",function(){
     		j('#tabs-search-accordion').accordion({'active': 2});
     	});
     	j('button').button();
-    	j('#manual-submission-button').click(function(event){
+    	j('#manual-submission-button').on("click",function(event){
     		var colman = j('#select-collection-manual').val();
     		if (colman != -1)
     		{
@@ -549,30 +572,17 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
     			j('#no-collection-warn').modal('show');
    			}
     	});
-    	j('#manual-submission-button').click(function(event){
-    		var colman = j('#select-collection-manual').val();
-    		if (colman != -1)
-    		{
-    			j('#collectionid').val(colman);
-    			j('#form-submission').submit();
-    		}
-    		else
-   			{
-    			j('#no-collection-warn').modal('show');
-   			}
-    	});
-   	
-    	j('#lookup_idenfifiers').click(function(){
+    	j('#lookup_idenfifiers').on("click",function(){
     		submissionLookupIdentifiers(j('input.submission-lookup-identifier'));
     	});
-    	j('#search_go').click(function(){
+    	j('#search_go').on("click",function(){
     		submissionLookupSearch(j('.submission-lookup-search'));
     	});
-    	j('#loadfile_go').click(function(){
+    	j('#loadfile_go').on("click",function(){
     		j('#select-collection').val(j('#select-collection-file').val());
     		submissionLookupFile(j('#form-submission-loader'));
     	});
-    	j('button.exit').click(function(event){
+    	j('button.exit').on("click",function(event){
     		event.preventDefault();
     		window.location = "<%= request.getContextPath() %>/mydspace";
     	});
@@ -584,7 +594,7 @@ void generateCollectionTree(javax.servlet.jsp.JspWriter out, CollectionsTree tre
   			 j('#loading-details .modal-body').empty();
   			 j('#loading-details .modal-footer').empty();
    		});
-    	j(".submission-preview-loader").click(function() {
+    	j(".submission-preview-loader").on("click",function() {
     		if(j(this).is (':checked')) {
     			j("#select-collection-file-div").hide();
     		}

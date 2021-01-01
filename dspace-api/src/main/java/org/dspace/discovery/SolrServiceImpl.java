@@ -131,9 +131,9 @@ public class SolrServiceImpl implements SearchService, IndexingService {
     private static final Logger log = Logger.getLogger(SolrServiceImpl.class);
 
     protected static final String LAST_INDEXED_FIELD = "SolrIndexer.lastIndexed";
-    protected static final String HANDLE_FIELD = "handle";
-    protected static final String RESOURCE_TYPE_FIELD = "search.resourcetype";
-    protected static final String RESOURCE_ID_FIELD = "search.resourceid";
+    public static final String HANDLE_FIELD = "handle";
+    public static final String RESOURCE_TYPE_FIELD = "search.resourcetype";
+    public static final String RESOURCE_ID_FIELD = "search.resourceid";
 
     public static final String FILTER_SEPARATOR = "\n|||\n";
     public static final String ESCAPED_FILTER_SEPARATOR = "\n\\|\\|\\|\n";
@@ -1174,7 +1174,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                         if (!ignorePrefered)
                         {
 
-                            preferedLabel = ChoiceAuthorityManager.getManager()
+                            preferedLabel = ChoiceAuthorityManager.getManager(context)
                                     .getLabel(meta.schema, meta.element,
                                             meta.qualifier, meta.authority,
                                             meta.language);
@@ -1193,7 +1193,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                                         true);
                         if (!ignoreVariants)
                         {
-                            variants = ChoiceAuthorityManager.getManager()
+                            variants = ChoiceAuthorityManager.getManager(context)
                                     .getVariants(meta.schema, meta.element,
                                             meta.qualifier, meta.authority,
                                             meta.language);
@@ -1204,13 +1204,23 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
                 if ((searchFilters.get(field) != null || searchFilters.get(unqualifiedField + "." + Item.ANY) != null))
                 {
-                    List<DiscoverySearchFilter> searchFilterConfigs = searchFilters.get(field);
-                    if(searchFilterConfigs == null)
+                    List<DiscoverySearchFilter> filterConfigs = new ArrayList<DiscoverySearchFilter>();
+                    // get all the configuration specified for the field "as is" (i.e. dc.contributor.author)
+                    List<DiscoverySearchFilter> searchFieldFilterConfigs = searchFilters.get(field);
+                    if(searchFieldFilterConfigs != null)
                     {
-                        searchFilterConfigs = searchFilters.get(unqualifiedField + "." + Item.ANY);
+                        filterConfigs.addAll(searchFieldFilterConfigs);
+                    }
+                    // get all the configuration specified with jolly (i.e. dc.contributor.*)                    
+                    List<DiscoverySearchFilter> searchUnqualifiedFieldFilterConfigs = searchFilters
+                            .get(unqualifiedField + "." + Item.ANY);
+                    if(searchUnqualifiedFieldFilterConfigs != null)
+                    {
+                        filterConfigs.addAll(searchUnqualifiedFieldFilterConfigs);
                     }
 
-                    for (DiscoverySearchFilter searchFilter : searchFilterConfigs)
+                    // work on all the configurations that use the current field
+                    for (DiscoverySearchFilter searchFilter : filterConfigs)
                     {
                         Date date = null;
                         String separator = new DSpace().getConfigurationService().getProperty("discovery.solr.facets.split.char");
@@ -1736,7 +1746,12 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
 
     public DiscoverResult search(Context context, DiscoverQuery discoveryQuery, boolean includeUnDiscoverable) throws SearchServiceException {
+        boolean createdNewContext = false;
         try {
+            if (context == null) {
+                context = new Context();
+                createdNewContext = true;
+            }
             if(getSolr() == null){
                 return new DiscoverResult();
             }
@@ -1749,6 +1764,10 @@ public class SolrServiceImpl implements SearchService, IndexingService {
         } catch (Exception e)
         {
             throw new org.dspace.discovery.SearchServiceException(e.getMessage(),e);
+        } finally {
+            if (createdNewContext && context != null && context.isValid()) {
+                context.abort();
+            }
         }
     }
 
