@@ -34,6 +34,7 @@
 	</div>
 	<div class="titlestats tab-content with-padding">
 		<div class="btn-group pull-right btngrp_cytc">
+		<span onmouseover="hover(this);" onmouseout="out(this);">
 			<a href="#" class="btn btn-default bgcytc_lightblue clrcytc_white brdradius" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.statistics.label" /> <span class="fa fa-caret-down"></span></a>
 			<!-- <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
    				<i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
@@ -78,9 +79,16 @@
 					</c:choose>
 				</li>
 			</ul>
+		</span>
 		</div>
+<<<<<<< HEAD
 		<div class="btn-group btngrp_cytc  pull-right">
 		<a href="#" class="btn btn-default bgcytc_green clrcytc_white brdradius" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.rss.label" /> <span class="fa fa-caret-down"></span></a>
+=======
+		<div class="btn-group  pull-right">
+		<span onmouseover="hover(this);" onmouseout="out(this);">
+		<a href="#" class="btn btn-default" data-toggle="dropdown"><fmt:message key="view.stats.subscribe.rss.label" /> <span class="fa fa-caret-down"></span></a>
+>>>>>>> dspace-5_x_x-cris
 		<!-- <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
   			<i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
 		</button> -->
@@ -89,5 +97,6 @@
 			<li><a href="${rssLink}weekly?uid=${data.object.handle}&amp;type=${data.object.type}" title="Subscribe to RSS statistics update"><fmt:message key="view.stats.subscribe.rss.weekly" /></a></li>
 			<li><a href="${rssLink}monthly?uid=${data.object.handle}&amp;type=${data.object.type}" title="Subscribe to RSS statistics update"><fmt:message key="view.stats.subscribe.rss.monthly" /></a></li>
 		</ul>
+		</span>
 		</div>
 		<div class="clearfix">&nbsp;</div>

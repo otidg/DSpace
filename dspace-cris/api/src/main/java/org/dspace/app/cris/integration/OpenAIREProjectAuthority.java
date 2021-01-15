@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authority.AuthorityValueGenerator;
 import org.dspace.authority.openaireproject.OpenAIREProjectService;
@@ -20,6 +21,7 @@ import org.dspace.authority.openaireproject.OpenAireProject;
 import org.dspace.content.authority.Choice;
 import org.dspace.content.authority.Choices;
 import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
 import org.dspace.utils.DSpace;
 
 public class OpenAIREProjectAuthority extends ProjectAuthority {
@@ -32,10 +34,23 @@ public class OpenAIREProjectAuthority extends ProjectAuthority {
 	
 	private OpenAIREProjectService openAIREProjectService = new DSpace().getServiceManager()
 			.getServiceByName(OpenAIREProjectService.class.getName(), OpenAIREProjectService.class);
+
+	private List<OpenAIREExtraMetadataGenerator> generators = new DSpace().getServiceManager().getServicesByType(OpenAIREExtraMetadataGenerator.class);
 	
-	public Choices getMatches(String field, String query, int collection, int start, int limit, String locale) {
-		Choices choices = super.getMatches(field, query, collection, start, limit, locale);		
+	@Override
+	public Choices getMatches(Context context, String field, String query, int collection, int start, int limit, String locale) {
+		Choices choices = super.getMatches(context,  field, query, collection, start, limit, locale);		
 		return new Choices(addExtraResults(field, query, choices, start, limit <= 0?DEFAULT_MAX_ROWS:limit), choices.start, choices.total, choices.confidence, choices.more);
+	}
+	
+	@Override
+	public Choices getMatches(Context context, String field, String query, int collection, int start, int limit, String locale, boolean extra) {
+		if(extra)
+		{
+			return getMatches(context, field, query, collection, start, limit, locale);
+		} else {
+			return super.getMatches(context, field, query, collection, start, limit, locale);
+		}
 	}
 	
 	protected Choice[] addExtraResults(String field, String text, Choices choices, int start, int max) {
@@ -45,6 +60,7 @@ public class OpenAIREProjectAuthority extends ProjectAuthority {
 			for(OpenAireProject pj : pjs) {
 				Map<String, String> extras = new HashMap<String,String>();
 				extras.put("insolr", "false");
+				extras.putAll(buildExtra(pj.getCode()));
 				String value = pj.getTitle();
 				String authority=AuthorityValueGenerator.GENERATE + OPENAIRE_PROJECT_AUTHORITY_TYPE + AuthorityValueGenerator.SPLIT + pj.getCode();
 				if(ConfigurationManager.getBooleanProperty("openaireprojectauthority.prefix.enabled",false)) {
@@ -61,4 +77,18 @@ public class OpenAIREProjectAuthority extends ProjectAuthority {
 		return choices.values;
 	}
 
+
+    private Map<String, String> buildExtra(String value)
+    {
+        Map<String, String> extras = new HashMap<String,String>();
+        
+        if(generators!=null) {
+            for(OpenAIREExtraMetadataGenerator gg : generators) {
+                Map<String, String> extrasTmp = gg.build(value);
+                extras.putAll(extrasTmp);
+            }
+        }
+        return extras;
+    }
+    
 }

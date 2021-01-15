@@ -312,14 +312,17 @@
 						<ref local="crisIndexerListener" />
 						<ref local="nestedIndexerListener" />
 						<ref local="ORCIDListener" />
-						<ref local="rpAutoSubscriberListener" />								
+						<ref local="rpAutoSubscriberListener" />
+						<ref local="crisDedupIndexerListener" />
 					</list>
 				</property>
 				<property name="listenerOnPostDelete">
 					<list>
 						<ref local="crisIndexerListener" />
 						<ref local="nestedIndexerListener" />
-						<ref local="ORCIDListener" />		
+						<ref local="ORCIDListener" />
+						<ref local="crisDedupIndexerListener" />
+						<ref local="rpAutoUnsubscriberListener" />
 					</list>
 				</property>
 				<property name="listenerOnPreInsert">
@@ -1661,6 +1664,10 @@
 		
 	</bean>
 
+	<bean id="crisDedupIndexerListener" class="org.dspace.app.cris.deduplication.CrisDedupListenerSolrIndexer">
+		<property name="dedupService" ref="org.dspace.app.cris.deduplication.service.DedupService" />
+	</bean>
+
 	<bean id="crisIndexerListener" class="org.dspace.app.cris.discovery.NativeCrisListenerSolrIndexer">
 		<property name="crisSearchService" ref="org.dspace.discovery.IndexingService" />
 	</bean>
@@ -1684,6 +1691,8 @@
 	<bean id="nestedPositionListener" class="org.dspace.app.cris.model.listener.NestedPositionListener"/>
 	
 	<bean id="rpAutoSubscriberListener" class="org.dspace.app.cris.model.listener.RPOwnerAutoSubscribeListener"/>
+
+	<bean id="rpAutoUnsubscriberListener" class="org.dspace.app.cris.model.listener.RPAutoUnsubscribeListener"/>
 
 	<bean id="visualNetworkSolrService" class="org.dspace.app.cris.network.VisualizationGraphSolrService">
 		<property name="searcher" ref="org.dspace.discovery.SearchService" />

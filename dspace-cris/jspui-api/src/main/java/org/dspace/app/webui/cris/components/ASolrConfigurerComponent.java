@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.dspace.app.cris.configuration.RelationService;
+import org.dspace.app.cris.configuration.RelationServiceConfiguration;
 import org.dspace.app.cris.configuration.RelationConfiguration;
 import org.dspace.app.cris.discovery.CrisSearchService;
 import org.dspace.app.cris.integration.ICRISComponent;
@@ -34,12 +36,15 @@ import org.dspace.app.webui.util.UIUtil;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Context;
+import org.dspace.core.I18nUtil;
 import org.dspace.core.LogManager;
+import org.dspace.discovery.BadRequestSearchServiceException;
 import org.dspace.discovery.DiscoverFacetField;
 import org.dspace.discovery.DiscoverQuery;
 import org.dspace.discovery.DiscoverQuery.SORT_ORDER;
 import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
 import org.dspace.discovery.configuration.DiscoverySearchFilterFacet;
+import org.dspace.discovery.configuration.DiscoverySearchMultilanguageFilterFacet;
 import org.dspace.discovery.DiscoverResult;
 import org.dspace.discovery.SearchService;
 import org.dspace.discovery.SearchServiceException;
@@ -59,6 +64,8 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
     private ApplicationService applicationService;
 
     private SearchService searchService;
+
+    private RelationServiceConfiguration relationServiceConfiguration;
 
     private RelationConfiguration relationConfiguration;
 
@@ -86,6 +93,17 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
                     SearchService.class.getName(), CrisSearchService.class);
         }
         return searchService;
+    }
+
+    public RelationServiceConfiguration getRelationServiceConfiguration()
+    {
+        if (relationServiceConfiguration == null)
+        {
+            DSpace dspace = new DSpace();
+            relationServiceConfiguration = dspace.getServiceManager().getServiceByName(
+                    RelationServiceConfiguration.class.getName(), RelationServiceConfiguration.class);
+        }
+        return relationServiceConfiguration;
     }
 
     private Map<String, IBC> types = new HashMap<String, IBC>();
@@ -203,6 +221,20 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
             sortOption = SortOption.getSortOption(sortBy);
         }
 
+        RelationService relationService = getRelationServiceConfiguration()
+                .getRelationService(getRelationConfiguration()
+                        .getRelationName());
+        boolean addRelations = false;
+        boolean removeRelations = false;
+        if (relationService != null && relationService.isAuthorized(context, cris)) {
+            if (relationService.getAddAction() != null) {
+                addRelations = true;
+            }
+            if (relationService.getRemoveAction() != null) {
+                removeRelations = true;
+            }
+        }
+
         // Pass the results to the display JSP
 
         Map<String, ComponentInfoDTO<T>> componentInfoMap = (Map<String, ComponentInfoDTO<T>>) request
@@ -222,7 +254,7 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
         ComponentInfoDTO<T> componentInfo = buildComponentInfo(docs, context,
                 type, start, order, rpp, etAl, docsNumFound, pageTotal,
 				pageCurrent, pageLast, pageFirst, sortOption,
-				searchTime);
+				searchTime, cris.getCrisID(), addRelations, removeRelations);
 
         componentInfoMap.put(getShortName(), componentInfo);
         request.setAttribute("componentinfomap", componentInfoMap);
@@ -253,7 +285,10 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
                 "appliedFilterQueries"
                         + getRelationConfiguration().getRelationName(),
                 appliedFilterQueries);
-        request.setAttribute("count" + this.getShortName(), docsNumFound);
+        if (!addRelations)
+        {
+            request.setAttribute("count" + this.getShortName(), docsNumFound);
+        }
     }
 
 	private String getOrderField(int sortBy) throws SortException {
@@ -271,7 +306,8 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
     private ComponentInfoDTO<T> buildComponentInfo(DiscoverResult docs,
             Context context, String type, int start, String order, int rpp,
             int etAl, long docsNumFound, int pageTotal, int pageCurrent,
-			int pageLast, int pageFirst, SortOption sortOption, int searchTime)
+			int pageLast, int pageFirst, SortOption sortOption, int searchTime,
+			String crisID, boolean addRelations, boolean removeRelations)
             throws Exception
     {
         ComponentInfoDTO<T> componentInfo = new ComponentInfoDTO<T>();
@@ -295,6 +331,9 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
         componentInfo.setType(type);
 		componentInfo.setSearchTime(searchTime);
 		componentInfo.setBrowseType(getRelationConfiguration().getType());
+		componentInfo.setCrisID(crisID);
+		componentInfo.setAddRelations(addRelations);
+		componentInfo.setRemoveRelations(removeRelations);
         return componentInfo;
     }
 
@@ -303,7 +342,7 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
 
     public DiscoverResult search(Context context, HttpServletRequest request, String type,
             ACrisObject cris, int start, int rpp, String orderfield,
-            boolean ascending, List<String> extraFields) throws SearchServiceException
+            boolean ascending, List<String> extraFields) throws SearchServiceException, BadRequestSearchServiceException
     {
         // can't start earlier than 0 in the results!
         if (start < 0)
@@ -382,10 +421,19 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
                 {
                     log.error(
                             LogManager.getHeader(context,
+                                    "Error retrieving object from database using facet query",
+                                    "filter_field: " + f[0] + ",filter_type:"
+                                            + f[1] + ",filer_value:" + f[2]));
+                    throw new SearchServiceException(e);
+                }
+                catch (NullPointerException e)
+                {
+                    log.error(
+                            LogManager.getHeader(context,
                                     "Error in discovery while setting up user facet query",
                                     "filter_field: " + f[0] + ",filter_type:"
-                                            + f[1] + ",filer_value:" + f[2]),
-                            e);
+                                            + f[1] + ",filer_value:" + f[2]));
+                    throw new BadRequestSearchServiceException(e);
                 }
 
             }
@@ -649,9 +697,16 @@ public abstract class ASolrConfigurerComponent<T extends DSpaceObject, IBC exten
                 // add the already selected facet so to have a full
                 // top list
                 // if possible
-                discoveryQuery.addFacetField(new DiscoverFacetField(facet.getIndexFieldName(),
+                if (DiscoverySearchMultilanguageFilterFacet.class.isAssignableFrom(facet.getClass())) {
+                	discoveryQuery.addFacetField(new DiscoverFacetField(facet.getIndexFieldName(),
+                            DiscoveryConfigurationParameters.TYPE_TEXT, facetLimit + 1 + alreadySelected, facet
+                            .getSortOrder(), I18nUtil.getSupportedLocale(context.getCurrentLocale()).getLanguage() + "_", facetPage * facetLimit,false));       
+				} else {
+                
+					discoveryQuery.addFacetField(new DiscoverFacetField(facet.getIndexFieldName(),
                         facet.getType(), facetLimit + 1 + alreadySelected, facet
                                 .getSortOrder(), facetPage * facetLimit, false));
+				}
             }
 
         }

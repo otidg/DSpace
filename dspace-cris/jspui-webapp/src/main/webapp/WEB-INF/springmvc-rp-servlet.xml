@@ -1438,6 +1438,7 @@
 		<property name="specificContextPath">
 			<value>/cris/tools/</value>
 		</property>							
+		<property name="validator" ref="rpNestedAnagraficaValidator" />
 	</bean>
 	
 
@@ -2923,6 +2924,7 @@
 			<value>org.dspace.app.cris.model.jdyna.ProjectNestedPropertiesDefinition
 			</value>
 		</property>		
+		<property name="validator" ref="projectNestedAnagraficaValidator" />
 	</bean>
 	
 
@@ -4501,6 +4503,7 @@
 			<value>org.dspace.app.cris.model.jdyna.OUNestedPropertiesDefinition
 			</value>
 		</property>		
+		<property name="validator" ref="ouNestedAnagraficaValidator" />
 	</bean>
 	
 
@@ -6455,6 +6458,7 @@
 			<value>org.dspace.app.cris.model.jdyna.DynamicNestedPropertiesDefinition
 			</value>
 		</property>		
+		<property name="validator" ref="doNestedAnagraficaValidator" />
 	</bean>
 	
 
@@ -7397,7 +7401,8 @@
 		
 		<property name="interceptors">  
   			<list>  
-    			<ref bean="openSessionInViewInterceptor" />  
+    			<ref bean="openSessionInViewInterceptor" />
+    			<ref bean="localeChangeInterceptor" />  
   			</list>  
 		</property>  
 	</bean>
@@ -7779,6 +7784,30 @@
 		<property name="clazzTipologiaProprieta"
 			value="org.dspace.app.cris.model.jdyna.DynamicPropertiesDefinition" />
 	</bean>
+	<bean id="rpNestedAnagraficaValidator"
+		class="it.cilea.osd.jdyna.validator.NestedAnagraficaObjectDTOAreaValidator">
+		<property name="applicationService" ref="applicationService" />
+		<property name="clazzTypeNestedObject"
+			value="org.dspace.app.cris.model.jdyna.RPTypeNestedObject" />
+	</bean>
+	<bean id="projectNestedAnagraficaValidator"
+		class="it.cilea.osd.jdyna.validator.NestedAnagraficaObjectDTOAreaValidator">
+		<property name="applicationService" ref="applicationService" />
+		<property name="clazzTypeNestedObject"
+			value="org.dspace.app.cris.model.jdyna.ProjectTypeNestedObject" />
+	</bean>
+	<bean id="ouNestedAnagraficaValidator"
+		class="it.cilea.osd.jdyna.validator.NestedAnagraficaObjectDTOAreaValidator">
+		<property name="applicationService" ref="applicationService" />
+		<property name="clazzTypeNestedObject"
+			value="org.dspace.app.cris.model.jdyna.OUTypeNestedObject" />
+	</bean>
+	<bean id="doNestedAnagraficaValidator"
+		class="it.cilea.osd.jdyna.validator.NestedAnagraficaObjectDTOAreaValidator">
+		<property name="applicationService" ref="applicationService" />
+		<property name="clazzTypeNestedObject"
+			value="org.dspace.app.cris.model.jdyna.DynamicTypeNestedObject" />
+	</bean>
 	
 	<bean id="researcherPageValidator"
 		class="org.dspace.app.webui.cris.validator.ResearcherPageValidator">
@@ -7943,5 +7972,14 @@
     <bean id="openSessionInViewInterceptor"  
         class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">  
         <property name="sessionFactory" ref="sessionFactory" />   
-    </bean>  
+    </bean>
+
+    <bean id="localeResolver" class="org.dspace.app.webui.cris.servlet.CustomSessionLocaleResolver">
+        <property name="defaultLocale" value="en" />
+    </bean>
+  
+    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="locale" />
+    </bean>
+     
 </beans>

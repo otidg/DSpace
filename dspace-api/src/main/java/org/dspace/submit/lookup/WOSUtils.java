@@ -48,6 +48,12 @@ public class WOSUtils {
 					record.addValue("issn", new StringValue(issn));
 				}
 			}
+			if ("art_no".equals(current.getAttribute("type"))) {
+				String art_no = current.getAttribute("value");
+				if (StringUtils.isNotBlank(art_no)) {
+					record.addValue("articlenumber", new StringValue(art_no));
+				}
+			}
 		}
 
 		Element staticData = XMLUtils.getSingleElement(rec, "static_data");
@@ -131,6 +137,17 @@ public class WOSUtils {
 			}
 			record.addField("keywords", keyVals);
 		}
+		
+		Element item = XMLUtils.getSingleElement(staticData, "item");
+		Element keywordsPlus = XMLUtils.getSingleElement(item, "keywords_plus");
+		List<String> keywordPlusList = XMLUtils.getElementValueList(keywordsPlus, "keyword");
+		if (keywordPlusList != null && keywordPlusList.size() > 0) {
+			List<Value> keyPlusVals = new LinkedList<Value>();
+			for (String key : keywordPlusList) {
+				keyPlusVals.add(new StringValue(key));
+			}
+			record.addField("keywordsPlus", keyPlusVals);
+		}
 
 		Element languages = XMLUtils.getSingleElement(recordMetadata, "languages");
 		List<Element> languageList = XMLUtils.getElementList(languages, "language");
@@ -157,27 +174,29 @@ public class WOSUtils {
 		}
 
 		Element abstractsElement = XMLUtils.getSingleElement(recordMetadata, "abstracts");
-		List<Element> abstractList = XMLUtils.getElementList(abstractsElement, "abstract");
-		if (abstractList != null && abstractList.size() > 0) {
-			List<Value> abstracts = new LinkedList<Value>();
-			for (Element current : abstractList) {
-				Element absText = XMLUtils.getSingleElement(current, "abstract_text");
-				String lang = null;
-				if (abstractList.size() == 1) {
-					lang = record.getValues("language").get(0).getAsString();
-					switch (lang) {
-					case "English":
-						record.addValue("abstracteng", new StringValue(absText.getTextContent()));
-						break;
-					default:
-						abstracts.add(new StringValue(absText.getTextContent()));
-						break;
-					}
-				} else {
-					abstracts.add(new StringValue(absText.getTextContent()));
-				}
-			}
-			record.addField("abstracts", abstracts);
+		if(abstractsElement!=null) {
+    		List<Element> abstractList = XMLUtils.getElementList(abstractsElement, "abstract");
+    		if (abstractList != null && abstractList.size() > 0) {
+    			List<Value> abstracts = new LinkedList<Value>();
+    			for (Element current : abstractList) {
+    				Element absText = XMLUtils.getSingleElement(current, "abstract_text");
+    				String lang = null;
+    				if (abstractList.size() == 1) {
+    					lang = record.getValues("language").get(0).getAsString();
+    					switch (lang) {
+    					case "English":
+    						record.addValue("abstracteng", new StringValue(absText.getTextContent()));
+    						break;
+    					default:
+    						abstracts.add(new StringValue(absText.getTextContent()));
+    						break;
+    					}
+    				} else {
+    					abstracts.add(new StringValue(absText.getTextContent()));
+    				}
+    			}
+    			record.addField("abstracts", abstracts);
+    		}
 		}
 
 		Element publishers = XMLUtils.getSingleElement(summary, "publishers");

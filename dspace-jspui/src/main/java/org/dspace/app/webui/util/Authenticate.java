@@ -125,6 +125,7 @@ public class Authenticate
         {
             // Set the flag in the session, so that when the redirect is
             // followed, we'll know to resume the interrupted request
+        	originalURL =UIUtil.checkRedirectURL(originalURL);
             session.setAttribute("resuming.request", Boolean.TRUE);
         }
 
@@ -266,6 +267,9 @@ public class Authenticate
             // Get the original URL of interrupted request, if set
             String requestUrl = (String) session.getAttribute("interrupted.request.url");
 
+            // Shibboleth stores information about special groups in the session. Preserve these information.
+            Boolean shibbolethAuthenticated = (Boolean) session.getAttribute("shib.authenticated");
+            int[] shibbolethSpecialGroups = (int[]) session.getAttribute("shib.specialgroup");
             // Invalidate session unless dspace.cfg says not to
             if(ConfigurationManager.getBooleanProperty("webui.session.invalidate", true))
             {
@@ -287,6 +291,14 @@ public class Authenticate
                 session.setAttribute("interrupted.request.url", requestUrl);
             }
 
+            // Restore shibboleth special groups
+            if (shibbolethAuthenticated != null) {
+                session.setAttribute("shib.authenticated", shibbolethAuthenticated.booleanValue());
+            }
+            if (shibbolethSpecialGroups != null) {
+                session.setAttribute("shib.specialgroup", shibbolethSpecialGroups);
+            }
+            
 			List<PostLoggedInAction> postLoggedInActions = new DSpace().getServiceManager().getServicesByType(
 					PostLoggedInAction.class);
 

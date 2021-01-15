@@ -26,6 +26,7 @@ import org.dspace.app.cris.metrics.common.services.MetricsPersistenceService;
 import org.dspace.app.cris.model.ACrisObject;
 import org.dspace.app.cris.model.CrisConstants;
 import org.dspace.app.cris.model.ResearchObject;
+import org.dspace.app.cris.model.jdyna.DynamicObjectType;
 import org.dspace.app.cris.service.ApplicationService;
 import org.dspace.app.cris.statistics.CrisSolrLogger;
 import org.dspace.core.Context;
@@ -61,16 +62,7 @@ public class StatsAggregateIndicatorsPlugin<ACO extends ACrisObject>
                 MetricsPersistenceService.class.getName(),
                 MetricsPersistenceService.class);
 
-        List<ACO> rs = new ArrayList<ACO>();
-
-        if (crisEntityTypeId > 1000)
-        {
-            rs = (List<ACO>)applicationService.getResearchObjectByIDType(crisEntityTypeId);
-        }
-        else
-        {
-            rs = applicationService.getList(crisEntityClazz);
-        }
+        List<ACO> rs = applicationService.getCrisObjectPaginate(crisEntityClazz, crisEntityTypeId);
 
         for (ACO rp : rs)
         {

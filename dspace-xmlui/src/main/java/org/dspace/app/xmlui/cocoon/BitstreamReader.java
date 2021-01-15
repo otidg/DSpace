@@ -28,6 +28,7 @@ import org.apache.cocoon.environment.http.HttpEnvironment;
 import org.apache.cocoon.environment.http.HttpResponse;
 import org.apache.cocoon.reading.AbstractReader;
 import org.apache.cocoon.util.ByteRange;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.utils.AuthenticationUtil;
 import org.dspace.app.xmlui.utils.ContextUtil;
@@ -36,12 +37,14 @@ import org.dspace.authorize.AuthorizeManager;
 import org.dspace.authorize.ResourcePolicy;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
+import org.dspace.content.Collection;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.disseminate.CitationDocument;
+import org.dspace.disseminate.CoverPageService;
 import org.dspace.handle.HandleManager;
 import org.dspace.usage.UsageEvent;
 import org.dspace.utils.DSpace;
@@ -338,33 +341,44 @@ public class BitstreamReader extends AbstractReader implements Recyclable
             // 1) Intercepting Enabled
             // 2) This User is not an admin
             // 3) This object is citation-able
-            if (CitationDocument.isCitationEnabledForBitstream(bitstream, context)) {
+        	CoverPageService coverService = new DSpace().getSingletonService(CoverPageService.class);
+        	Collection owningColl = item.getOwningCollection();
+        	String collHandle="";
+        	if(owningColl != null) {
+        		collHandle= owningColl.getHandle();
+        	}
+        	String configFile =coverService.getConfigFile(collHandle);
+
+            if (StringUtils.isNotBlank(configFile) && coverService.isValidType(bitstream)) {
                 // on-the-fly citation generator
                 log.info(item.getHandle() + " - " + bitstream.getName() + " is citable.");
 
-                FileInputStream fileInputStream = null;
+                InputStream inputStream = null;
                 CitationDocument citationDocument = new CitationDocument();
 
                 try {
                     //Create the cited document
-                    tempFile = citationDocument.makeCitedDocument(bitstream);
+                    inputStream = citationDocument.makeCitedDocument(bitstream);
+
+                    // copy inputstream to temp file to retrieve length
+                    tempFile = File.createTempFile(String.valueOf(bitstream.getID()), "temp");
+                    FileUtils.copyInputStreamToFile(inputStream, tempFile);
                     if(tempFile == null) {
                         log.error("CitedDocument was null");
                     } else {
                         log.info("CitedDocument was ok," + tempFile.getAbsolutePath());
                     }
 
-
-                    fileInputStream = new FileInputStream(tempFile);
-                    if(fileInputStream == null) {
-                        log.error("Error opening fileInputStream: ");
-                    }
-
-                    this.bitstreamInputStream = fileInputStream;
+                    this.bitstreamInputStream = inputStream;
                     this.bitstreamSize = tempFile.length();
 
+                    tempFile.delete();
                 } catch (Exception e) {
                     log.error("Caught an error with intercepting the citation document:" + e.getMessage());
+                } finally {
+                    if(tempFile != null && tempFile.exists()) {
+                        tempFile.delete();
+                    }
                 }
 
                 //End of CitationDocument
