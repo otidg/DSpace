@@ -2748,11 +2748,11 @@
                                 <stored-value>http://purl.org/pe-repo/ocde/ford#4.02.01</stored-value>
                         </pair>
                         <pair>
-                                <displayed-value>4.02.02 -- Agricultura</displayed-value>
+                                <displayed-value>4.02.02 -- Cría</displayed-value>
                                 <stored-value>http://purl.org/pe-repo/ocde/ford#4.02.02</stored-value>
                         </pair>
                         <pair>
-                                <displayed-value>4.02.03 -- Crías y mascotas</displayed-value>
+                                <displayed-value>4.02.03 -- Mascotas</displayed-value>
                                 <stored-value>http://purl.org/pe-repo/ocde/ford#4.02.03</stored-value>
                         </pair>
                         <pair>
