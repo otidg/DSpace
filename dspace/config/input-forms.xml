@@ -102,7 +102,7 @@
 					<repeatable>true</repeatable>
 					<label>Asesor (dc.contributor.advisor)</label>
 					<input-type>onebox</input-type>
-					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese al(los) asesore(s) en el orden Apellido(s), Nombre(es) [por ejemplo, Smith, Josh o Smith, J] según indique la fuente.</hint>
+					<hint>Obligatorio para tesis conducentes a grados académicos. Ingrese al(los) asesore(s) en el orden Apellido(s), Nombre(es) [por ejemplo, Smith, Josh o Smith, J] según indique la fuente.</hint>
 					<required></required>
 				</field>
 								<field>
@@ -112,7 +112,7 @@
 					<repeatable>true</repeatable>
 					<label>Tipo de Documento de Identidad del Asesor (renati.advisor.[dni, cext, pasaporte, cedula])</label>
 					<input-type value-pairs-name="renati_advisor_identifier">qualdrop_value</input-type>
-					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Seleccione el tipo de documento e ingrese los dígitos [por ejemplo: 40590542] para cada asesor que se incluya.</hint>
+					<hint>Obligatorio para tesis conducentes a grados académicos. Seleccione el tipo de documento e ingrese los dígitos [por ejemplo: 40590542] para cada asesor que se incluya.</hint>
 					<required></required>
 				</field>
 								<field>
@@ -122,7 +122,7 @@
 					<repeatable>true</repeatable>
 					<label>ORCID del asesor (renati.advisor.orcid)</label>
 					<input-type>onebox</input-type>
-					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el identificador ORCID del Asesor de esta publicación</hint>
+					<hint>Obligatorio para tesis conducentes a grados académicos. Ingrese el identificador ORCID del Asesor de esta publicación</hint>
 					<required></required>
 				</field>
 				<field>
@@ -329,7 +329,7 @@
 					<dc-schema>thesis</dc-schema>
 					<dc-element>degree</dc-element>
 					<dc-qualifier>name</dc-qualifier>
-					<repeatable>false</repeatable>
+					<repeatable>true</repeatable>
 					<label>Nombre del grado (thesis.degree.name)</label>
 					<input-type>onebox</input-type>
 					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el nombre del grado del estudiante asociado con el trabajo de investigacion.</hint>
@@ -349,7 +349,7 @@
 					<dc-schema>thesis</dc-schema>
 					<dc-element>degree</dc-element>
 					<dc-qualifier>discipline</dc-qualifier>
-					<repeatable>false</repeatable>
+					<repeatable>true</repeatable>
 					<label>Nombre del programa (thesis.degree.discipline)</label>
 					<input-type>onebox</input-type>
 					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese el nombre del programa de educación superior conducente al grado académico y/o título profesional</hint>
@@ -359,7 +359,7 @@
 					<dc-schema>renati</dc-schema>
 					<dc-element>discipline</dc-element>
 					<dc-qualifier></dc-qualifier>
-					<repeatable>false</repeatable>
+					<repeatable>true</repeatable>
 					<label>Código del programa (renati.discipline)</label>
 					<input-type>onebox</input-type>
 					<hint>Obligatorio para trabajos de investigación conducentes a grados y títulos. Ingrese la clasificación del programa de educación superior conducente al grado académico y/o título profesional.</hint>
@@ -380,9 +380,9 @@
 					<dc-element>juror</dc-element>
 					<dc-qualifier></dc-qualifier>
 					<repeatable>true</repeatable>
-					<label>Obligatorio para trabajos de investigación conducentes a grados y títulos. Jurado (renati.juror)</label>
+					<label>Jurado (renati.juror)</label>
 					<input-type>onebox</input-type>
-					<hint></hint>
+					<hint>Obligatorio para tesis conducentes a grados académicos.</hint>
 					<required></required>
 				</field>
 				<field>
