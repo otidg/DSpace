@@ -134,6 +134,27 @@
                 This contexts complies with OpenAIRE Guidelines for Literature Repositories v4.0.
             </Description>
         </Context>
+
+        <Context baseurl="perucris" name="PeruCRIS Context for CRIS System">
+            <!-- Date format, field prefixes, etc are ensured by the transformer -->
+            <Transformer ref="perucrisTransformer"/>
+            <Filter ref="PeruCRISFilter"/>
+            <Set ref="perucrisPublicationsSet"/>
+            <Set ref="perucrisProductsSet"/>
+            <Set ref="perucrisPatentsSet"/>
+            <Set ref="perucrisPersonsSet"/>
+            <Set ref="perucrisOrgunitsSet"/>
+            <Set ref="perucrisProjectsSet"/>
+            <Set ref="perucrisEquipmentsSet"/>
+            <Set ref="perucrisFundingSet"/>
+            <!-- Metadata Formats -->
+            <Format ref="oai_cerif_perucris"/>
+            <Format ref="oai_cerif"/>
+            <Format ref="xoai"/>
+            <Description>
+                This contexts complies with PeruCRIS rules for CRIS system v 1.0
+            </Description>
+        </Context>
     </Contexts>
 
 
@@ -239,6 +260,13 @@
             <Namespace>http://namespace.openaire.eu/schema/oaire/</Namespace>
             <SchemaLocation>https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd</SchemaLocation>
         </Format>
+        <!-- set the format for perucris cerif profile -->
+        <Format id="oai_cerif_perucris">
+            <Prefix>cerif_perucris</Prefix>
+            <XSLT>metadataFormats/oai_cerif_perucris.xsl</XSLT>
+            <Namespace>https://purl.org/pe-repo/cerif-profile/1.0/</Namespace>
+            <SchemaLocation>https://purl.org/pe-repo/cerif-profile/1.0/perucris-cerif-profile.xsd</SchemaLocation>
+        </Format>
     </Formats>
 
     <Transformers>
@@ -253,7 +281,10 @@
         </Transformer>
         <Transformer id="openaire4Transformer">
             <XSLT>transformers/openaire4.xsl</XSLT>
-        </Transformer>        
+        </Transformer> 
+        <Transformer id="perucrisTransformer">
+            <XSLT>transformers/perucris.xsl</XSLT>
+        </Transformer>       
     </Transformers>
 
 
@@ -491,6 +522,31 @@
             </Definition>
         </Filter>
 
+        <!--  PeruCRIS filter for records returned by OAI-PMH.
+         By default, return a record:
+         * If the record is an Item or another supported type
+         This filter is only used in the PeruCRIS context ([oai]/perucris).
+        -->
+        <Filter id="PeruCRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <Custom ref="perucrisObjectTypeCondition"/>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
         <!-- Default filter for records returned by OAI-PMH. 
              By default, return an Item record:
                 * If it is publicly accessible
@@ -509,11 +565,11 @@
 		                        <Custom ref="itemWithdrawnCondition"/>
 		                    </RightCondition>
 		                </Or>
-					</LeftCondition>
-                	<RightCondition>
+                </LeftCondition>
+                <RightCondition>
                 		<Custom ref="dspaceItemCondition" />
-                	</RightCondition>
-                </And>
+                </RightCondition>
+              </And>
             </Definition>
         </Filter>
 
@@ -624,6 +680,23 @@
                     <string>ou</string>
                     <string>journals</string>
                     <string>events</string>
+                    <string>equipment</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
+        
+        <!-- This condition determines if an OAI document is of one of the types 
+        	 required by PeruCRIS for CRIS System. -->
+        <CustomCondition id="perucrisObjectTypeCondition">
+            <Class>org.dspace.xoai.filter.DSpaceEntityTypeFilter</Class>
+            <Configuration>
+                <list name="values">
+                    <string>cfitem</string>
+                    <string>project</string>
+                    <string>rp</string>
+                    <string>ou</string>
+                    <string>journals</string>
+                    <string>funding</string>
                     <string>equipment</string>
                 </list>
             </Configuration>
@@ -827,5 +900,46 @@
             <Name>OpenAIRE set</Name>
             <!-- Just an alias -->
         </Set>
+		<!-- PeruCRIS OAI-PMH Sets -->
+		<Set id="perucrisPublicationsSet">
+            <Spec>perucris_publications</Spec>
+            <Name>PerúCRIS - Publicaciones</Name>
+            <Filter ref="publicationOrJournalSetFilter" />
+        </Set>
+		<Set id="perucrisProductsSet">
+            <Spec>perucris_products</Spec>
+            <Name>PerúCRIS - Productos</Name>
+            <Filter ref="productSetFilter" />
+        </Set>
+		<Set id="perucrisPatentsSet">
+            <Spec>perucris_patents</Spec>
+            <Name>PerúCRIS - Patentes</Name>
+            <Filter ref="patentSetFilter" />
+        </Set>        
+        <Set id="perucrisPersonsSet">
+            <Spec>perucris_persons</Spec>
+            <Name>PerúCRIS - Personas</Name>
+            <Filter ref="researcherSetFilter" />
+        </Set>
+        <Set id="perucrisOrgunitsSet">
+            <Spec>perucris_orgunits</Spec>
+            <Name>PerúCRIS - Unidades organizativas</Name>
+            <Filter ref="orgUnitSetFilter" />
+        </Set>
+        <Set id="perucrisProjectsSet">
+            <Spec>perucris_projects</Spec>
+            <Name>PerúCRIS - Proyectos</Name>
+            <Filter ref="projectSetFilter" />
+        </Set>          
+        <Set id="perucrisEquipmentsSet">
+            <Spec>perucris_equipments</Spec>
+            <Name>PerúCRIS - Equipamientos</Name>
+            <Filter ref="equipmentSetFilter" />
+        </Set>
+        <Set id="perucrisFundingSet">
+            <Spec>perucris_fundings</Spec>
+            <Name>PerúCRIS - Financiamientos</Name>
+            <Filter ref="fundingSetFilter" />
+        </Set>  
     </Sets>
 </Configuration>

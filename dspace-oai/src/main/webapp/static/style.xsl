@@ -70,12 +70,16 @@
                                         </xsl:if>
                                         <xsl:attribute name="href">
                                         <xsl:choose>
-											<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
-                                            <xsl:value-of
+                                            <xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
+                                              <xsl:value-of
                                                     select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_cerif_openaire')"></xsl:value-of>
                                             </xsl:when>
+                                            <xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
+                                              <xsl:value-of
+                                                    select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=cerif_perucris')"></xsl:value-of>
+                                            </xsl:when>
                                             <xsl:otherwise>
-                                            <xsl:value-of
+                                              <xsl:value-of
                                                     select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_dc')"></xsl:value-of>
                                             </xsl:otherwise>
 	                                    </xsl:choose>
