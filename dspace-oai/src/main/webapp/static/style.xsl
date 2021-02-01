@@ -94,14 +94,18 @@
                                         </xsl:if>
                                         <xsl:attribute name="href">
                                         <xsl:choose>
-											<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
+                                          <xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
                                             <xsl:value-of
-                                                    select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=oai_cerif_openaire')"></xsl:value-of>
-                                            </xsl:when>
-                                            <xsl:otherwise>
+                                                  select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=oai_cerif_openaire')"></xsl:value-of>
+                                          </xsl:when>
+                                          <xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
                                             <xsl:value-of
-                                                    select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=oai_dc')"></xsl:value-of>
-                                            </xsl:otherwise>
+                                                  select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=cerif_perucris')"></xsl:value-of>
+                                          </xsl:when>
+                                          <xsl:otherwise>
+                                            <xsl:value-of
+                                                  select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=oai_dc')"></xsl:value-of>
+                                          </xsl:otherwise>
 	                                    </xsl:choose>                                                    
                                         </xsl:attribute>
                                         Identifiers
@@ -266,29 +270,37 @@
                         <a>
                             <xsl:attribute name="href">
                                         <xsl:choose>
-											<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
-			                                <xsl:value-of
+                                          <xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
+                                            <xsl:value-of
 			                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_cerif_openaire&amp;set=', oai:setSpec/text())" />
-                                            </xsl:when>
-                                            <xsl:otherwise>
-			                                <xsl:value-of
+                                          </xsl:when>
+                                          <xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
+                                            <xsl:value-of
+			                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=cerif_perucris&amp;set=', oai:setSpec/text())" />
+                                          </xsl:when>
+                                          <xsl:otherwise>
+                                            <xsl:value-of
 			                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_dc&amp;set=', oai:setSpec/text())" />		
-                                            </xsl:otherwise>
-	                                    </xsl:choose>                                        
+                                          </xsl:otherwise>
+                                        </xsl:choose>                                        
                             </xsl:attribute>
                             Records
                         </a>
                         <a>
                             <xsl:attribute name="href">
                                         <xsl:choose>
-											<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
-			                                <xsl:value-of
+                                          <xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
+                                            <xsl:value-of
 			                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=oai_cerif_openaire&amp;set=', oai:setSpec/text())" />
-                                            </xsl:when>
-                                            <xsl:otherwise>
-			                                <xsl:value-of
+                                          </xsl:when>
+                                          <xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
+                                            <xsl:value-of
+			                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=cerif_perucris&amp;set=', oai:setSpec/text())" />
+                                          </xsl:when>
+                                          <xsl:otherwise>
+                                            <xsl:value-of
 			                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListIdentifiers&amp;metadataPrefix=oai_dc&amp;set=', oai:setSpec/text())" />		
-                                            </xsl:otherwise>
+                                          </xsl:otherwise>
 	                                    </xsl:choose>                                           
                             </xsl:attribute>
                             Identifiers
@@ -347,15 +359,19 @@
                                         <a>
                                             <xsl:attribute name="href">
 		                                        <xsl:choose>
-													<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
-					                                <xsl:value-of
+                                              <xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
+                                                <xsl:value-of
 					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_cerif_openaire&amp;set=', text())" />
-		                                            </xsl:when>
-		                                            <xsl:otherwise>
-					                                <xsl:value-of
+                                              </xsl:when>
+                                              <xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
+                                                <xsl:value-of
+					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=cerif_perucris&amp;set=', text())" />
+                                              </xsl:when>
+                                              <xsl:otherwise>
+                                                <xsl:value-of
 					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_dc&amp;set=', text())" />		
-		                                            </xsl:otherwise>
-			                                    </xsl:choose>                                                           
+                                              </xsl:otherwise>
+                                            </xsl:choose>                                                           
                                             </xsl:attribute>
                                             <xsl:value-of select="text()" />
                                         </a>
@@ -468,12 +484,16 @@
                             <a class="btn btn-default pull-right">
                                 <xsl:attribute name="href">
 												<xsl:choose>
-													<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
-					                                <xsl:value-of
+                                                <xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
+                                                  <xsl:value-of
 					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=GetRecord&amp;metadataPrefix=oai_cerif_openaire&amp;identifier=', oai:identifier/text())" />
 		                                            </xsl:when>
+                                                <xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
+                                                  <xsl:value-of
+					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=GetRecord&amp;metadataPrefix=cerif_perucris&amp;identifier=', oai:identifier/text())" />
+		                                            </xsl:when>
 		                                            <xsl:otherwise>
-					                                <xsl:value-of
+                                                  <xsl:value-of
 					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=', oai:identifier/text())" />		
 		                                            </xsl:otherwise>
 			                                    </xsl:choose>
@@ -508,6 +528,10 @@
 													<xsl:when test="contains(/oai:OAI-PMH/oai:request,'openairecris')">
 					                                <xsl:value-of
 					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=oai_cerif_openaire&amp;set=', text())" />
+		                                            </xsl:when>
+													<xsl:when test="contains(/oai:OAI-PMH/oai:request,'perucris')">
+					                                <xsl:value-of
+					                                        select="concat(/oai:OAI-PMH/oai:request/text(), '?verb=ListRecords&amp;metadataPrefix=cerif_perucris&amp;set=', text())" />
 		                                            </xsl:when>
 		                                            <xsl:otherwise>
 					                                <xsl:value-of
