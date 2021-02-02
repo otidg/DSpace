@@ -219,12 +219,42 @@
             	</Type>
             	</xsl:for-each>
             	
-            	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='acronym']/doc:element/doc:element">
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peTipoSubunidad']/doc:element/doc:element">
+              <xsl:if test="doc:field[@name='value'] != '---'">
+               	<Type scheme="https://purl.org/pe-repo/concytec/tipoSubunidad"><xsl:value-of select="doc:field[@name='value']" /></Type>
+               </xsl:if>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peSectorInstitucional']/doc:element/doc:element">
+              <xsl:if test="doc:field[@name='value'] != '---'">
+               	<Type scheme="https://purl.org/pe-repo/ocde/sectorInstitucional"><xsl:value-of select="doc:field[@name='value']" /></Type>
+               </xsl:if>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peTipoEducacion']/doc:element/doc:element">
+              <xsl:if test="doc:field[@name='value'] != '---'">
+               	<Type scheme="https://purl.org/pe-repo/sunedu/tipoInstitucion"><xsl:value-of select="doc:field[@name='value']" /></Type>
+              </xsl:if>
+           	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peActividadEconomica']/doc:element/doc:element">
+              <xsl:if test="doc:field[@name='value'] != '---'">
+               	<Type scheme="https://purl.org/pe-repo/inei/ciiu"><xsl:value-of select="doc:field[@name='value']" /></Type>
+              </xsl:if>
+           	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peNaturaleza']/doc:element/doc:element">
+              <xsl:if test="doc:field[@name='value'] != '---'">
+               	<Type scheme="https://purl.org/pe-repo/ocde/naturalezaInstitucion"><xsl:value-of select="doc:field[@name='value']" /></Type>
+              </xsl:if>
+           	</xsl:for-each>
+           	
+             	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='acronym']/doc:element/doc:element">
 					<Acronym><xsl:value-of select="doc:field[@name='value']/text()"></xsl:value-of></Acronym>
             	</xsl:for-each>
             	
             	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='name']/doc:element/doc:element">
-					<Name xml:lang="en"><xsl:value-of select="doc:field[@name='value']" /></Name>
+					<Name xml:lang="es"><xsl:value-of select="doc:field[@name='value']" /></Name>
 				</xsl:for-each>
 			
 				<xsl:variable name="identifiertypeid" select="doc:element[@name='ouidentifier']/doc:element[@name='ouidentifiertypeid']/doc:element/doc:element/doc:field[@name='value']" />
@@ -233,7 +263,31 @@
 					<Identifier type="{$identifiertypeid}"><xsl:value-of select="$identifierid"/></Identifier>
 				</xsl:if>
             	
-            	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='email']/doc:element/doc:element">
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peRUC']/doc:element/doc:element">
+               	<Identifier type="https://purl.org/pe-repo/concytec/terminos#ruc"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='ror']/doc:element/doc:element">
+               	<Identifier type="https://w3id.org/cerif/vocab/IdentifierTypes#RORID"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peISNI']/doc:element/doc:element">
+               	<Identifier type="https://w3id.org/cerif/vocab/IdentifierTypes#ISNI"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peScopusAffId']/doc:element/doc:element">
+               	<Identifier type="https://w3id.org/cerif/vocab/IdentifierTypes#ScopusAffiliationID"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peAlternativeScopusAffId']/doc:element/doc:element">
+               	<Identifier type="https://w3id.org/cerif/vocab/IdentifierTypes#ScopusAffiliationID"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
+          	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peCrossRefFunderId']/doc:element/doc:element">
+               	<Identifier type="https://w3id.org/cerif/vocab/IdentifierTypes#FundRefID"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
+          	</xsl:for-each>
+           	
+             	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='email']/doc:element/doc:element">
 					<ElectronicAddress><xsl:value-of select="doc:field[@name='value']/text()"></xsl:value-of></ElectronicAddress>
             	</xsl:for-each>
             	
@@ -258,6 +312,41 @@
 					</xsl:choose>
 			    	</PartOf>
 				</xsl:for-each>
+        
+        <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peClasificacionOCDE']/doc:element/doc:element">
+          <xsl:if test="doc:field[@name='value'] != '---'">
+            <Subject scheme="https://purl.org/pe-repo/ocde/ford"><xsl:value-of select="doc:field[@name='value']" /></Subject>
+          </xsl:if>
+        </xsl:for-each>
+
+        <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='keywords']/doc:element/doc:element/doc:field[@name='value']">
+          <Keyword xml:lang="es"><xsl:value-of select="." /></Keyword>
+        </xsl:for-each>
+
+        <xsl:if test="doc:element[@name='crisou']/doc:element[@name='pePostAddress'] or doc:element[@name='crisou']/doc:element[@name='city'] or doc:element[@name='crisou']/doc:element[@name='iso-country']">
+          <PostAddress>
+            <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='pePostAddress']/doc:element/doc:element/doc:field[@name='value']">
+              <StreetAddress><xsl:value-of select="." /></StreetAddress>
+            </xsl:for-each>
+
+            <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='city']/doc:element/doc:element/doc:field[@name='value']">
+              <AddressLocality><xsl:value-of select="." /></AddressLocality>
+            </xsl:for-each>
+
+            <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='iso-country']/doc:element/doc:element/doc:field[@name='value']">
+              <AddressCountry><xsl:value-of select="." /></AddressCountry>
+            </xsl:for-each>
+          </PostAddress>
+        </xsl:if>
+        
+        <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peUbigeoSede']/doc:element/doc:element/doc:field[@name='value']">
+          <UbiGeo scheme="https://purl.org/pe-repo/inei/ubigeo"><xsl:value-of select="." /></UbiGeo>
+        </xsl:for-each>
+        
+        <xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='description']/doc:element/doc:element/doc:field[@name='value']">
+          <Description xml:lang="es"><xsl:value-of select="." /></Description>
+        </xsl:for-each>
+
 			</OrgUnit>			
 		</xsl:for-each>
 		</xsl:when>
@@ -298,7 +387,13 @@
            		</xsl:for-each>	        
 	    	</PersonName>
 	    	
-           	<xsl:for-each select="doc:element[@name='crisrp']/doc:element[@name='orcid']/doc:element/doc:element">
+           	<xsl:for-each select="doc:element[@name='crisrp']/doc:element[@name='cfGender']/doc:element/doc:element">
+              <xsl:if test="doc:field[@name='value'] != '---'">
+               	<Gender><xsl:value-of select="doc:field[@name='value']" /></Gender>
+              </xsl:if>
+           	</xsl:for-each>
+           	
+          	<xsl:for-each select="doc:element[@name='crisrp']/doc:element[@name='orcid']/doc:element/doc:element">
                	<ORCID><xsl:value-of select="doc:field[@name='value']" /></ORCID>
            	</xsl:for-each>
            	
@@ -308,6 +403,10 @@
            	
            	<xsl:for-each select="doc:element[@name='crisrp']/doc:element[@name='scopusid']/doc:element/doc:element">
                	<ScopusAuthorID><xsl:value-of select="doc:field[@name='value']" /></ScopusAuthorID>
+           	</xsl:for-each>
+           	
+           	<xsl:for-each select="doc:element[@name='crisrp']/doc:element[@name='oaAlternativeScopusAuthorID']/doc:element/doc:element">
+               	<AlternativeScopusAuthorID><xsl:value-of select="doc:field[@name='value']" /></AlternativeScopusAuthorID>
            	</xsl:for-each>
            	
            	<xsl:for-each select="doc:element[@name='rp']/doc:element[@name='email']/doc:element">
@@ -1601,12 +1700,6 @@
             
             <xsl:for-each select="doc:element[@name='crisfunding']/doc:element[@name='fundingcfFundingDescription']/doc:element/doc:element/doc:field[@name='value']">
               <Description xml:lang="es"><xsl:value-of select="." /></Description>
-            </xsl:for-each>
-            
-            <xsl:for-each select="doc:element[@name='crisfunding']/doc:element[@name='fundingpeClasificacionOCDE']/doc:element/doc:element/doc:field[@name='value']">
-              <xsl:if test="string(.) != '---'">
-                <Subject xml:lang="es"><xsl:value-of select="." /></Subject>
-              </xsl:if>
             </xsl:for-each>
             
             <xsl:for-each select="doc:element[@name='crisfunding']/doc:element[@name='fundingcfFundingKeywords']/doc:element/doc:element/doc:field[@name='value']">
