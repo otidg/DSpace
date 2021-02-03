@@ -287,8 +287,16 @@
                	<Identifier type="https://w3id.org/cerif/vocab/IdentifierTypes#FundRefID"><xsl:value-of select="doc:field[@name='value']" /></Identifier>
           	</xsl:for-each>
            	
+             	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peURL']/doc:element/doc:element">
+					<ElectronicAddress><xsl:value-of select="doc:field[@name='value']/text()"/></ElectronicAddress>
+            	</xsl:for-each>
+            	
              	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='email']/doc:element/doc:element">
-					<ElectronicAddress><xsl:value-of select="doc:field[@name='value']/text()"></xsl:value-of></ElectronicAddress>
+					<ElectronicAddress><xsl:value-of select="doc:field[@name='value']/text()"/></ElectronicAddress>
+            	</xsl:for-each>
+            	
+             	<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='peEmail']/doc:element/doc:element">
+					<ElectronicAddress>mailto:<xsl:value-of select="doc:field[@name='value']/text()"/></ElectronicAddress>
             	</xsl:for-each>
             	
 				<xsl:for-each select="doc:element[@name='crisou']/doc:element[@name='parentorgunit']/doc:element/doc:element/doc:element[@name='value']">				
@@ -991,18 +999,18 @@
             <xsl:value-of select="doc:element[@name='others']/doc:field[@name='handle']" />
         </xsl:variable>
         
-        <Publication id="{$item_prop_id}">
+        <Publication id="Publications/{$item_prop_id}">
             
             <xsl:for-each select="doc:element[@name='item']/doc:element[@name='openairecristype']/doc:element/doc:field[@name='value']">
 	            <Type xmlns:oai_cerif="https://www.openaire.eu/cerif-profile/vocab/COAR_Publication_Types"><xsl:value-of select="." /></Type>
             </xsl:for-each>
             
             <xsl:for-each select="doc:element[@name='dc']/doc:element[@name='title']/doc:element/doc:field[@name='value']">
-                <Title xml:lang="en"><xsl:value-of select="." /></Title>
+                <Title xml:lang="es"><xsl:value-of select="." /></Title>
             </xsl:for-each>
             
             <xsl:for-each select="doc:element[@name='dc']/doc:element[@name='title']/doc:element[@name='alternative']/doc:element/doc:field[@name='value']">
-                <Subtitle xml:lang="en"><xsl:value-of select="." /></Subtitle>
+                <Subtitle xml:lang="es"><xsl:value-of select="." /></Subtitle>
             </xsl:for-each>
             
             <!-- PublishedIn [START] -->
@@ -1023,7 +1031,7 @@
                     </xsl:variable>
             
                     <DisplayName><xsl:value-of select="./doc:field[@name='value']/text()" /></DisplayName>        
-            		<!-- by desing dc.relation.ispartof is always a JournalAuthority -->
+            		<!-- by design dc.relation.ispartof is always a JournalAuthority -->
             		<xsl:call-template name="journal">
             			<xsl:with-param name="selector" select="./doc:element[@name='authority']" />
             			<xsl:with-param name="journal_id" select="$journals_id" />
@@ -1205,7 +1213,7 @@
 	        	</OriginatesFrom>					
 	        </xsl:for-each>
 	        
-	        <xsl:for-each select="doc:element[@name='dc']/doc:element[@name='relation']/doc:element[@name='conference']/doc:element/doc:field[@name='value']">
+<!--	        <xsl:for-each select="doc:element[@name='dc']/doc:element[@name='relation']/doc:element[@name='conference']/doc:element/doc:field[@name='value']">
 				<PresentedAt>	        
 		        	<xsl:variable name="dc_relation_conference_id">
 	             		<xsl:value-of select="../doc:element[@name='authority']/doc:element[@name='others']/doc:field[@name='handle']/text()" />
@@ -1227,7 +1235,7 @@
 					</xsl:choose>
 				</PresentedAt>
 	       	</xsl:for-each>
-	        
+-->	        
 	        <xsl:for-each select="doc:element[@name='item']/doc:element[@name='grantfulltext']/doc:element/doc:field[@name='value']">
 	        	<ns4:Access xmlns:ns4="http://purl.org/coar/access_right">
 	        		<xsl:variable name="accessright">
